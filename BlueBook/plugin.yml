@@ -1,0 +1,8 @@
+name: BlueBook
+main: com.wasteofplastic.bluebook.BlueBook
+version: 0.1
+depend: [Vault]
+permissions:
+    bluebook.show:
+        description: Provides guide price for block or item when hitting a sign or chest.
+        default: op
