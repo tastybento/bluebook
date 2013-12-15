@@ -102,8 +102,8 @@ public class BlueBook extends JavaPlugin implements Listener {
 			short durability = itemInHand.getDurability();
 			// Find out the max durability of the item
 			short maxDurability = itemInHand.getType().getMaxDurability();
-			//p.sendMessage(ChatColor.BLUE + "[BlueBook] " + ChatColor.GOLD
-			//		+ Util.getName(itemInHand) + " durability is " + durability + " out of " + maxDurability);
+			p.sendMessage(ChatColor.BLUE + "[BlueBook] " + ChatColor.GOLD
+					+ Util.getName(itemInHand) + " durability is " + durability + " out of " + maxDurability);
 			/*
 			// If the max and current durability are zero then this is just a block or normal item
 			// If the current durability is greater than the max, then it's a variant on the current item, e.g. potion, etc.
