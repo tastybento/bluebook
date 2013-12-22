@@ -40,11 +40,14 @@ import com.wasteofplastic.bluebook.MetricsLite;
 public class BlueBook extends JavaPlugin implements Listener {
 	/** The active instance of BlueBook */
 	public static BlueBook instance;
-
+	
 	public static Economy econ = null;
 	
 	public double profit = 0.0;
 
+	// Version of the Plugin
+	private static double version = 1.2;
+	
 	@Override
 	public void onDisable() {
 		this.reloadConfig();
@@ -113,7 +116,7 @@ public class BlueBook extends JavaPlugin implements Listener {
 			short durability = itemInHand.getDurability();
 			// Find out the max durability of the item
 			short maxDurability = itemInHand.getType().getMaxDurability();
-			//p.sendMessage(ChatColor.BLUE + "[BlueBook] " + ChatColor.GOLD
+			//p.sendMessage(ChatColor.BLUE + "[BlueBook "+version+ "] " + ChatColor.GOLD
 			//		+ Util.getName(itemInHand) + " durability is " + durability + " out of " + maxDurability);
 			/*
 			// If the max and current durability are zero then this is just a block or normal item
@@ -142,20 +145,20 @@ public class BlueBook extends JavaPlugin implements Listener {
 				// We do not know what the price is! This is a catch all for
 				// unknown prices - literally price-less
 				// TODO: Allow the prefix of the message to be configured
-				p.sendMessage(ChatColor.BLUE + "[BlueBook] " + ChatColor.GOLD
+				p.sendMessage(ChatColor.BLUE + "[BlueBook" + version + "] " + ChatColor.GOLD
 						+ Util.getName(itemInHand) + " is priceless!");
 			} else {
 				if (maxDurability > 0 && durability > 0) {
 					// Item is worn down somewhat
-					p.sendMessage(ChatColor.BLUE + "[BlueBook] " + ChatColor.GOLD
+					p.sendMessage(ChatColor.BLUE + "[BlueBook" + version + "] " + ChatColor.GOLD
 							+ "Worn " + Util.getName(itemInHand) + " ~"
 							+ econ.format(price) + " each");
 				} else if (durability == 0 && maxDurability > 0){
-					p.sendMessage(ChatColor.BLUE + "[BlueBook] " + ChatColor.GOLD
+					p.sendMessage(ChatColor.BLUE + "[BlueBook" + version + "] " + ChatColor.GOLD
 							+ "Mint " + Util.getName(itemInHand) + " ~"
 							+ econ.format(price) + " each");
 				} else {
-					p.sendMessage(ChatColor.BLUE + "[BlueBook] " + ChatColor.GOLD
+					p.sendMessage(ChatColor.BLUE + "[BlueBook" + version + "] " + ChatColor.GOLD
 							+ Util.getName(itemInHand) + " ~"
 							+ econ.format(price) + " each");
 					

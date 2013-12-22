@@ -1409,10 +1409,6 @@ public class Util {
 				return "BIRCH_LOG";
 			case 3:
 				return "JUNGLE_LOG";
-			case 4:
-				return "Acacia Log";
-			case 5:
-				return "Dark Oak Log";
 			}
 			return mat.toString();
 		case LEAVES:
@@ -1927,9 +1923,9 @@ public class Util {
 		case GOLD_ORE:
 			break;
 		case GOLD_PICKAXE:
-			return "Golden Pickaxe";
+			return "Golden_Pickaxe";
 		case GOLD_PLATE:
-			return "Weighted Pressure Plate (Light)";
+			return "Weighted_Pressure_Plate_(Light)";
 		case GOLD_RECORD:
 			return "Golden Record";
 		case GOLD_SPADE:
@@ -1961,7 +1957,7 @@ public class Util {
 		case IRON_AXE:
 			break;
 		case IRON_BARDING:
-			return "Iron Horse Armor";
+			return "Iron_Horse_Armor";
 		case IRON_BLOCK:
 			break;
 		case IRON_BOOTS:
@@ -1987,13 +1983,13 @@ public class Util {
 		case IRON_PLATE:
 			break;
 		case IRON_SPADE:
-			return "Iron Shovel";
+			return "Iron_Shovel";
 		case IRON_SWORD:
 			break;
 		case ITEM_FRAME:
 			break;
 		case JACK_O_LANTERN:
-			return "Jack O'Lantern";
+			return "Jack_O'Lantern";
 		case JUKEBOX:
 			break;
 		case JUNGLE_WOOD_STAIRS:
@@ -2023,18 +2019,18 @@ public class Util {
 		case LEAVES_2:
 			switch ((int) damage) {
 			case 0:
-				return "Acacia Leaves";
+				return "Acacia_Leaves";
 			case 1:
-				return "Dark Oak Leaves";
+				return "Dark_Oak_Leaves";
 			}
 			return mat.toString();
 		case LEVER:
 			break;
 		case LOG_2:
 			switch ((int) damage) {
-			case 0:
-				return "ACACIA OAK LOG";
-			case 1:
+			case 3:
+				return "ACACIA_OAK_LOG";
+			case 4:
 				return "DARK_OAK_LOG";
 			}
 			return mat.toString();
