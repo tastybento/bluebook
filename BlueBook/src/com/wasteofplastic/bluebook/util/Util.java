@@ -1450,7 +1450,7 @@ public class Util {
 				case 0:
 					// return "COAL";
 				case 1:
-					// "CHARCOAL";
+					// "CHARCOAL - is wood + fuel
 				}
 				break;
 			case SANDSTONE:

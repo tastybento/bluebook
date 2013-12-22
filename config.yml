@@ -102,3 +102,6 @@ block-prices:
    FIRE: 12
 # COCOA PLANT, max 3 beans per plant
    COCOA: 15
+# 1.7.2 Double plants
+   DOUBLE_PLANT: 1
+

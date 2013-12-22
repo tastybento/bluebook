@@ -16,6 +16,8 @@
  */
 package com.wasteofplastic.bluebook;
 
+import java.io.IOException;
+
 import net.milkbowl.vault.economy.Economy;
 
 import org.bukkit.ChatColor;
@@ -33,6 +35,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.block.Block;
 
 import com.wasteofplastic.bluebook.util.Util;
+import com.wasteofplastic.bluebook.MetricsLite;
 
 public class BlueBook extends JavaPlugin implements Listener {
 	/** The active instance of BlueBook */
@@ -66,6 +69,14 @@ public class BlueBook extends JavaPlugin implements Listener {
 		PluginManager pm = getServer().getPluginManager(); // Registers the
 															// plugin
 		pm.registerEvents(this, this);
+	   	// Send stats
+    	try {
+    	    MetricsLite metrics = new MetricsLite(this);
+    	    metrics.start();
+    	} catch (IOException e) {
+    	    // Failed to submit the stats :-(
+    	}
+
 	}
 
 	/**
@@ -137,15 +148,15 @@ public class BlueBook extends JavaPlugin implements Listener {
 				if (maxDurability > 0 && durability > 0) {
 					// Item is worn down somewhat
 					p.sendMessage(ChatColor.BLUE + "[BlueBook] " + ChatColor.GOLD
-							+ "Worn " + Util.getName(itemInHand) + " ~$"
+							+ "Worn " + Util.getName(itemInHand) + " ~"
 							+ econ.format(price) + " each");
 				} else if (durability == 0 && maxDurability > 0){
 					p.sendMessage(ChatColor.BLUE + "[BlueBook] " + ChatColor.GOLD
-							+ "Mint " + Util.getName(itemInHand) + " ~$"
+							+ "Mint " + Util.getName(itemInHand) + " ~"
 							+ econ.format(price) + " each");
 				} else {
 					p.sendMessage(ChatColor.BLUE + "[BlueBook] " + ChatColor.GOLD
-							+ Util.getName(itemInHand) + " ~$"
+							+ Util.getName(itemInHand) + " ~"
 							+ econ.format(price) + " each");
 					
 				}
