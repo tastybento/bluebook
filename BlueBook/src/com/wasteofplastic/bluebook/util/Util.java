@@ -22,6 +22,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 //import java.util.Set;
 
+
 //import org.bukkit.ChatColor;
 //import org.bukkit.ChatColor;
 //import org.bukkit.Location;
@@ -35,7 +36,6 @@ import org.bukkit.inventory.ItemStack;
 //import org.bukkit.material.MaterialData;
 import org.bukkit.potion.Potion;
 import org.bukkit.potion.PotionEffect;
-
 import com.wasteofplastic.bluebook.BlueBook;
 
 public class Util {
@@ -53,11 +53,9 @@ public class Util {
 		// happens
 		// The value is set to a large negative number so that even crafted
 		// items will probably become priceless
-		for (int i = 0; i < 2268; i++) {
-			Material mat = Material.getMaterial(i);
-			if (mat != null) {
-				blockPrices.put(mat, -10000.0);
-			}
+		for (Material mat: Material.values()) {
+			// Set the price of everything to -10000
+			blockPrices.put(mat, -10000.0);
 		}
 		//plugin.getLogger().info("******************Loading prices");
 		// Load in prices
@@ -1324,7 +1322,7 @@ public class Util {
 			// Special case,.. Why?
 			if (damage == 0)
 				return "WATER_BOTTLE";
-
+			// TODO fix this so it works without deprication
 			Potion pot;
 			try {
 				pot = Potion.fromDamage(damage);
@@ -1342,8 +1340,10 @@ public class Util {
 				prefix += "SPLASH_";
 
 			if (pot.getEffects().isEmpty()) {
-				switch ((int) pot.getNameId()) {
-				case 0:
+				//switch ((int) pot.getNameId()) {
+				plugin.getLogger().info("Bluebook debug:"+damage);
+				switch ((int) damage) {
+				case 64:
 					return prefix + "MUNDANE_POTION" + suffix;
 				case 7:
 					return prefix + "CLEAR_POTION" + suffix;
@@ -1357,6 +1357,26 @@ public class Util {
 					return prefix + "AWKWARD_POTION" + suffix;
 				case 32:
 					return prefix + "THICK_POTION" + suffix;
+				case 23:
+					return prefix + "BUNGLING_POTION" + suffix;
+				case 27:
+					return prefix + "SMOOTH_POTION" + suffix;
+				case 31:
+					return prefix + "DEBONAIR_POTION" + suffix;
+				case 39:
+					return prefix + "CHARMING_POTION" + suffix;
+				case 43:
+					return prefix + "REFINED_POTION" + suffix;
+				case 47:
+					return prefix + "SPARKLING_POTION" + suffix;
+				case 48:
+					return prefix + "POTENT_POTION" + suffix;
+				case 55:
+					return prefix + "RANK_POTION" + suffix;
+				case 59:
+					return prefix + "ACRID_POTION" + suffix;
+				case 63:
+					return prefix + "STINKY_POTION" + suffix;
 				}
 			} else {
 				String effects = "";
