@@ -22,11 +22,11 @@ import java.util.Map;
 import java.util.Map.Entry;
 //import java.util.Set;
 
-
 //import org.bukkit.ChatColor;
 //import org.bukkit.ChatColor;
 //import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
 //import org.bukkit.configuration.InvalidConfigurationException;
 //import org.bukkit.configuration.file.YamlConfiguration;
 //import org.bukkit.enchantments.Enchantment;
@@ -36,6 +36,7 @@ import org.bukkit.inventory.ItemStack;
 //import org.bukkit.material.MaterialData;
 import org.bukkit.potion.Potion;
 import org.bukkit.potion.PotionEffect;
+
 import com.wasteofplastic.bluebook.BlueBook;
 
 public class Util {
@@ -44,7 +45,7 @@ public class Util {
 	private static HashMap<Integer, Double> dyePrices = new HashMap<Integer, Double>();
 	private static HashMap<Integer, Double> potionPrices = new HashMap<Integer, Double>();
 	private static HashMap<Integer, Double> fishPrices = new HashMap<Integer, Double>();
-	
+
 	private static BlueBook plugin;
 
 	static {
@@ -53,20 +54,17 @@ public class Util {
 		// happens
 		// The value is set to a large negative number so that even crafted
 		// items will probably become priceless
-		for (Material mat: Material.values()) {
+		for (Material mat : Material.values()) {
 			// Set the price of everything to -10000
 			blockPrices.put(mat, -10000.0);
 		}
-		//plugin.getLogger().info("******************Loading prices");
+		// plugin.getLogger().info("BlueBook Loading Prices from config.yml");
 		// Load in prices
 		Map<String, Object> map = plugin.getConfig()
 				.getConfigurationSection("block-prices").getValues(false);
 		for (Entry<String, Object> entry : map.entrySet()) { // just to loop
 																// through the
 																// entries
-			// plugin.getLogger().info("******************Loading price");
-			// plugin.getLogger().info("Block loaded " +
-			// entry.getKey().toString() + " $" + (Double)entry.getValue());
 			Material key = Material.getMaterial(entry.getKey());
 			Double price = Double.valueOf(entry.getValue().toString());
 			if (key != null) {
@@ -75,7 +73,9 @@ public class Util {
 				// plugin.getLogger().info("Block loaded " + key + " $" +
 				// price);
 			} else {
-				plugin.getLogger().info("BlueBook - Invalid block in config.yml: " + entry.getKey());
+				plugin.getLogger().info(
+						"BlueBook - Invalid block in config.yml: "
+								+ entry.getKey());
 			}
 		}
 
@@ -169,36 +169,64 @@ public class Util {
 		// WHITE - bone meal
 		dyePrices.put(15, blockPrices.get(Material.BONE));
 		// ORANGE - made the traditional way, just like mom used to make it
-		dyePrices.put(14, blockPrices.get(Material.RED_ROSE) + blockPrices.get(Material.YELLOW_FLOWER));
+		dyePrices.put(
+				14,
+				blockPrices.get(Material.RED_ROSE)
+						+ blockPrices.get(Material.YELLOW_FLOWER));
 		// MAGENTA
-		dyePrices.put(13, blockPrices.get(Material.RED_ROSE) * 2.0 + blockPrices.get(Material.BONE) + blockPrices.get(Material.LAPIS_ORE));
+		dyePrices.put(
+				13,
+				blockPrices.get(Material.RED_ROSE) * 2.0
+						+ blockPrices.get(Material.BONE)
+						+ blockPrices.get(Material.LAPIS_ORE));
 		// LIGHT BLUE
-		dyePrices.put(12, blockPrices.get(Material.BONE) + blockPrices.get(Material.LAPIS_ORE));
+		dyePrices.put(
+				12,
+				blockPrices.get(Material.BONE)
+						+ blockPrices.get(Material.LAPIS_ORE));
 		// YELLOW
 		dyePrices.put(11, blockPrices.get(Material.YELLOW_FLOWER));
 		// LIME
-		dyePrices.put(10, blockPrices.get(Material.CACTUS) + fuel + blockPrices.get(Material.BONE));
+		dyePrices.put(
+				10,
+				blockPrices.get(Material.CACTUS) + fuel
+						+ blockPrices.get(Material.BONE));
 		// PINK
-		dyePrices.put(9, blockPrices.get(Material.RED_ROSE) + blockPrices.get(Material.BONE));
+		dyePrices.put(
+				9,
+				blockPrices.get(Material.RED_ROSE)
+						+ blockPrices.get(Material.BONE));
 		// GRAY
-		dyePrices.put(8, blockPrices.get(Material.INK_SACK) + blockPrices.get(Material.BONE));
+		dyePrices.put(
+				8,
+				blockPrices.get(Material.INK_SACK)
+						+ blockPrices.get(Material.BONE));
 		// LIGHT GRAY
-		dyePrices.put(7, blockPrices.get(Material.INK_SACK) + blockPrices.get(Material.BONE) * 2.0);
+		dyePrices.put(
+				7,
+				blockPrices.get(Material.INK_SACK)
+						+ blockPrices.get(Material.BONE) * 2.0);
 		// CYAN
-		dyePrices.put(6, blockPrices.get(Material.CACTUS) + fuel + blockPrices.get(Material.LAPIS_ORE));
+		dyePrices.put(
+				6,
+				blockPrices.get(Material.CACTUS) + fuel
+						+ blockPrices.get(Material.LAPIS_ORE));
 		// PURPLE
-		dyePrices.put(5, blockPrices.get(Material.RED_ROSE) + blockPrices.get(Material.LAPIS_ORE));
+		dyePrices.put(
+				5,
+				blockPrices.get(Material.RED_ROSE)
+						+ blockPrices.get(Material.LAPIS_ORE));
 		// BLUE
 		dyePrices.put(4, blockPrices.get(Material.LAPIS_ORE));
 		// BROWN
-		dyePrices.put(3, blockPrices.get(Material.COCOA)/3.0);
+		dyePrices.put(3, blockPrices.get(Material.COCOA) / 3.0);
 		// GREEN
 		dyePrices.put(2, blockPrices.get(Material.CACTUS) + fuel);
 		// RED
 		dyePrices.put(1, blockPrices.get(Material.RED_ROSE));
 		// BLACK
 		dyePrices.put(0, blockPrices.get(Material.INK_SACK));
-		
+
 		// Other crafted items
 		blockPrices.put(Material.GLASS, blockPrices.get(Material.SAND) + fuel);
 		blockPrices.put(Material.LAPIS_BLOCK,
@@ -207,17 +235,17 @@ public class Util {
 				Material.DISPENSER,
 				blockPrices.get(Material.COBBLESTONE) * 7.0
 						+ blockPrices.get(Material.HOPPER) + redStone);
-		blockPrices.put(Material.SANDSTONE, blockPrices.get(Material.SAND) * 4.0);
+		blockPrices.put(Material.SANDSTONE,
+				blockPrices.get(Material.SAND) * 4.0);
 		blockPrices.put(Material.NOTE_BLOCK, 8.0 * wood + redStone);
 		blockPrices.put(Material.POWERED_RAIL,
 				(6.0 * goldBar + redStone + stick) / 6.0);
 		blockPrices.put(Material.STONE_PLATE, 2.0 * stone);
-		blockPrices
-				.put(Material.DETECTOR_RAIL,
-						(6.0 * ironBar + redStone + blockPrices
-								.get(Material.STONE_PLATE)) / 6.0);
-		blockPrices.put(Material.PISTON_BASE, 3.0 * wood + ironBar + 4.0 * cobble
-				+ redStone);
+		blockPrices.put(Material.DETECTOR_RAIL,
+				(6.0 * ironBar + redStone + blockPrices
+						.get(Material.STONE_PLATE)) / 6.0);
+		blockPrices.put(Material.PISTON_BASE, 3.0 * wood + ironBar + 4.0
+				* cobble + redStone);
 		blockPrices.put(Material.PISTON_STICKY_BASE, 3.0 * wood + ironBar + 4.0
 				* cobble + redStone + blockPrices.get(Material.SLIME_BALL));
 		blockPrices.put(Material.GOLD_BLOCK, 9.0 * goldBar);
@@ -230,8 +258,8 @@ public class Util {
 		blockPrices.put(Material.PAPER, blockPrices.get(Material.SUGAR_CANE));
 		blockPrices.put(Material.BOOK, blockPrices.get(Material.PAPER) * 3.0
 				+ blockPrices.get(Material.LEATHER));
-		blockPrices.put(Material.BOOKSHELF, blockPrices.get(Material.BOOK) * 3.0
-				+ blockPrices.get(Material.WOOD) * 6.0);
+		blockPrices.put(Material.BOOKSHELF, blockPrices.get(Material.BOOK)
+				* 3.0 + blockPrices.get(Material.WOOD) * 6.0);
 		blockPrices.put(Material.TORCH, stick + blockPrices.get(Material.COAL)
 				/ 4.0);
 		blockPrices.put(Material.WOOD_STAIRS, 6.0 * wood / 4.0);
@@ -280,14 +308,13 @@ public class Util {
 				blockPrices.get(Material.NETHER_BRICK));
 		blockPrices.put(Material.NETHER_BRICK_STAIRS,
 				6.0 * blockPrices.get(Material.NETHER_BRICK) / 4.0);
-		blockPrices.put(
-				Material.ENCHANTMENT_TABLE,
+		blockPrices.put(Material.ENCHANTMENT_TABLE,
 				4.0 * blockPrices.get(Material.OBSIDIAN) + diamond
 						+ blockPrices.get(Material.BOOK));
 		blockPrices.put(Material.REDSTONE_LAMP_ON,
 				4.0 * redStone + blockPrices.get(Material.GLOWSTONE));
-		blockPrices.put(Material.REDSTONE_LAMP_OFF,
-				4.0 * redStone + blockPrices.get(Material.GLOWSTONE));
+		blockPrices.put(Material.REDSTONE_LAMP_OFF, 4.0 * redStone
+				+ blockPrices.get(Material.GLOWSTONE));
 		blockPrices.put(Material.WOOD_STEP, 3.0 * wood / 6.0);
 		blockPrices.put(Material.SANDSTONE_STAIRS,
 				6.0 * blockPrices.get(Material.SANDSTONE) / 4.0);
@@ -335,18 +362,19 @@ public class Util {
 		blockPrices.put(Material.ACTIVATOR_RAIL, 6.0 * ironBar + 2.0 * stick
 				+ blockPrices.get(Material.REDSTONE_TORCH_ON));
 		blockPrices.put(Material.DROPPER, 7.0 * cobble + redStone);
-		blockPrices.put(Material.CLAY, 4.0 * blockPrices.get(Material.CLAY_BALL));
+		blockPrices.put(Material.CLAY,
+				4.0 * blockPrices.get(Material.CLAY_BALL));
 		blockPrices.put(Material.HARD_CLAY, blockPrices.get(Material.CLAY)
 				+ fuel);
 		blockPrices.put(Material.STAINED_CLAY,
 				(8.0 * blockPrices.get(Material.HARD_CLAY) + blockPrices
 						.get(Material.INK_SACK)) / 8.0);
-		blockPrices
-				.put(Material.HAY_BLOCK, 9.0 * blockPrices.get(Material.WHEAT));
-		blockPrices
-				.put(Material.CARPET, 2.0 * blockPrices.get(Material.WOOL) / 3.0);
-		blockPrices
-				.put(Material.COAL_BLOCK, 9.0 * blockPrices.get(Material.COAL));
+		blockPrices.put(Material.HAY_BLOCK,
+				9.0 * blockPrices.get(Material.WHEAT));
+		blockPrices.put(Material.CARPET,
+				2.0 * blockPrices.get(Material.WOOL) / 3.0);
+		blockPrices.put(Material.COAL_BLOCK,
+				9.0 * blockPrices.get(Material.COAL));
 		blockPrices.put(Material.IRON_SPADE, ironBar + 2.0 * stick);
 		blockPrices.put(Material.IRON_PICKAXE, 3.0 * ironBar + 2.0 * stick);
 		blockPrices.put(Material.IRON_AXE, 3.0 * ironBar + 2.0 * stick);
@@ -448,14 +476,10 @@ public class Util {
 						* blockPrices.get(Material.MILK_BUCKET));
 		blockPrices.put(Material.BED,
 				3.0 * wood + 3.0 * blockPrices.get(Material.WOOL));
-		blockPrices.put(
-				Material.DIODE,
-				3.0 * stone + redStone + 2.0
-						* blockPrices.get(Material.REDSTONE_TORCH_ON));
-		 blockPrices.put(Material.COOKIE, 2.0 * blockPrices.get(Material.WHEAT)
-		 + blockPrices.get(Material.COCOA)/3.0);
-		//blockPrices.put(Material.COOKIE, 2 * blockPrices.get(Material.WHEAT)
-		//		+ blockPrices.get(Material.INK_SACK));
+		blockPrices.put(Material.DIODE, 3.0 * stone + redStone + 2.0
+				* blockPrices.get(Material.REDSTONE_TORCH_ON));
+		blockPrices.put(Material.COOKIE, 2.0 * blockPrices.get(Material.WHEAT)
+				+ blockPrices.get(Material.COCOA) / 3.0);
 		blockPrices.put(Material.SHEARS, 2.0 * ironBar);
 		blockPrices.put(Material.COOKED_BEEF,
 				blockPrices.get(Material.RAW_BEEF) + fuel);
@@ -463,8 +487,10 @@ public class Util {
 				blockPrices.get(Material.RAW_CHICKEN) + fuel);
 		blockPrices.put(Material.GOLD_NUGGET, goldBar / 9.0);
 		blockPrices.put(Material.GLASS_BOTTLE, blockPrices.get(Material.GLASS));
-		// This next one is actually just the water bottle and not a potion - glass bottle + water, which is free
-		blockPrices.put(Material.POTION, blockPrices.get(Material.GLASS_BOTTLE));
+		// This next one is actually just the water bottle and not a potion -
+		// glass bottle + water, which is free
+		blockPrices
+				.put(Material.POTION, blockPrices.get(Material.GLASS_BOTTLE));
 		blockPrices.put(
 				Material.FERMENTED_SPIDER_EYE,
 				blockPrices.get(Material.SUGAR)
@@ -477,8 +503,8 @@ public class Util {
 		blockPrices.put(Material.BREWING_STAND_ITEM,
 				3.0 * cobble + blockPrices.get(Material.BLAZE_ROD));
 		blockPrices.put(Material.CAULDRON_ITEM, 7.0 * ironBar);
-		blockPrices.put(Material.SPECKLED_MELON,
-				8.0 / 9.0 * goldBar + blockPrices.get(Material.MELON));
+		blockPrices.put(Material.SPECKLED_MELON, 8.0 / 9.0 * goldBar
+				+ blockPrices.get(Material.MELON));
 		blockPrices.put(
 				Material.FIREBALL,
 				blockPrices.get(Material.COAL)
@@ -493,14 +519,19 @@ public class Util {
 				8.0 * stick + blockPrices.get(Material.LEATHER));
 		blockPrices.put(Material.FLOWER_POT_ITEM,
 				3.0 * blockPrices.get(Material.CLAY_BRICK));
-		blockPrices.put(Material.BAKED_POTATO, blockPrices.get(Material.POTATO_ITEM) + fuel);
-		//blockPrices.put(Material.BAKED_POTATO, 20.0);
-		blockPrices.put(Material.EMPTY_MAP, 8.0 * blockPrices.get(Material.PAPER)
-				+ blockPrices.get(Material.COMPASS));
-		blockPrices.put(Material.GOLDEN_CARROT,
-				(8.0 / 9.0 * goldBar) + blockPrices.get(Material.CARROT_ITEM));
-		blockPrices.put(Material.CARROT_STICK, blockPrices.get(Material.CARROT_ITEM)
-				+ blockPrices.get(Material.FISHING_ROD));
+		blockPrices.put(Material.BAKED_POTATO,
+				blockPrices.get(Material.POTATO_ITEM) + fuel);
+		// blockPrices.put(Material.BAKED_POTATO, 20.0);
+		blockPrices.put(
+				Material.EMPTY_MAP,
+				8.0 * blockPrices.get(Material.PAPER)
+						+ blockPrices.get(Material.COMPASS));
+		blockPrices.put(Material.GOLDEN_CARROT, (8.0 / 9.0 * goldBar)
+				+ blockPrices.get(Material.CARROT_ITEM));
+		blockPrices.put(
+				Material.CARROT_STICK,
+				blockPrices.get(Material.CARROT_ITEM)
+						+ blockPrices.get(Material.FISHING_ROD));
 		blockPrices.put(Material.PUMPKIN_PIE,
 				blockPrices.get(Material.SUGAR) + blockPrices.get(Material.EGG)
 						+ blockPrices.get(Material.PUMPKIN));
@@ -519,280 +550,392 @@ public class Util {
 				(4.0 * blockPrices.get(Material.STRING) + blockPrices
 						.get(Material.SLIME_BALL) / 2.0));
 		// FISH
-		// Fish are randomly caught using fishing rods. The probability of catching each type of fish is in the code somewhere, but unknown to me.
-		// I used data from actual fishing as reported http://www.minecraftforum.net/topic/2076618-fishing-topic/
+		// Fish are randomly caught using fishing rods. The probability of
+		// catching each type of fish is in the code somewhere, but unknown to
+		// me.
+		// I used data from actual fishing as reported
+		// http://www.minecraftforum.net/topic/2076618-fishing-topic/
 		// Salmon
 		fishPrices.put(1, blockPrices.get(Material.RAW_FISH) * 2.30);
 		// Clown fish
 		fishPrices.put(2, blockPrices.get(Material.RAW_FISH) * 42.82);
 		// Puffer fish
 		fishPrices.put(3, blockPrices.get(Material.RAW_FISH) * 3.89);
-		
-		// POTIONS - base potion is always with netherwart, anything else is worthless
-		double potionValue = blockPrices.get(Material.GLASS_BOTTLE) + blockPrices.get(Material.NETHER_STALK)/3;
+
+		// POTIONS - base potion is always with netherwart, anything else is
+		// worthless/priceless :-)
+		double potionValue = blockPrices.get(Material.GLASS_BOTTLE)
+				+ blockPrices.get(Material.NETHER_STALK) / 3;
 		// 373:16 Awkward Potion
 		potionPrices.put(16, potionValue);
-		
+
 		// 373:8198 Night Vision Potion (3:00) - does this exist?
-		potionPrices.put(8198, blockPrices.get(Material.GOLDEN_CARROT)/3.0 + potionValue);
+		potionPrices.put(8198, blockPrices.get(Material.GOLDEN_CARROT) / 3.0
+				+ potionValue);
 		// 373:8230 Night Vision II
-		potionPrices.put(8230, blockPrices.get(Material.GOLDEN_CARROT)/3.0 + potionValue + blockPrices.get(Material.GLOWSTONE_DUST)/3.0);
+		potionPrices.put(8230, blockPrices.get(Material.GOLDEN_CARROT) / 3.0
+				+ potionValue + blockPrices.get(Material.GLOWSTONE_DUST) / 3.0);
 		// 373:8262 Extended Night Vision Potion (8:00)
-		potionPrices.put(8262, blockPrices.get(Material.GOLDEN_CARROT)/3.0 + potionValue + redStone/3.0);
+		potionPrices.put(8262, blockPrices.get(Material.GOLDEN_CARROT) / 3.0
+				+ potionValue + redStone / 3.0);
 		// 373: Splash Night Vision Potion (3:00)
-		potionPrices.put(16390, blockPrices.get(Material.GOLDEN_CARROT)/3.0 + potionValue + blockPrices.get(Material.SULPHUR)/3.0);
+		potionPrices.put(16390, blockPrices.get(Material.GOLDEN_CARROT) / 3.0
+				+ potionValue + blockPrices.get(Material.SULPHUR) / 3.0);
 		// 373:16422 Splash Night Vision II
-		potionPrices.put(16422, blockPrices.get(Material.GOLDEN_CARROT)/3.0 + potionValue + blockPrices.get(Material.GLOWSTONE_DUST)/3.0 + blockPrices.get(Material.SULPHUR)/3.0);
+		potionPrices.put(16422, blockPrices.get(Material.GOLDEN_CARROT) / 3.0
+				+ potionValue + blockPrices.get(Material.GLOWSTONE_DUST) / 3.0
+				+ blockPrices.get(Material.SULPHUR) / 3.0);
 		// Splash Extended Night Vision Potion (8:00)
-		potionPrices.put(16454, blockPrices.get(Material.GOLDEN_CARROT)/3.0 + potionValue + redStone/3.0 + blockPrices.get(Material.SULPHUR)/3.0);
-		
+		potionPrices.put(16454,
+				blockPrices.get(Material.GOLDEN_CARROT) / 3.0 + potionValue
+						+ redStone / 3.0 + blockPrices.get(Material.SULPHUR)
+						/ 3.0);
+
 		// 373:8238 Invisibility
-		potionPrices.put(8238, blockPrices.get(Material.GOLDEN_CARROT)/3.0 + blockPrices.get(Material.FERMENTED_SPIDER_EYE)/3.0 + potionValue);
+		potionPrices.put(8238, blockPrices.get(Material.GOLDEN_CARROT) / 3.0
+				+ blockPrices.get(Material.FERMENTED_SPIDER_EYE) / 3.0
+				+ potionValue);
 		// 373:8270 Extended invisibility
-		potionPrices.put(8270, blockPrices.get(Material.GOLDEN_CARROT)/3.0 + blockPrices.get(Material.FERMENTED_SPIDER_EYE)/3.0 + potionValue + redStone/3.0);
+		potionPrices.put(8270, blockPrices.get(Material.GOLDEN_CARROT) / 3.0
+				+ blockPrices.get(Material.FERMENTED_SPIDER_EYE) / 3.0
+				+ potionValue + redStone / 3.0);
 		// 373:16430 Splash Invisibility
-		potionPrices.put(16430, blockPrices.get(Material.GOLDEN_CARROT)/3.0 + blockPrices.get(Material.FERMENTED_SPIDER_EYE)/3.0 + potionValue + blockPrices.get(Material.SULPHUR)/3.0);
+		potionPrices.put(16430, blockPrices.get(Material.GOLDEN_CARROT) / 3.0
+				+ blockPrices.get(Material.FERMENTED_SPIDER_EYE) / 3.0
+				+ potionValue + blockPrices.get(Material.SULPHUR) / 3.0);
 		// 373:16462 Splash Extended invisibility
-		potionPrices.put(16462, blockPrices.get(Material.GOLDEN_CARROT)/3.0 + blockPrices.get(Material.FERMENTED_SPIDER_EYE)/3.0 + potionValue + redStone/3.0 + blockPrices.get(Material.SULPHUR)/3.0);
+		potionPrices.put(
+				16462,
+				blockPrices.get(Material.GOLDEN_CARROT) / 3.0
+						+ blockPrices.get(Material.FERMENTED_SPIDER_EYE) / 3.0
+						+ potionValue + redStone / 3.0
+						+ blockPrices.get(Material.SULPHUR) / 3.0);
 
 		// Harm
-		potionPrices.put(8268, blockPrices.get(Material.SPIDER_EYE)/3.0 + blockPrices.get(Material.FERMENTED_SPIDER_EYE)/3.0 + potionValue);
+		potionPrices.put(8268, blockPrices.get(Material.SPIDER_EYE) / 3.0
+				+ blockPrices.get(Material.FERMENTED_SPIDER_EYE) / 3.0
+				+ potionValue);
 		// Harm 2
-		potionPrices.put(8236, blockPrices.get(Material.SPIDER_EYE)/3.0 + blockPrices.get(Material.FERMENTED_SPIDER_EYE)/3.0 + blockPrices.get(Material.GLOWSTONE_DUST)/3.0 + potionValue);
+		potionPrices.put(8236, blockPrices.get(Material.SPIDER_EYE) / 3.0
+				+ blockPrices.get(Material.FERMENTED_SPIDER_EYE) / 3.0
+				+ blockPrices.get(Material.GLOWSTONE_DUST) / 3.0 + potionValue);
 		// Splash Harm
-		potionPrices.put(16460, blockPrices.get(Material.SPIDER_EYE)/3.0 + blockPrices.get(Material.FERMENTED_SPIDER_EYE)/3.0 + blockPrices.get(Material.SULPHUR)/3.0 + potionValue);
-		// Splash harm 2 
-		potionPrices.put(16428, blockPrices.get(Material.SPIDER_EYE)/3.0 + blockPrices.get(Material.FERMENTED_SPIDER_EYE)/3.0 + blockPrices.get(Material.GLOWSTONE_DUST)/3.0 + blockPrices.get(Material.SULPHUR)/3.0 + potionValue);
-		// Poison 
-		potionPrices.put(8196, blockPrices.get(Material.SPIDER_EYE)/3.0 + potionValue);
-		// Poison II 
-		potionPrices.put(8228, blockPrices.get(Material.SPIDER_EYE)/3.0 + blockPrices.get(Material.GLOWSTONE_DUST)/3.0 + potionValue);
-		// Poison Extended 
-		potionPrices.put(8260, blockPrices.get(Material.SPIDER_EYE)/3.0 + redStone/3.0 + potionValue);
-		// Splash Poison 
-		potionPrices.put(16388, blockPrices.get(Material.SPIDER_EYE)/3.0 + potionValue + blockPrices.get(Material.SULPHUR)/3.0);
-		// Splash Poison II 
-		potionPrices.put(16420, blockPrices.get(Material.SPIDER_EYE)/3.0 + blockPrices.get(Material.GLOWSTONE_DUST)/3.0 + potionValue + blockPrices.get(Material.SULPHUR)/3.0);
-		// Splash Poison Extended 
-		potionPrices.put(16452, blockPrices.get(Material.SPIDER_EYE)/3.0 + redStone/3.0 + potionValue + blockPrices.get(Material.SULPHUR)/3.0);
+		potionPrices.put(16460, blockPrices.get(Material.SPIDER_EYE) / 3.0
+				+ blockPrices.get(Material.FERMENTED_SPIDER_EYE) / 3.0
+				+ blockPrices.get(Material.SULPHUR) / 3.0 + potionValue);
+		// Splash harm 2
+		potionPrices
+				.put(16428, blockPrices.get(Material.SPIDER_EYE) / 3.0
+						+ blockPrices.get(Material.FERMENTED_SPIDER_EYE) / 3.0
+						+ blockPrices.get(Material.GLOWSTONE_DUST) / 3.0
+						+ blockPrices.get(Material.SULPHUR) / 3.0 + potionValue);
+		// Poison
+		potionPrices.put(8196, blockPrices.get(Material.SPIDER_EYE) / 3.0
+				+ potionValue);
+		// Poison II
+		potionPrices.put(8228, blockPrices.get(Material.SPIDER_EYE) / 3.0
+				+ blockPrices.get(Material.GLOWSTONE_DUST) / 3.0 + potionValue);
+		// Poison Extended
+		potionPrices.put(8260, blockPrices.get(Material.SPIDER_EYE) / 3.0
+				+ redStone / 3.0 + potionValue);
+		// Splash Poison
+		potionPrices.put(16388, blockPrices.get(Material.SPIDER_EYE) / 3.0
+				+ potionValue + blockPrices.get(Material.SULPHUR) / 3.0);
+		// Splash Poison II
+		potionPrices.put(16420, blockPrices.get(Material.SPIDER_EYE) / 3.0
+				+ blockPrices.get(Material.GLOWSTONE_DUST) / 3.0 + potionValue
+				+ blockPrices.get(Material.SULPHUR) / 3.0);
+		// Splash Poison Extended
+		potionPrices
+				.put(16452,
+						blockPrices.get(Material.SPIDER_EYE) / 3.0 + redStone
+								/ 3.0 + potionValue
+								+ blockPrices.get(Material.SULPHUR) / 3.0);
 
 		// Regeneration
-		potionPrices.put(8193, blockPrices.get(Material.GHAST_TEAR)/3.0 + potionValue);
+		potionPrices.put(8193, blockPrices.get(Material.GHAST_TEAR) / 3.0
+				+ potionValue);
 		// Regen II
-		potionPrices.put(8225, blockPrices.get(Material.GHAST_TEAR)/3.0 + potionValue + blockPrices.get(Material.GLOWSTONE_DUST)/3.0);
+		potionPrices.put(8225, blockPrices.get(Material.GHAST_TEAR) / 3.0
+				+ potionValue + blockPrices.get(Material.GLOWSTONE_DUST) / 3.0);
 		// Extended Regen
-		potionPrices.put(8257, blockPrices.get(Material.GHAST_TEAR)/3.0 + potionValue + redStone/3.0);
-		
+		potionPrices.put(8257, blockPrices.get(Material.GHAST_TEAR) / 3.0
+				+ potionValue + redStone / 3.0);
+
 		// Regeneration Splash
-		potionPrices.put(16385, blockPrices.get(Material.GHAST_TEAR)/3.0 + potionValue + blockPrices.get(Material.SULPHUR)/3.0);
+		potionPrices.put(16385, blockPrices.get(Material.GHAST_TEAR) / 3.0
+				+ potionValue + blockPrices.get(Material.SULPHUR) / 3.0);
 		// Regen II Splash
-		potionPrices.put(16417, blockPrices.get(Material.GHAST_TEAR)/3.0 + potionValue + blockPrices.get(Material.GLOWSTONE_DUST)/3.0 + blockPrices.get(Material.SULPHUR)/3.0);
-		// Extended Regen Splash 
-		potionPrices.put(16449, blockPrices.get(Material.GHAST_TEAR)/3.0 + potionValue + redStone/3.0 + blockPrices.get(Material.SULPHUR)/3.0);
-		
+		potionPrices.put(16417, blockPrices.get(Material.GHAST_TEAR) / 3.0
+				+ potionValue + blockPrices.get(Material.GLOWSTONE_DUST) / 3.0
+				+ blockPrices.get(Material.SULPHUR) / 3.0);
+		// Extended Regen Splash
+		potionPrices.put(16449,
+				blockPrices.get(Material.GHAST_TEAR) / 3.0 + potionValue
+						+ redStone / 3.0 + blockPrices.get(Material.SULPHUR)
+						/ 3.0);
+
 		// Strength
-		potionPrices.put(8201, blockPrices.get(Material.BLAZE_POWDER)/3.0 + potionValue);
+		potionPrices.put(8201, blockPrices.get(Material.BLAZE_POWDER) / 3.0
+				+ potionValue);
 		// Strength II
-		potionPrices.put(8233, blockPrices.get(Material.BLAZE_POWDER)/3.0 + potionValue + blockPrices.get(Material.GLOWSTONE_DUST)/3.0);
+		potionPrices.put(8233, blockPrices.get(Material.BLAZE_POWDER) / 3.0
+				+ potionValue + blockPrices.get(Material.GLOWSTONE_DUST) / 3.0);
 		// Extended Strength
-		potionPrices.put(8265, blockPrices.get(Material.BLAZE_POWDER)/3.0 + potionValue + redStone/3.0);
-		
+		potionPrices.put(8265, blockPrices.get(Material.BLAZE_POWDER) / 3.0
+				+ potionValue + redStone / 3.0);
+
 		// Strength Splash
-		potionPrices.put(16393, blockPrices.get(Material.BLAZE_POWDER)/3.0 + potionValue + blockPrices.get(Material.SULPHUR)/3.0);
+		potionPrices.put(16393, blockPrices.get(Material.BLAZE_POWDER) / 3.0
+				+ potionValue + blockPrices.get(Material.SULPHUR) / 3.0);
 		// Strength II Splash
-		potionPrices.put(16425, blockPrices.get(Material.BLAZE_POWDER)/3.0 + potionValue + blockPrices.get(Material.GLOWSTONE_DUST)/3.0 + blockPrices.get(Material.SULPHUR)/3.0);
-		// Extended Strength Splash 
-		potionPrices.put(16457, blockPrices.get(Material.BLAZE_POWDER)/3.0 + potionValue + redStone/3.0 + blockPrices.get(Material.SULPHUR)/3.0);
-		
+		potionPrices.put(16425, blockPrices.get(Material.BLAZE_POWDER) / 3.0
+				+ potionValue + blockPrices.get(Material.GLOWSTONE_DUST) / 3.0
+				+ blockPrices.get(Material.SULPHUR) / 3.0);
+		// Extended Strength Splash
+		potionPrices.put(16457,
+				blockPrices.get(Material.BLAZE_POWDER) / 3.0 + potionValue
+						+ redStone / 3.0 + blockPrices.get(Material.SULPHUR)
+						/ 3.0);
+
 		// Speed
-		potionPrices.put(8194, blockPrices.get(Material.SUGAR)/3.0 + potionValue);
+		potionPrices.put(8194, blockPrices.get(Material.SUGAR) / 3.0
+				+ potionValue);
 		// Speed II
-		potionPrices.put(8226, blockPrices.get(Material.SUGAR)/3.0 + potionValue + blockPrices.get(Material.GLOWSTONE_DUST)/3.0);
+		potionPrices.put(8226, blockPrices.get(Material.SUGAR) / 3.0
+				+ potionValue + blockPrices.get(Material.GLOWSTONE_DUST) / 3.0);
 		// Extended Speed
-		potionPrices.put(8258, blockPrices.get(Material.SUGAR)/3.0 + potionValue + redStone/3.0);
-		
+		potionPrices.put(8258, blockPrices.get(Material.SUGAR) / 3.0
+				+ potionValue + redStone / 3.0);
+
 		// Speed Splash
-		potionPrices.put(16386, blockPrices.get(Material.SUGAR)/3.0 + potionValue + blockPrices.get(Material.SULPHUR)/3.0);
+		potionPrices.put(16386, blockPrices.get(Material.SUGAR) / 3.0
+				+ potionValue + blockPrices.get(Material.SULPHUR) / 3.0);
 		// Speed II Splash
-		potionPrices.put(16418, blockPrices.get(Material.SUGAR)/3.0 + potionValue + blockPrices.get(Material.GLOWSTONE_DUST)/3.0 + blockPrices.get(Material.SULPHUR)/3.0);
-		// Extended Speed Splash 
-		potionPrices.put(16450, blockPrices.get(Material.SUGAR)/3.0 + potionValue + redStone/3.0 + blockPrices.get(Material.SULPHUR)/3.0);
+		potionPrices.put(16418, blockPrices.get(Material.SUGAR) / 3.0
+				+ potionValue + blockPrices.get(Material.GLOWSTONE_DUST) / 3.0
+				+ blockPrices.get(Material.SULPHUR) / 3.0);
+		// Extended Speed Splash
+		potionPrices.put(16450,
+				blockPrices.get(Material.SUGAR) / 3.0 + potionValue + redStone
+						/ 3.0 + blockPrices.get(Material.SULPHUR) / 3.0);
 
 		// Fire Resistance
-		potionPrices.put(8195, blockPrices.get(Material.MAGMA_CREAM)/3.0 + potionValue);
+		potionPrices.put(8195, blockPrices.get(Material.MAGMA_CREAM) / 3.0
+				+ potionValue);
 		// Fire Resistance II
-		potionPrices.put(8227, blockPrices.get(Material.MAGMA_CREAM)/3.0 + potionValue + blockPrices.get(Material.GLOWSTONE_DUST)/3.0);
+		potionPrices.put(8227, blockPrices.get(Material.MAGMA_CREAM) / 3.0
+				+ potionValue + blockPrices.get(Material.GLOWSTONE_DUST) / 3.0);
 		// Extended Fire Resistance
-		potionPrices.put(8259, blockPrices.get(Material.MAGMA_CREAM)/3.0 + potionValue + redStone/3.0);
-		
+		potionPrices.put(8259, blockPrices.get(Material.MAGMA_CREAM) / 3.0
+				+ potionValue + redStone / 3.0);
+
 		// Fire Resistance Splash
-		potionPrices.put(16387, blockPrices.get(Material.MAGMA_CREAM)/3.0 + potionValue + blockPrices.get(Material.SULPHUR)/3.0);
+		potionPrices.put(16387, blockPrices.get(Material.MAGMA_CREAM) / 3.0
+				+ potionValue + blockPrices.get(Material.SULPHUR) / 3.0);
 		// Fire Resistance II Splash
-		potionPrices.put(16419, blockPrices.get(Material.MAGMA_CREAM)/3.0 + potionValue + blockPrices.get(Material.GLOWSTONE_DUST)/3.0 + blockPrices.get(Material.SULPHUR)/3.0);
-		// Extended Fire Resistance Splash 
-		potionPrices.put(16451, blockPrices.get(Material.MAGMA_CREAM)/3.0 + potionValue + redStone/3.0 + blockPrices.get(Material.SULPHUR)/3.0);
+		potionPrices.put(16419, blockPrices.get(Material.MAGMA_CREAM) / 3.0
+				+ potionValue + blockPrices.get(Material.GLOWSTONE_DUST) / 3.0
+				+ blockPrices.get(Material.SULPHUR) / 3.0);
+		// Extended Fire Resistance Splash
+		potionPrices.put(16451,
+				blockPrices.get(Material.MAGMA_CREAM) / 3.0 + potionValue
+						+ redStone / 3.0 + blockPrices.get(Material.SULPHUR)
+						/ 3.0);
 
 		// Weakness
-		potionPrices.put(8200, blockPrices.get(Material.FERMENTED_SPIDER_EYE)/3.0 + potionValue);
+		potionPrices.put(8200, blockPrices.get(Material.FERMENTED_SPIDER_EYE)
+				/ 3.0 + potionValue);
 		// Weakness II
-		potionPrices.put(8232, blockPrices.get(Material.FERMENTED_SPIDER_EYE)/3.0 + potionValue + blockPrices.get(Material.GLOWSTONE_DUST)/3.0);
+		potionPrices.put(8232, blockPrices.get(Material.FERMENTED_SPIDER_EYE)
+				/ 3.0 + potionValue + blockPrices.get(Material.GLOWSTONE_DUST)
+				/ 3.0);
 		// Extended Weakness
-		potionPrices.put(8264, blockPrices.get(Material.FERMENTED_SPIDER_EYE)/3.0 + potionValue + redStone/3.0);
-		
+		potionPrices.put(8264, blockPrices.get(Material.FERMENTED_SPIDER_EYE)
+				/ 3.0 + potionValue + redStone / 3.0);
+
 		// Weakness Splash
-		potionPrices.put(16392, blockPrices.get(Material.FERMENTED_SPIDER_EYE)/3.0 + potionValue + blockPrices.get(Material.SULPHUR)/3.0);
+		potionPrices.put(16392, blockPrices.get(Material.FERMENTED_SPIDER_EYE)
+				/ 3.0 + potionValue + blockPrices.get(Material.SULPHUR) / 3.0);
 		// Weakness II Splash
-		potionPrices.put(16424, blockPrices.get(Material.FERMENTED_SPIDER_EYE)/3.0 + potionValue + blockPrices.get(Material.GLOWSTONE_DUST)/3.0 + blockPrices.get(Material.SULPHUR)/3.0);
-		// Extended Weakness Splash 
-		potionPrices.put(16456, blockPrices.get(Material.FERMENTED_SPIDER_EYE)/3.0 + potionValue + redStone/3.0 + blockPrices.get(Material.SULPHUR)/3.0);
+		potionPrices.put(16424, blockPrices.get(Material.FERMENTED_SPIDER_EYE)
+				/ 3.0 + potionValue + blockPrices.get(Material.GLOWSTONE_DUST)
+				/ 3.0 + blockPrices.get(Material.SULPHUR) / 3.0);
+		// Extended Weakness Splash
+		potionPrices.put(
+				16456,
+				blockPrices.get(Material.FERMENTED_SPIDER_EYE) / 3.0
+						+ potionValue + redStone / 3.0
+						+ blockPrices.get(Material.SULPHUR) / 3.0);
 
 		// Slowness
-		potionPrices.put(8202, blockPrices.get(Material.FERMENTED_SPIDER_EYE)/3.0 + blockPrices.get(Material.SUGAR)/3.0 + potionValue);
+		potionPrices.put(8202, blockPrices.get(Material.FERMENTED_SPIDER_EYE)
+				/ 3.0 + blockPrices.get(Material.SUGAR) / 3.0 + potionValue);
 		// Slowness II
-		potionPrices.put(8234, blockPrices.get(Material.FERMENTED_SPIDER_EYE)/3.0 + blockPrices.get(Material.SUGAR)/3.0 + potionValue + blockPrices.get(Material.GLOWSTONE_DUST)/3.0);
+		potionPrices.put(8234, blockPrices.get(Material.FERMENTED_SPIDER_EYE)
+				/ 3.0 + blockPrices.get(Material.SUGAR) / 3.0 + potionValue
+				+ blockPrices.get(Material.GLOWSTONE_DUST) / 3.0);
 		// Extended Slowness
-		potionPrices.put(8266, blockPrices.get(Material.FERMENTED_SPIDER_EYE)/3.0 + blockPrices.get(Material.SUGAR)/3.0 + potionValue + redStone/3.0);
-		
+		potionPrices.put(8266, blockPrices.get(Material.FERMENTED_SPIDER_EYE)
+				/ 3.0 + blockPrices.get(Material.SUGAR) / 3.0 + potionValue
+				+ redStone / 3.0);
+
 		// Slowness Splash
-		potionPrices.put(16394, blockPrices.get(Material.FERMENTED_SPIDER_EYE)/3.0 + blockPrices.get(Material.SUGAR)/3.0 + potionValue + blockPrices.get(Material.SULPHUR)/3.0);
+		potionPrices.put(16394, blockPrices.get(Material.FERMENTED_SPIDER_EYE)
+				/ 3.0 + blockPrices.get(Material.SUGAR) / 3.0 + potionValue
+				+ blockPrices.get(Material.SULPHUR) / 3.0);
 		// Slowness II Splash
-		potionPrices.put(16426, blockPrices.get(Material.FERMENTED_SPIDER_EYE)/3.0 + blockPrices.get(Material.SUGAR)/3.0 + potionValue + blockPrices.get(Material.GLOWSTONE_DUST)/3.0 + blockPrices.get(Material.SULPHUR)/3.0);
-		// Extended Slowness Splash 
-		potionPrices.put(16458, blockPrices.get(Material.FERMENTED_SPIDER_EYE)/3.0 + blockPrices.get(Material.SUGAR)/3.0 + potionValue + redStone/3.0 + blockPrices.get(Material.SULPHUR)/3.0);
-		
+		potionPrices.put(16426,
+				blockPrices.get(Material.FERMENTED_SPIDER_EYE) / 3.0
+						+ blockPrices.get(Material.SUGAR) / 3.0 + potionValue
+						+ blockPrices.get(Material.GLOWSTONE_DUST) / 3.0
+						+ blockPrices.get(Material.SULPHUR) / 3.0);
+		// Extended Slowness Splash
+		potionPrices.put(16458, blockPrices.get(Material.FERMENTED_SPIDER_EYE)
+				/ 3.0 + blockPrices.get(Material.SUGAR) / 3.0 + potionValue
+				+ redStone / 3.0 + blockPrices.get(Material.SULPHUR) / 3.0);
+
 		// Healing
-		potionPrices.put(8197, blockPrices.get(Material.SPECKLED_MELON)/3.0 + potionValue);
+		potionPrices.put(8197, blockPrices.get(Material.SPECKLED_MELON) / 3.0
+				+ potionValue);
 		// Healing II
-		potionPrices.put(8229, blockPrices.get(Material.SPECKLED_MELON)/3.0 + potionValue + blockPrices.get(Material.GLOWSTONE_DUST)/3.0);
+		potionPrices.put(8229, blockPrices.get(Material.SPECKLED_MELON) / 3.0
+				+ potionValue + blockPrices.get(Material.GLOWSTONE_DUST) / 3.0);
 		// Extended Healing
-		potionPrices.put(8261, blockPrices.get(Material.SPECKLED_MELON)/3.0 + potionValue + redStone/3.0);
-		
+		potionPrices.put(8261, blockPrices.get(Material.SPECKLED_MELON) / 3.0
+				+ potionValue + redStone / 3.0);
+
 		// Healing Splash
-		potionPrices.put(16389, blockPrices.get(Material.SPECKLED_MELON)/3.0 + potionValue + blockPrices.get(Material.SULPHUR)/3.0);
+		potionPrices.put(16389, blockPrices.get(Material.SPECKLED_MELON) / 3.0
+				+ potionValue + blockPrices.get(Material.SULPHUR) / 3.0);
 		// Healing II Splash
-		potionPrices.put(16421, blockPrices.get(Material.SPECKLED_MELON)/3.0 + potionValue + blockPrices.get(Material.GLOWSTONE_DUST)/3.0 + blockPrices.get(Material.SULPHUR)/3.0);
-		// Extended Healing Splash 
-		potionPrices.put(16453, blockPrices.get(Material.SPECKLED_MELON)/3.0 + potionValue + redStone/3.0 + blockPrices.get(Material.SULPHUR)/3.0);
+		potionPrices.put(16421, blockPrices.get(Material.SPECKLED_MELON) / 3.0
+				+ potionValue + blockPrices.get(Material.GLOWSTONE_DUST) / 3.0
+				+ blockPrices.get(Material.SULPHUR) / 3.0);
+		// Extended Healing Splash
+		potionPrices.put(16453,
+				blockPrices.get(Material.SPECKLED_MELON) / 3.0 + potionValue
+						+ redStone / 3.0 + blockPrices.get(Material.SULPHUR)
+						/ 3.0);
 
 		// Technically this potion is made from PUFFERFISH 349:3
 		// Water Breathing
-		potionPrices.put(8205, fishPrices.get(3)/3.0 + potionValue);
+		potionPrices.put(8205, fishPrices.get(3) / 3.0 + potionValue);
 		// Water Breathing II
-		potionPrices.put(8237, fishPrices.get(3)/3.0 + potionValue + blockPrices.get(Material.GLOWSTONE_DUST)/3.0);
+		potionPrices.put(8237, fishPrices.get(3) / 3.0 + potionValue
+				+ blockPrices.get(Material.GLOWSTONE_DUST) / 3.0);
 		// Extended Water Breathing
-		potionPrices.put(8269, fishPrices.get(3)/3.0 + potionValue + redStone/3.0);
-		
+		potionPrices.put(8269, fishPrices.get(3) / 3.0 + potionValue + redStone
+				/ 3.0);
+
 		// Water Breathing Splash
-		potionPrices.put(16397, fishPrices.get(3)/3.0 + potionValue + blockPrices.get(Material.SULPHUR)/3.0);
+		potionPrices.put(16397, fishPrices.get(3) / 3.0 + potionValue
+				+ blockPrices.get(Material.SULPHUR) / 3.0);
 		// Water Breathing II Splash
-		potionPrices.put(16429, fishPrices.get(3)/3.0 + potionValue + blockPrices.get(Material.GLOWSTONE_DUST)/3.0 + blockPrices.get(Material.SULPHUR)/3.0);
-		// Extended Water Breathing Splash 
-		potionPrices.put(16461, fishPrices.get(3)/3.0 + potionValue + redStone/3.0 + blockPrices.get(Material.SULPHUR)/3.0);
-	
+		potionPrices.put(
+				16429,
+				fishPrices.get(3) / 3.0 + potionValue
+						+ blockPrices.get(Material.GLOWSTONE_DUST) / 3.0
+						+ blockPrices.get(Material.SULPHUR) / 3.0);
+		// Extended Water Breathing Splash
+		potionPrices.put(16461, fishPrices.get(3) / 3.0 + potionValue
+				+ redStone / 3.0 + blockPrices.get(Material.SULPHUR) / 3.0);
+
 		/*
 		 * 
-		 * Potion 373:8193 Regeneration Potion (0:45) 373:8194
-		 * Swiftness Potion (3:00) 373:8195 Fire Resistance Potion
-		 * (3:00) 373:8196 Poison Potion (0:45) 373:8197 Healing
-		 * Potion 373:8200
-		 * Weakness Potion (1:30) 373:8201 Strength Potion (3:00)
-		 * 373:8202 Slowness Potion (1:30) 373:8204 Harming Potion
-		 * 373:8205 Water Breathing Potion (3:00) 373:8206
-		 * Invisibility Potion (3:00) 373:8225 Regeneration Potion
-		 * II (0:22) 373:8226 Swiftness Potion II (1:30) 373:8228
-		 * Poison Potion II (0:22) 373:8229 Healing Potion II
-		 * 373:8233 Strength Potion II (1:30) 373:8236 Harming
-		 * Potion II 373:8257 Regeneration Potion (2:00) 373:8258
-		 * Swiftness Potion (8:00) 373:8259 Fire Resistance Potion
-		 * (8:00) 373:8260 Poison Potion (2:00)  373:8264 Weakness Potion (4:00)
-		 * 373:8265 Strength Potion (8:00) 373:8266 Slowness Potion
-		 * (4:00) 373:8269 Water Breathing Potion (8:00) 373:8270
-		 * Invisibility Potion (8:00) 373:8289 Regeneration Potion
-		 * II (1:00) 373:8290 Swiftness Potion II (4:00) 373:8292
-		 * Poison Potion II (1:00) 373:8297 Strength Potion II
-		 * (4:00) 373:16385 Regeneration Splash (0:33) 373:16386
-		 * Swiftness Splash (2:15) 373:16387 Fire Resistance Splash
-		 * (2:15) 373:16388 Poison Splash (0:33) 373:16389 Healing
-		 * Splash 373:16390 Night Vision Splash (2:15) 373:16392
-		 * Weakness Splash (1:07) 373:16393 Strength Splash (2:15)
-		 * 373:16394 Slowness Splash (1:07) 373:16396 Harming Splash
-		 * 373:16397 Breathing Splash (2:15) 373:16398 Invisibility
-		 * Splash (2:15) 373:16417 Regeneration Splash II (0:16)
-		 * 373:16418 Swiftness Splash II (1:07) 373:16420 Poison
-		 * Splash II (0:16) 373:16421 Healing Splash II 373:16425
-		 * Strength Splash II (1:07) 373:16428 Harming Splash II
-		 * 373:16449 Regeneration Splash (1:30) 373:16450 Swiftness
-		 * Splash (6:00) 373:16451 Fire Resistance Splash (6:00)
-		 * 373:16452 Poison Splash (1:30) 373:e Night Vision
-		 * Splash (6:00) 373:16456 Weakness Splash (3:00) 373:16457
-		 * Strength Splash (6:00) 373:16458 Slowness Splash (3:00)
-		 * 373:16461 Breathing Splash (6:00) 373:16462 Invisibility
-		 * Splash (6:00) 373:16481 Regeneration Splash II (0:45)
-		 * 373:16482 Swiftness Splash II (3:00) 373:16484 Poison
-		 * Splash II (0:45) 373:16489 Strength Splash II (3:00)
+		 * Potion 373:8193 Regeneration Potion (0:45) 373:8194 Swiftness Potion
+		 * (3:00) 373:8195 Fire Resistance Potion (3:00) 373:8196 Poison Potion
+		 * (0:45) 373:8197 Healing Potion 373:8200 Weakness Potion (1:30)
+		 * 373:8201 Strength Potion (3:00) 373:8202 Slowness Potion (1:30)
+		 * 373:8204 Harming Potion 373:8205 Water Breathing Potion (3:00)
+		 * 373:8206 Invisibility Potion (3:00) 373:8225 Regeneration Potion II
+		 * (0:22) 373:8226 Swiftness Potion II (1:30) 373:8228 Poison Potion II
+		 * (0:22) 373:8229 Healing Potion II 373:8233 Strength Potion II (1:30)
+		 * 373:8236 Harming Potion II 373:8257 Regeneration Potion (2:00)
+		 * 373:8258 Swiftness Potion (8:00) 373:8259 Fire Resistance Potion
+		 * (8:00) 373:8260 Poison Potion (2:00) 373:8264 Weakness Potion (4:00)
+		 * 373:8265 Strength Potion (8:00) 373:8266 Slowness Potion (4:00)
+		 * 373:8269 Water Breathing Potion (8:00) 373:8270 Invisibility Potion
+		 * (8:00) 373:8289 Regeneration Potion II (1:00) 373:8290 Swiftness
+		 * Potion II (4:00) 373:8292 Poison Potion II (1:00) 373:8297 Strength
+		 * Potion II (4:00) 373:16385 Regeneration Splash (0:33) 373:16386
+		 * Swiftness Splash (2:15) 373:16387 Fire Resistance Splash (2:15)
+		 * 373:16388 Poison Splash (0:33) 373:16389 Healing Splash 373:16390
+		 * Night Vision Splash (2:15) 373:16392 Weakness Splash (1:07) 373:16393
+		 * Strength Splash (2:15) 373:16394 Slowness Splash (1:07) 373:16396
+		 * Harming Splash 373:16397 Breathing Splash (2:15) 373:16398
+		 * Invisibility Splash (2:15) 373:16417 Regeneration Splash II (0:16)
+		 * 373:16418 Swiftness Splash II (1:07) 373:16420 Poison Splash II
+		 * (0:16) 373:16421 Healing Splash II 373:16425 Strength Splash II
+		 * (1:07) 373:16428 Harming Splash II 373:16449 Regeneration Splash
+		 * (1:30) 373:16450 Swiftness Splash (6:00) 373:16451 Fire Resistance
+		 * Splash (6:00) 373:16452 Poison Splash (1:30) 373:e Night Vision
+		 * Splash (6:00) 373:16456 Weakness Splash (3:00) 373:16457 Strength
+		 * Splash (6:00) 373:16458 Slowness Splash (3:00) 373:16461 Breathing
+		 * Splash (6:00) 373:16462 Invisibility Splash (6:00) 373:16481
+		 * Regeneration Splash II (0:45) 373:16482 Swiftness Splash II (3:00)
+		 * 373:16484 Poison Splash II (0:45) 373:16489 Strength Splash II (3:00)
 		 */
 	}
 
-	/*
-	 * public static void parseColours(YamlConfiguration config) { Set<String>
-	 * keys = config.getKeys(true);
-	 * 
-	 * for (String key : keys) { String filtered = config.getString(key); if
-	 * (filtered.startsWith("MemorySection")) { continue; } filtered =
-	 * ChatColor.translateAlternateColorCodes('&', filtered); config.set(key,
-	 * filtered); } }
-	 */
-	/**
-	 * Converts a string into an item from the database.
-	 * 
-	 * @param itemString
-	 *            The database string. Is the result of makeString(ItemStack
-	 *            item).
-	 * @return A new itemstack, with the properties given in the string
-	 */
-	/*
-	 * public static ItemStack makeItem(String itemString) { String[] itemInfo =
-	 * itemString.split(":");
-	 * 
-	 * ItemStack item = new ItemStack(Material.getMaterial(itemInfo[0]));
-	 * MaterialData data = new MaterialData(Integer.parseInt(itemInfo[1]));
-	 * item.setData(data); item.setDurability(Short.parseShort(itemInfo[2]));
-	 * item.setAmount(Integer.parseInt(itemInfo[3]));
-	 * 
-	 * for (int i = 4; i < itemInfo.length; i = i + 2) { int level =
-	 * Integer.parseInt(itemInfo[i + 1]);
-	 * 
-	 * Enchantment ench = Enchantment.getByName(itemInfo[i]); if (ench == null)
-	 * continue; // Invalid if (ench.canEnchantItem(item)) { if (level <= 0)
-	 * continue; level = Math.min(ench.getMaxLevel(), level);
-	 * 
-	 * item.addEnchantment(ench, level); }
-	 * 
-	 * } return item; }
-	 */
-	/*
-	 * public static String serialize(ItemStack iStack) { YamlConfiguration cfg
-	 * = new YamlConfiguration(); cfg.set("item", iStack); return
-	 * cfg.saveToString(); }
-	 * 
-	 * public static ItemStack deserialize(String config) throws
-	 * InvalidConfigurationException { YamlConfiguration cfg = new
-	 * YamlConfiguration(); cfg.loadFromString(config); ItemStack stack =
-	 * cfg.getItemStack("item"); return stack; }
-	 */
 	/**
 	 * Fetches an ItemStack's name - For example, converting INK_SAC:11 to
-	 * Dandellion Yellow, or WOOL:14 to Red Wool
+	 * Dandelion Yellow, or WOOL:14 to Red Wool
 	 * 
 	 * @param i
 	 *            The itemstack to fetch the name of
 	 * @return The human readable item name.
 	 */
 	public static String getName(ItemStack i) {
-		//String vanillaName = getDataName(i.getType(), i.getDurability());
-		String vanillaName = getDataName(i);
-		return prettifyText(vanillaName);
+		// If the item has had its name changed, then let's use that
+		String vanillaName = "";
+		String displayName = i.getItemMeta().getDisplayName();
+		if (displayName == null) {
+			vanillaName = prettifyText(getDataName(i));
+		} else {
+			vanillaName = displayName;
+		}
+		if (!i.getEnchantments().isEmpty()) {
+			vanillaName += " (Enchanted)";
+			// Loop through every enchantment on the item
+			/*
+			for (Map.Entry<Enchantment, Integer> item : i.getEnchantments()
+					.entrySet()) {
+				String name = item.getKey().getName();
+				vanillaName += "\n" + name + " " + toRoman(item.getValue());
+			}
+			*/
+		}
+		return vanillaName;
 	}
+
+	private static final String[] ROMAN = { "X", "IX", "V", "IV", "I" };
+	private static final int[] DECIMAL = { 10, 9, 5, 4, 1 };
+
+	/**
+	 * Converts the given number to roman numerals. If the number is >= 40 or <=
+	 * 0, it will just return the number as a string.
+	 * 
+	 * @param n
+	 *            The number to convert
+	 * @return The roman numeral representation of this number, or the number in
+	 *         decimal form as a string if n <= 0 || n >= 40.
+	 */
+	public static String toRoman(int n) {
+		if (n <= 0 || n >= 40)
+			return "" + n;
+		String roman = "";
+
+		for (int i = 0; i < ROMAN.length; i++) {
+			while (n >= DECIMAL[i]) {
+				n -= DECIMAL[i];
+				roman += ROMAN[i];
+			}
+		}
+
+		return roman;
+	}
+
 	/**
 	 * Converts a name like IRON_INGOT into Iron Ingot to improve readability
 	 * 
@@ -821,418 +964,19 @@ public class Util {
 		}
 		return fin;
 	}
-/*
-	public static String toRomain(Integer value) {
-		return toRoman(value.intValue());
-	}
 
-	private static final String[] ROMAN = { "X", "IX", "V", "IV", "I" };
-	private static final int[] DECIMAL = { 10, 9, 5, 4, 1 };
-*/
-	/**
-	 * Converts the given number to roman numerals. If the number is >= 40 or <=
-	 * 0, it will just return the number as a string.
-	 * 
-	 * @param n
-	 *            The number to convert
-	 * @return The roman numeral representation of this number, or the number in
-	 *         decimal form as a string if n <= 0 || n >= 40.
-	 */
-	/*
-	public static String toRoman(int n) {
-		if (n <= 0 || n >= 40)
-			return "" + n;
-		String roman = "";
-
-		for (int i = 0; i < ROMAN.length; i++) {
-			while (n >= DECIMAL[i]) {
-				n -= DECIMAL[i];
-				roman += ROMAN[i];
-			}
-		}
-
-		return roman;
-	}
-*/
-	/**
-	 * Converts a given material and data value into a format similar to
-	 * Material.<?>.toString(). Upper case, with underscores. Includes material
-	 * name in result.
-	 * 
-	 * @param mat
-	 *            The base material.
-	 * @param damage
-	 *            The durability/damage of the item.
-	 * @return A string with the name of the item.
-	 */
-	/*
-	private static String getDataName(Material mat, short damage) {
-		int id = mat.getId();
-		switch (id) {
-		case 35:
-			switch ((int) damage) {
-			case 0:
-				return "WHITE_WOOL";
-			case 1:
-				return "ORANGE_WOOL";
-			case 2:
-				return "MAGENTA_WOOL";
-			case 3:
-				return "LIGHT_BLUE_WOOL";
-			case 4:
-				return "YELLOW_WOOL";
-			case 5:
-				return "LIME_WOOL";
-			case 6:
-				return "PINK_WOOL";
-			case 7:
-				return "GRAY_WOOL";
-			case 8:
-				return "LIGHT_GRAY_WOOL";
-			case 9:
-				return "CYAN_WOOL";
-			case 10:
-				return "PURPLE_WOOL";
-				return "BLUE_WOOL";
-			case 12:
-				return "BROWN_WOOL";
-			case 13:
-				return "GREEN_WOOL";
-			case 14:
-				return "RED_WOOL";
-			case 15:
-				return "BLACK_WOOL";
-			}
-			return mat.toString();
-		case 351:
-			case 11:
-			switch ((int) damage) {
-			case 0:
-				return "INK_SAC";
-			case 1:
-				return "ROSE_RED";
-			case 2:
-				return "CACTUS_GREEN";
-			case 3:
-				return "COCOA_BEANS";
-			case 4:
-				return "LAPIS_LAZULI";
-			case 5:
-				return "PURPLE_DYE";
-			case 6:
-				return "CYAN_DYE";
-			case 7:
-				return "LIGHT_GRAY_DYE";
-			case 8:
-				return "GRAY_DYE";
-			case 9:
-				return "PINK_DYE";
-			case 10:
-				return "LIME_DYE";
-			case 11:
-				return "DANDELION_YELLOW";
-			case 12:
-				return "LIGHT_BLUE_DYE";
-			case 13:
-				return "MAGENTA_DYE";
-			case 14:
-				return "ORANGE_DYE";
-			case 15:
-				return "BONE_MEAL";
-			}
-			return mat.toString();
-		case 98:
-			switch ((int) damage) {
-			case 0:
-				return "STONE_BRICKS";
-			case 1:
-				return "MOSSY_STONE_BRICKS";
-			case 2:
-				return "CRACKED_STONE_BRICKS";
-			case 3:
-				return "CHISELED_STONE_BRICKS";
-			}
-			return mat.toString();
-		case 373:
-			// Special case,.. Why?
-			if (damage == 0)
-				return "WATER_BOTTLE";
-
-			Potion pot;
-			try {
-				pot = Potion.fromDamage(damage);
-			} catch (Exception e) {
-				return "CUSTOM_POTION";
-			}
-
-			String prefix = "";
-			String suffix = "";
-			if (pot.getLevel() > 0)
-				suffix += "_" + pot.getLevel();
-			if (pot.hasExtendedDuration())
-				prefix += "EXTENDED_";
-			if (pot.isSplash())
-				prefix += "SPLASH_";
-
-			if (pot.getEffects().isEmpty()) {
-				switch ((int) pot.getNameId()) {
-				case 0:
-					return prefix + "MUNDANE_POTION" + suffix;
-				case 7:
-					return prefix + "CLEAR_POTION" + suffix;
-				case 11:
-					return prefix + "DIFFUSE_POTION" + suffix;
-				case 13:
-					return prefix + "ARTLESS_POTION" + suffix;
-				case 15:
-					return prefix + "THIN_POTION" + suffix;
-				case 16:
-					return prefix + "AWKWARD_POTION" + suffix;
-				case 32:
-					return prefix + "THICK_POTION" + suffix;
-				}
-			} else {
-				String effects = "";
-				for (PotionEffect effect : pot.getEffects()) {
-					effects += effect.toString().split(":")[0];
-				}
-				return prefix + effects + suffix;
-			}
-			return mat.toString();
-		case 6:
-			switch ((int) damage) {
-			case 0:
-				return "OAK_SAPLING";
-			case 1:
-				return "PINE_SAPLING";
-			case 2:
-				return "BIRCH_SAPLING";
-			case 3:
-				return "JUNGLE_TREE_SAPLING";
-			}
-			return mat.toString();
-
-		case 5:
-			switch ((int) damage) {
-			case 0:
-				return "OAK_PLANKS";
-			case 1:
-				return "PINE_PLANKS";
-			case 2:
-				return "BIRCH_PLANKS";
-			case 3:
-				return "JUNGLE_PLANKS";
-			}
-			return mat.toString();
-		case 17:
-			switch (damage) {
-			case 0:
-				return "OAK_LOG";
-			case 1:
-				return "PINE_LOG";
-			case 2:
-				return "BIRCH_LOG";
-			case 3:
-				return "JUNGLE_LOG";
-			}
-			return mat.toString();
-		case 18:
-			damage = (short) (damage % 4);
-			switch (damage) {
-			case 0:
-				return "OAK_LEAVES";
-			case 1:
-				return "PINE_LEAVES";
-			case 2:
-				return "BIRCH_LEAVES";
-			case 3:
-				return "JUNGLE_LEAVES";
-			}
-		case 263:
-			switch (damage) {
-			case 0:
-				return "COAL";
-			case 1:
-				return "CHARCOAL";
-			}
-			return mat.toString();
-		case 24:
-			switch ((int) damage) {
-			case 0:
-				return "SANDSTONE";
-			case 1:
-				return "CHISELED_SANDSTONE";
-			case 2:
-				return "SMOOTH_SANDSTONE";
-			}
-			return mat.toString();
-		case 31:
-			switch ((int) damage) {
-			case 0:
-				return "DEAD_SHRUB";
-			case 1:
-				return "TALL_GRASS";
-			case 2:
-				return "FERN";
-			}
-			return mat.toString();
-		case 44:
-			switch ((int) damage) {
-			case 0:
-				return "STONE_SLAB";
-			case 1:
-				return "SANDSTONE_SLAB";
-			case 2:
-				return "WOODEN_SLAB";
-			case 3:
-				return "COBBLESTONE_SLAB";
-			case 4:
-				return "BRICK_SLAB";
-			case 5:
-				return "STONE_BRICK_SLAB";
-			}
-			return mat.toString();
-		case 383:
-			switch ((int) damage) {
-			case 50:
-				return "CREEPER_EGG";
-			case 51:
-				return "SKELETON_EGG";
-			case 52:
-				return "SPIDER_EGG";
-			case 53:
-				return "GIANT_EGG";
-			case 54:
-				return "ZOMBIE_EGG";
-			case 55:
-				return "SLIME_EGG";
-			case 56:
-				return "GHAST_EGG";
-			case 57:
-				return "ZOMBIE_PIGMAN_EGG";
-			case 58:
-				return "ENDERMAN_EGG";
-			case 59:
-				return "CAVE_SPIDER_EGG";
-			case 60:
-				return "SILVERFISH_EGG";
-			case 61:
-				return "BLAZE_EGG";
-			case 62:
-				return "MAGMA_CUBE_EGG";
-			case 63:
-				return "ENDER_DRAGON_EGG";
-			case 90:
-				return "PIG_EGG";
-			case 91:
-				return "SHEEP_EGG";
-			case 92:
-				return "COW_EGG";
-			case 93:
-				return "CHICKEN_EGG";
-			case 94:
-				return "SQUID_EGG";
-			case 95:
-				return "WOLF_EGG";
-			case 96:
-				return "MOOSHROOM_EGG";
-			case 97:
-				return "SNOW_GOLEM_EGG";
-			case 98:
-				return "OCELOT_EGG";
-			case 99:
-				return "IRON_GOLEM_EGG";
-			case 120:
-				return "VILLAGER_EGG";
-			case 200:
-				return "ENDER_CRYSTAL_EGG";
-			case 14:
-				return "PRIMED_TNT_EGG";
-			case 66:
-				return "WITCH_EGG";
-			case 65:
-				return "BAT_EGG";
-			}
-			return mat.toString();
-		case 397:
-			switch ((int) damage) {
-			case 0:
-				return "SKELETON_SKULL";
-			case 1:
-				return "WITHER_SKULL";
-			case 2:
-				return "ZOMBIE_HEAD";
-			case 3:
-				return "PLAYER_HEAD";
-			case 4:
-				return "CREEPER_HEAD";
-			}
-			break;
-		case 76:
-			return "REDSTONE_TORCH";
-		case 115:
-			return "NETHER_WART";
-		case 30:
-			return "COBWEB";
-		case 102:
-			return "GLASS_PANE";
-		case 101:
-			return "IRON_BARS";
-		case 58:
-			return "CRAFTING_TABLE";
-		case 123:
-			return "REDSTONE_LAMP";
-		case 392:
-			return "POTATO";
-		case 289:
-			return "GUNPOWDER";
-		case 391:
-			return "CARROT";
-		case 322:
-			switch ((int) damage) {
-			case 0:
-				return "GOLDEN_APPLE";
-			case 1:
-				return "ENCHANTED_GOLDEN_APPLE";
-			}
-			break;
-		case 390:
-			return "FLOWER_POT";
-		case 145:
-			switch ((int) damage) {
-			case 0:
-				return "ANVIL";
-			case 1:
-				return "SLIGHTLY_DAMAGED_ANVIL";
-			case 2:
-				return "VERY_DAMAGED:ANVIL";
-			}
-			break;
-		case 384:
-			return "BOTTLE_O'_ENCHANTING";
-		case 402:
-			return "FIREWORK_STAR";
-		case 385:
-			return "FIREWORK_CHARGE";
-		}
-
-		if (damage == 0 || isTool(mat))
-			return mat.toString();
-		return mat.toString() + ":" + damage;
-	}
-	*/
 	/**
 	 * Converts a given ItemStack into a pretty string
+	 * 
 	 * @param item
 	 *            The item stack
 	 * @return A string with the name of the item.
 	 */
 	private static String getDataName(ItemStack item) {
 		Material mat = item.getType();
-		// Find out if this item is damaged or not, i.e. durability
+		// Find out durability, which indicates additional information on the
+		// item, color, etc.
 		short damage = item.getDurability();
-		// Find out the max durability of the item
-		//short maxDurability = item.getType().getMaxDurability();
 		switch (mat) {
 		case WOOL:
 			switch ((int) damage) {
@@ -1322,14 +1066,16 @@ public class Util {
 			// Special case,.. Why?
 			if (damage == 0)
 				return "WATER_BOTTLE";
-			// TODO fix this so it works without deprication
 			Potion pot;
+			// Convert the item stack to a potion. The try is just in case this
+			// is not a potion, which it should be
+
 			try {
-				pot = Potion.fromDamage(damage);
+				pot = Potion.fromItemStack(item);
 			} catch (Exception e) {
 				return "CUSTOM_POTION";
 			}
-
+			// Now we can parse out what the potion is from its effects and type
 			String prefix = "";
 			String suffix = "";
 			if (pot.getLevel() > 0)
@@ -1338,10 +1084,9 @@ public class Util {
 				prefix += "EXTENDED_";
 			if (pot.isSplash())
 				prefix += "SPLASH_";
-
+			// These are the useless or unused potions. Usually, these can only
+			// be obtained by /give
 			if (pot.getEffects().isEmpty()) {
-				//switch ((int) pot.getNameId()) {
-				plugin.getLogger().info("Bluebook debug:"+damage);
 				switch ((int) damage) {
 				case 64:
 					return prefix + "MUNDANE_POTION" + suffix;
@@ -1397,9 +1142,9 @@ public class Util {
 			case 3:
 				return "JUNGLE_TREE_SAPLING";
 			case 4:
-				return "Acacia Sapling";
+				return "Acacia_Sapling";
 			case 5:
-				return "Dark Oak Sapling";
+				return "Dark_Oak_Sapling";
 			}
 			return mat.toString();
 
@@ -2048,9 +1793,9 @@ public class Util {
 			break;
 		case LOG_2:
 			switch ((int) damage) {
-			case 3:
-				return "ACACIA_OAK_LOG";
-			case 4:
+			case 0:
+				return "ACACIA_LOG";
+			case 1:
 				return "DARK_OAK_LOG";
 			}
 			return mat.toString();
@@ -2263,7 +2008,7 @@ public class Util {
 			case 15:
 				return "BLACK_STAINED_CLAY";
 			}
-			return mat.toString();			
+			return mat.toString();
 		case STAINED_GLASS:
 			switch ((int) damage) {
 			case 0:
@@ -2428,10 +2173,11 @@ public class Util {
 		// This covers the rest of the items that have a "reasonable" name
 		if (damage == 0 || isTool(mat))
 			return mat.toString();
-		// This returns something that has a durability qualifier, but we don't know what it is.
+		// This returns something that has a durability qualifier, but we don't
+		// know what it is.
 		return mat.toString() + ":" + damage;
 	}
-	
+
 	/**
 	 * @param mat
 	 *            The material to check
@@ -2549,16 +2295,165 @@ public class Util {
 	 * 
 	 * @return The price of the block
 	 */
-
-	public static double getPrice(Material type) {
-		if (blockPrices.containsKey(type)) {
-			return (Double) blockPrices.get(type);
-		}
-		return -10000;
-	}
-	
+	/*
+	 * public static double getPrice(Material type) { if
+	 * (blockPrices.containsKey(type)) { return (Double) blockPrices.get(type);
+	 * } return -10000; }
+	 */
 	/**
 	 * Returns the price of a block of the ItemStack or -100000 if unknown
+	 * 
+	 * @return The price of the block
+	 */
+	public static double getEnchantmentValue(ItemStack i) {
+		// TODO
+		if (!i.getEnchantments().isEmpty()) {
+			// Loop through every enchantment on the item and value it
+			/*
+			 * The value is a multiplier to the base value of the item, so
+			 * diamond items are more valuable than wooden ones. Method to
+			 * calculate the multiplier is as follows:
+			 * 
+			 * 1. Add the value of all the enchantments on the item The value is
+			 * determine by the probability of obtaining the enchantment as
+			 * follows:
+			 * 
+			 * ==Armor==
+			 * Protection 1
+			 *	Enchantment.PROTECTION_ENVIRONMENTAL;
+			 * Feather Fall 2 
+			 *	Enchantment.PROTECTION_FALL;
+			 * Fire Protection 2 
+			 *	Enchantment.PROTECTION_FIRE;
+			 * Projectile Protection 2 
+			 *	Enchantment.PROTECTION_PROJECTILE;
+			 * Aqua Affinity 5
+			 *	Enchantment.WATER_WORKER;
+			 * Blast Protection 5 
+			 *	Enchantment.PROTECTION_EXPLOSIONS;
+			 * Respiration 5
+			 *	Enchantment.OXYGEN;
+			 * Thorns 10
+			 *	Enchantment.THORNS;
+			 * 
+			 * ==Sword==
+			 * Sharpness	1
+			 * 	Enchantment.DAMAGE_ALL;
+			 * Bane of Arthropods	2.5
+			 * 	Enchantment.DAMAGE_ARTHROPODS;
+			 * Knockback	2.5
+			 * 	Enchantment.KNOCKBACK;
+			 * Smite	2.5
+			 * 	Enchantment.DAMAGE_UNDEAD;
+			 * Fire Aspect	5
+			 * 	Enchantment.FIRE_ASPECT;
+			 * Looting	5
+			 * 	Enchantment.LOOT_BONUS_MOBS;
+			 * 
+			 * ==Bow==
+			 * Power	1
+			 *	Enchantment.ARROW_DAMAGE;
+			 * Flame	5
+			 * 	Enchantment.ARROW_FIRE;
+			 * Punch	5
+			 * 	Enchantment.ARROW_KNOCKBACK;
+			 * Infinity	10
+			 * 	Enchantment.ARROW_INFINITE;
+			 * 
+			 * ==Rod==
+			 * Luck of the Sea 1
+			 * 	Enchantment.LUCK;
+			 * Lure 1
+			 * 	Enchantment.LURE;
+			 * 
+			 * ==Tools==
+			 * Efficiency 1
+			 * 	Enchantment.DIG_SPEED;
+			 * Unbreaking 2
+			 * 	Enchantment.DURABILITY;
+			 * Fortune 5
+			 * 	Enchantment.LOOT_BONUS_BLOCKS;
+			 * Silk Touch 10
+			 * 	Enchantment.SILK_TOUCH;
+			 * 
+			 * Multiple enchantments make the object more valuable 
+			 * 1 enchantment = 1x 
+			 * 2 enchantments = 3.1x 
+			 * 3 enchantments = 5.88x 
+			 * 4 enchantments = 10.53x 
+			 * This is derived from the probability of obtaining
+			 * multiple enchantments as calculated 1000's of times (see website calculators)
+			 */
+			final Map <Integer, Double> multiEnchantValue = new HashMap <Integer, Double>() {
+				private static final long serialVersionUID = 1L;
+				{
+					put(1, 1.0);
+					put(2, 3.1);
+					put(3, 5.88);
+					put(4, 10.53);
+				}
+			};
+			double enchantValue = 0;
+			int multiplier = 0;
+			for (Map.Entry<Enchantment, Integer> item : i.getEnchantments()
+					.entrySet()) {
+				// Find rank of the enchantment
+				int rank = item.getValue();
+				// Add up value
+				if (item.getKey().equals(Enchantment.ARROW_DAMAGE)
+						| item.getKey().equals(
+								Enchantment.PROTECTION_ENVIRONMENTAL)
+						| item.getKey().equals(Enchantment.DAMAGE_ALL)
+						| item.getKey().equals(Enchantment.LURE)
+						| item.getKey().equals(Enchantment.LUCK)
+						| item.getKey().equals(Enchantment.DIG_SPEED)) {
+					// Value = 1
+					enchantValue += (1.0 * rank);
+					//plugin.getLogger().info("Enchant +1 rank " + rank);
+				} else if (item.getKey().equals(Enchantment.PROTECTION_FALL)
+						| item.getKey().equals(Enchantment.PROTECTION_FIRE)
+						| item.getKey().equals(
+								Enchantment.PROTECTION_PROJECTILE)) {
+					// Value 2
+					enchantValue += (2.0 * rank);
+					//plugin.getLogger().info("Enchant +2 rank " + rank);
+				} else if (item.getKey().equals(Enchantment.DAMAGE_ARTHROPODS)
+						| item.getKey().equals(Enchantment.KNOCKBACK)
+						| item.getKey().equals(Enchantment.DAMAGE_UNDEAD)) {
+					// Value 2.5
+					enchantValue += 2.5;
+					//plugin.getLogger().info("Enchant +2.5 rank "+ rank);
+				} else if (item.getKey().equals(Enchantment.WATER_WORKER)
+						| item.getKey().equals(
+								Enchantment.PROTECTION_EXPLOSIONS)
+						| item.getKey().equals(Enchantment.OXYGEN)
+						| item.getKey().equals(Enchantment.FIRE_ASPECT)
+						| item.getKey().equals(Enchantment.LOOT_BONUS_MOBS)
+						| item.getKey().equals(Enchantment.ARROW_FIRE)
+						| item.getKey().equals(Enchantment.ARROW_KNOCKBACK)
+						| item.getKey().equals(Enchantment.LOOT_BONUS_BLOCKS)) {
+					// Value 5
+					enchantValue += (5.0 * rank);
+					//plugin.getLogger().info("Enchant +5 rank "+ rank);
+				} else if (item.getKey().equals(Enchantment.THORNS)
+						| item.getKey().equals(Enchantment.ARROW_INFINITE)
+						| item.getKey().equals(Enchantment.SILK_TOUCH)) {
+					// Value 10
+					enchantValue += (10.0 * rank);
+					//plugin.getLogger().info("Enchant +10 rank "+ rank);
+				}
+				multiplier++;
+			}
+			// Multiply the value by how many enchantments there are
+			//plugin.getLogger().info("There are "+multiplier+" enchantments so multiplier is " + multiEnchantValue.get(multiplier));
+			enchantValue = enchantValue * multiEnchantValue.get(multiplier);
+			return enchantValue;
+		} else {
+			return 0.0;
+		}
+	}
+	/**
+	 * Returns the price of a block of the ItemStack or -100000.0 if unknown
 	 * 
 	 * @return The price of the block
 	 */
@@ -2579,19 +2474,20 @@ public class Util {
 			switch (type) {
 			case WOOL:
 				try {
-					return (dyePrices.get((int)(15-durability)) + blockPrices.get(Material.WOOL));
+					return (dyePrices.get((int) (15 - durability)) + blockPrices
+							.get(Material.WOOL));
 				} catch (Exception e) {
 					return -10000.0;
 				}
 			case RAW_FISH:
 				try {
-					return (fishPrices.get((int)durability));
+					return (fishPrices.get((int) durability));
 				} catch (Exception e) {
 					return -10000.0;
-				}				
+				}
 			case INK_SACK:
 				try {
-					return (dyePrices.get((int)durability));
+					return (dyePrices.get((int) durability));
 				} catch (Exception e) {
 					return -10000.0;
 				}
@@ -2609,7 +2505,7 @@ public class Util {
 				break;
 			case POTION:
 				try {
-					return potionPrices.get((int)durability);
+					return potionPrices.get((int) durability);
 				} catch (Exception e) {
 					return -10000.0;
 				}
@@ -2714,12 +2610,13 @@ public class Util {
 				// All monster eggs are priceless. They cannot be crafted.
 				return -10000;
 			case SKULL_ITEM:
-				// All of these are priceless. The Wither Skull is a rare drop and the rest are in creative only.
+				// All of these are priceless. The Wither Skull is a rare drop
+				// and the rest are in creative only.
 				// "SKELETON_SKULL";
-					// "WITHER_SKULL";
-					// "ZOMBIE_HEAD";
-					// "PLAYER_HEAD";
-					// "CREEPER_HEAD";
+				// "WITHER_SKULL";
+				// "ZOMBIE_HEAD";
+				// "PLAYER_HEAD";
+				// "CREEPER_HEAD";
 				return -10000;
 			case GOLDEN_APPLE:
 				switch ((int) durability) {
@@ -2727,21 +2624,23 @@ public class Util {
 					// "GOLDEN_APPLE";
 				case 1:
 					// "ENCHANTED_GOLDEN_APPLE"
-					return (blockPrices.get(Material.APPLE) + blockPrices.get(Material.GOLD_BLOCK) * 8.0);
+					return (blockPrices.get(Material.APPLE) + blockPrices
+							.get(Material.GOLD_BLOCK) * 8.0);
 				}
 				break;
 			case ANVIL:
-				// Anvils have a 12% chance of being damaged every time they are used.
+				// Anvils have a 12% chance of being damaged every time they are
+				// used.
 				switch ((int) durability) {
 				case 0:
 					// "ANVIL";
 					return blockPrices.get(Material.ANVIL);
 				case 1:
 					// "SLIGHTLY_DAMAGED_ANVIL";
-					return blockPrices.get(Material.ANVIL)*0.12;
+					return blockPrices.get(Material.ANVIL) * 0.12;
 				case 2:
 					// "VERY_DAMAGED:ANVIL";
-					return blockPrices.get(Material.ANVIL)*0.0144;
+					return blockPrices.get(Material.ANVIL) * 0.0144;
 				}
 				break;
 			case RED_ROSE:
@@ -2756,53 +2655,38 @@ public class Util {
 				}
 				break;
 			case STAINED_GLASS:
-				//plugin.getLogger().info("Stained glass");
+				// plugin.getLogger().info("Stained glass");
 				try {
-					return (dyePrices.get((int)(15-durability)) + blockPrices.get(Material.GLASS));
-				} catch (Exception e) {
-					return -10000.0;
-				}
-					/*
-					 * 
-					  95:1 Stained Glass (Orange)
-					  95:2 Stained Glass (Magenta)
-					  95:3 Stained Glass (Light Blue)
-					  95:4 Stained Glass (Yellow)
-					  95:5 Stained Glass (Lime)
-					  95:6 Stained Glass (Pink)
-					  95:7 Stained Glass (Gray)
-					  95:8 Stained Glass (Light Grey)
-					  95:9 Stained Glass (Cyan)
-					  95:10 Stained Glass (Purple)
-					  95:11 Stained Glass (Blue)
-					  95:12 Stained Glass (Brown)
-					  95:13 Stained Glass (Green)
-					  95:14 Stained Glass (Red)
-					  95:15 Stained Glass (Black)
-					 */
-			case CARPET:
-				try {
-					return (dyePrices.get((int)(15-durability)) + 2/3 * blockPrices.get(Material.WOOL));
+					return (dyePrices.get((int) (15 - durability)) + blockPrices
+							.get(Material.GLASS));
 				} catch (Exception e) {
 					return -10000.0;
 				}
 				/*
 				 * 
-				 171:1 Carpet (Orange)
-				 171:2 Carpet (Magenta)
-				 171:3 Carpet (Light Blue)
-				 171:4 Carpet (Yellow)
-				 171:5 Carpet (Lime)
-				 171:6 Carpet (Pink)
-				 171:7 Carpet (Grey)
-				 171:8 Carpet (Light Gray)
-				 171:9 Carpet (Cyan)
-				 171:10 Carpet (Purple)
-				 171:11 Carpet (Blue)
-				 171:12 Carpet (Brown)
-				 171:13 Carpet (Green)
-				 171:14 Carpet (Red)
-				 171:15 Carpet (Black)
+				 * 95:1 Stained Glass (Orange) 95:2 Stained Glass (Magenta) 95:3
+				 * Stained Glass (Light Blue) 95:4 Stained Glass (Yellow) 95:5
+				 * Stained Glass (Lime) 95:6 Stained Glass (Pink) 95:7 Stained
+				 * Glass (Gray) 95:8 Stained Glass (Light Grey) 95:9 Stained
+				 * Glass (Cyan) 95:10 Stained Glass (Purple) 95:11 Stained Glass
+				 * (Blue) 95:12 Stained Glass (Brown) 95:13 Stained Glass
+				 * (Green) 95:14 Stained Glass (Red) 95:15 Stained Glass (Black)
+				 */
+			case CARPET:
+				try {
+					return (dyePrices.get((int) (15 - durability)) + 2 / 3 * blockPrices
+							.get(Material.WOOL));
+				} catch (Exception e) {
+					return -10000.0;
+				}
+				/*
+				 * 
+				 * 171:1 Carpet (Orange) 171:2 Carpet (Magenta) 171:3 Carpet
+				 * (Light Blue) 171:4 Carpet (Yellow) 171:5 Carpet (Lime) 171:6
+				 * Carpet (Pink) 171:7 Carpet (Grey) 171:8 Carpet (Light Gray)
+				 * 171:9 Carpet (Cyan) 171:10 Carpet (Purple) 171:11 Carpet
+				 * (Blue) 171:12 Carpet (Brown) 171:13 Carpet (Green) 171:14
+				 * Carpet (Red) 171:15 Carpet (Black)
 				 */
 			case ACACIA_STAIRS:
 				break;
@@ -3482,11 +3366,12 @@ public class Util {
 						/ (double) maxDurability;
 			}
 		}
+		// Final total is...
 		if (blockPrices.containsKey(type)) {
 			return (Double) blockPrices.get(type) * damageModifier;
-			//return (Double) blockPrices.get(Material.BAKED_POTATO);
 		} else {
 			return -10010;
 		}
+
 	}
 }

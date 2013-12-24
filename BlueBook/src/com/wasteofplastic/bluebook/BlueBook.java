@@ -46,7 +46,7 @@ public class BlueBook extends JavaPlugin implements Listener {
 	public double profit = 0.0;
 
 	// Version of the Plugin
-	private static double version = 1.2;
+	private static double version = 1.3;
 	
 	@Override
 	public void onDisable() {
@@ -116,27 +116,17 @@ public class BlueBook extends JavaPlugin implements Listener {
 			short durability = itemInHand.getDurability();
 			// Find out the max durability of the item
 			short maxDurability = itemInHand.getType().getMaxDurability();
+			// For DEBUG
 			//p.sendMessage(ChatColor.BLUE + "[BlueBook "+version+ "] " + ChatColor.GOLD
 			//		+ Util.getName(itemInHand) + " durability is " + durability + " out of " + maxDurability);
-			/*
-			// If the max and current durability are zero then this is just a block or normal item
-			// If the current durability is greater than the max, then it's a variant on the current item, e.g. potion, etc.
-			if (durability > maxDurability) {
-				// This is a special item
-				
-			} else {
-				// Adjust price for damage to the item
-				if (maxDurability > 0) {
-					damageModifier = 1 - (double)durability/(double)maxDurability;
-					p.sendMessage(ChatColor.BLUE + "[BlueBook] " + ChatColor.GOLD
-							+  " damageModifier = " + damageModifier);
-				}
-			}
-			*/
 			// Tell player what the guide price is.
-			//double price = damageModifier * Util.getPrice(itemInHand.getType());
 			double price = Util.getPrice(itemInHand);
-			//getLogger().info("Golden carrot" + Util.blockPrices.get(Material.GOLDEN_CARROT));
+			// Find out the value of enchantments
+			// Find out if this item is enchanted or not
+			if (!item.getEnchantments().isEmpty()) {
+				//getLogger().info("Item is enchanted and multiplier is " + Util.getEnchantmentValue(item));
+				price = price + price * Util.getEnchantmentValue(item);
+			}
 			// Add the % profit
 			price = price + price * (profit/100);
 			// If the price is negative, it is undefined, or parts of the

@@ -103,5 +103,6 @@ block-prices:
 # COCOA PLANT, max 3 beans per plant
    COCOA: 15
 # 1.7.2 Double plants
-   DOUBLE_PLANT: 1
+   DOUBLE_PLANT: 2
+   LOG_2: 15
 
