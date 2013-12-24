@@ -113,7 +113,7 @@ public class BlueBook extends JavaPlugin implements Listener {
 			// Find out the value of enchantments
 			// Find out if this item is enchanted or not
 			if (!item.getEnchantments().isEmpty()) {
-				//getLogger().info("Item is enchanted and multiplier is " + Util.getEnchantmentValue(item));
+				getLogger().info("Base price = " + Util.format(price));
 				price = price + price * Util.getEnchantmentValue(item) * enchantValue;
 			}
 			// Add the % profit
@@ -130,15 +130,15 @@ public class BlueBook extends JavaPlugin implements Listener {
 				if (maxDurability > 0 && durability > 0) {
 					// Item is worn down somewhat
 					p.sendMessage(ChatColor.BLUE + "[BlueBook " + version + "] " + ChatColor.GOLD
-							+ "Worn " + Util.getName(itemInHand) + " ~"
+							+ "Worn " + Util.getName(itemInHand) + " "
 							+ Util.format(price) + " each");
 				} else if (durability == 0 && maxDurability > 0){
 					p.sendMessage(ChatColor.BLUE + "[BlueBook " + version + "] " + ChatColor.GOLD
-							+ "Mint " + Util.getName(itemInHand) + " ~"
+							+ "Mint " + Util.getName(itemInHand) + " "
 							+ Util.format(price) + " each");
 				} else {
 					p.sendMessage(ChatColor.BLUE + "[BlueBook " + version + "] " + ChatColor.GOLD
-							+ Util.getName(itemInHand) + " ~"
+							+ Util.getName(itemInHand) + " "
 							+ Util.format(price) + " each");
 					
 				}

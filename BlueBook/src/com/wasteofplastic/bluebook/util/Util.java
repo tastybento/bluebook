@@ -2396,7 +2396,7 @@ public class Util {
 			 * Silk Touch 10
 			 * 	Enchantment.SILK_TOUCH;
 			 * 
-			 * Multiple enchantments make the object more valuable 
+			 * REMOVED: Multiple enchantments make the object more valuable 
 			 * 1 enchantment = 1x 
 			 * 2 enchantments = 3.1x 
 			 * 3 enchantments = 5.88x 
@@ -2404,6 +2404,7 @@ public class Util {
 			 * This is derived from the probability of obtaining
 			 * multiple enchantments as calculated 1000's of times (see website calculators)
 			 */
+			/*
 			final Map <Integer, Double> multiEnchantValue = new HashMap <Integer, Double>() {
 				private static final long serialVersionUID = 1L;
 				{
@@ -2412,9 +2413,9 @@ public class Util {
 					put(3, 5.88);
 					put(4, 10.53);
 				}
-			};
-			double enchantValue = 0;
-			int multiplier = 0;
+			};*/
+			double enchantValue = 0.0;
+			//int multiplier = 0;
 			for (Map.Entry<Enchantment, Integer> item : i.getEnchantments()
 					.entrySet()) {
 				// Find rank of the enchantment
@@ -2462,11 +2463,11 @@ public class Util {
 					enchantValue += (10.0 * rank);
 					plugin.getLogger().info("Enchant +10 rank "+ rank);
 				}
-				multiplier++;
+				//multiplier++;
 			}
 			// Multiply the value by how many enchantments there are
-			//plugin.getLogger().info("There are "+multiplier+" enchantments so multiplier is " + multiEnchantValue.get(multiplier));
-			enchantValue = enchantValue * multiEnchantValue.get(multiplier);
+			plugin.getLogger().info("Total = "+enchantValue+" enchantments");
+			//enchantValue = enchantValue * multiEnchantValue.get(multiplier);
 			return enchantValue;
 		} else {
 			return 0.0;
