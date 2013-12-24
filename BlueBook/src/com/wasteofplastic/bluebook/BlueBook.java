@@ -33,6 +33,8 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.block.Block;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
 
 import com.wasteofplastic.bluebook.util.Util;
 import com.wasteofplastic.bluebook.MetricsLite;
@@ -44,6 +46,7 @@ public class BlueBook extends JavaPlugin implements Listener {
 	public static Economy econ = null;
 	
 	public double profit = 0.0;
+	public double enchantValue = 1.0;
 
 	// Version of the Plugin
 	private static double version = 1.3;
@@ -55,16 +58,8 @@ public class BlueBook extends JavaPlugin implements Listener {
 
 	public void onEnable() {
 		instance = this;
-		saveDefaultConfig(); // Creates the config folder and copies config.yml
-								// (If one doesn't exist) as required.
-		reloadConfig(); // Reloads config.yml
-		getConfig().options().copyDefaults(true); // Load defaults.
-		// Pull out a few variables
-		Double configProfit = this.getConfig().getDouble("profit");
-		if (configProfit != null && configProfit > 0.0) {
-			profit = configProfit;
-		}
-		
+		loadYamls();
+		// TODO remove requirement to have Vault. It's just used for formatting anyway and I can do a better version
 		if (!setupEconomy()) {
 			getLogger().severe("Vault not found. Plugin Disabling");
 			getServer().getPluginManager().disablePlugin(this);
@@ -125,7 +120,7 @@ public class BlueBook extends JavaPlugin implements Listener {
 			// Find out if this item is enchanted or not
 			if (!item.getEnchantments().isEmpty()) {
 				//getLogger().info("Item is enchanted and multiplier is " + Util.getEnchantmentValue(item));
-				price = price + price * Util.getEnchantmentValue(item);
+				price = price + price * Util.getEnchantmentValue(item) * enchantValue;
 			}
 			// Add the % profit
 			price = price + price * (profit/100);
@@ -135,20 +130,20 @@ public class BlueBook extends JavaPlugin implements Listener {
 				// We do not know what the price is! This is a catch all for
 				// unknown prices - literally price-less
 				// TODO: Allow the prefix of the message to be configured
-				p.sendMessage(ChatColor.BLUE + "[BlueBook" + version + "] " + ChatColor.GOLD
+				p.sendMessage(ChatColor.BLUE + "[BlueBook " + version + "] " + ChatColor.GOLD
 						+ Util.getName(itemInHand) + " is priceless!");
 			} else {
 				if (maxDurability > 0 && durability > 0) {
 					// Item is worn down somewhat
-					p.sendMessage(ChatColor.BLUE + "[BlueBook" + version + "] " + ChatColor.GOLD
+					p.sendMessage(ChatColor.BLUE + "[BlueBook " + version + "] " + ChatColor.GOLD
 							+ "Worn " + Util.getName(itemInHand) + " ~"
 							+ econ.format(price) + " each");
 				} else if (durability == 0 && maxDurability > 0){
-					p.sendMessage(ChatColor.BLUE + "[BlueBook" + version + "] " + ChatColor.GOLD
+					p.sendMessage(ChatColor.BLUE + "[BlueBook " + version + "] " + ChatColor.GOLD
 							+ "Mint " + Util.getName(itemInHand) + " ~"
 							+ econ.format(price) + " each");
 				} else {
-					p.sendMessage(ChatColor.BLUE + "[BlueBook" + version + "] " + ChatColor.GOLD
+					p.sendMessage(ChatColor.BLUE + "[BlueBook " + version + "] " + ChatColor.GOLD
 							+ Util.getName(itemInHand) + " ~"
 							+ econ.format(price) + " each");
 					
@@ -156,7 +151,41 @@ public class BlueBook extends JavaPlugin implements Listener {
 			}
 		}
 	}
-
+	
+	public void loadYamls() {
+		saveDefaultConfig(); // Creates the config folder and copies config.yml
+		// (If one doesn't exist) as required.
+		reloadConfig(); // Reloads config.yml
+		getConfig().options().copyDefaults(true); // Load defaults.
+		// Pull out a few variables and put some limit checking in just in case
+		// someone goes crazy
+		Double configProfit = this.getConfig().getDouble("profit");
+		if (configProfit != null && configProfit > -1000.0
+				&& configProfit < 1000.0) {
+			profit = configProfit;
+		}
+		Double configEnchantValue = this.getConfig().getDouble("enchantments");
+		if (configEnchantValue != null && configEnchantValue > -1000.0
+				&& configEnchantValue < 1000.0) {
+			enchantValue = configEnchantValue;
+		}
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see org.bukkit.plugin.java.JavaPlugin#onCommand(org.bukkit.command.CommandSender, org.bukkit.command.Command, java.lang.String, java.lang.String[])
+	 */
+    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args){
+    	if(cmd.getName().equalsIgnoreCase("bbreload")) {
+    		// Reload the config file
+    		loadYamls();
+    		sender.sendMessage(ChatColor.BLUE + "[BlueBook " + version + "] " + ChatColor.GOLD
+					+ "Reloaded");
+    		return true;
+    	} else {
+    		return false;
+    	}
+    }
 	/**
 	 * Returns the economy
 	 * 

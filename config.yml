@@ -1,6 +1,19 @@
-# Set the profit percentage. If 0%, then the recommended price will
-# be exactly the cost of goods, no labor. 5% is a good value
+# Bento’s BlueBook Price Guide
+# Version 1.3
+
+# Enchanted items pricing
+# Enchanted items are priced based on their rarity, which is based on
+# the probability of obtaining the enchantments when using an enchantment table
+# 
+
+# Set your server’s profit percentage. If 0%, then the recommended price will
+# be exactly the cost of goods, no labor. 5% is a good value. 
 profit: 5.0
+
+# Set the value multiplier for enchantments. A value of 1.0 will result in an item
+# doubling in price if it has a single, level I, common enchantment, like Bow Power I
+enchantments: 1.0
+
 #Set your prices here. Commenting out a value will result in it becoming priceless and may make other items that use it priceless too.
 block-prices:
    GRASS: 1
@@ -104,5 +117,6 @@ block-prices:
    COCOA: 15
 # 1.7.2 Double plants
    DOUBLE_PLANT: 2
+# 1.7. 2 New wood types
    LOG_2: 15
 
