@@ -113,7 +113,7 @@ public class BlueBook extends JavaPlugin implements Listener {
 			// Find out the value of enchantments
 			// Find out if this item is enchanted or not
 			if (!item.getEnchantments().isEmpty()) {
-				getLogger().info("Base price = " + Util.format(price));
+				//getLogger().info("Base price = " + Util.format(price));
 				price = price + price * Util.getEnchantmentValue(item) * enchantValue;
 			}
 			// Add the % profit

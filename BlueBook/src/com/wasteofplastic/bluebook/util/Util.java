@@ -2430,20 +2430,20 @@ public class Util {
 						| item.getKey().equals(Enchantment.DIG_SPEED)) {
 					// Value = 1
 					enchantValue += (1.0 * rank);
-					plugin.getLogger().info("Enchant +1 rank " + rank);
+					//plugin.getLogger().info("Enchant +1 rank " + rank);
 				} else if (item.getKey().equals(Enchantment.PROTECTION_FALL)
 						| item.getKey().equals(Enchantment.PROTECTION_FIRE)
 						| item.getKey().equals(
 								Enchantment.PROTECTION_PROJECTILE)) {
 					// Value 2
 					enchantValue += (2.0 * rank);
-					plugin.getLogger().info("Enchant +2 rank " + rank);
+					//plugin.getLogger().info("Enchant +2 rank " + rank);
 				} else if (item.getKey().equals(Enchantment.DAMAGE_ARTHROPODS)
 						| item.getKey().equals(Enchantment.KNOCKBACK)
 						| item.getKey().equals(Enchantment.DAMAGE_UNDEAD)) {
 					// Value 2.5
 					enchantValue += 2.5;
-					plugin.getLogger().info("Enchant +2.5 rank "+ rank);
+					//plugin.getLogger().info("Enchant +2.5 rank "+ rank);
 				} else if (item.getKey().equals(Enchantment.WATER_WORKER)
 						| item.getKey().equals(
 								Enchantment.PROTECTION_EXPLOSIONS)
@@ -2455,18 +2455,18 @@ public class Util {
 						| item.getKey().equals(Enchantment.LOOT_BONUS_BLOCKS)) {
 					// Value 5
 					enchantValue += (5.0 * rank);
-					plugin.getLogger().info("Enchant +5 rank "+ rank);
+					//plugin.getLogger().info("Enchant +5 rank "+ rank);
 				} else if (item.getKey().equals(Enchantment.THORNS)
 						| item.getKey().equals(Enchantment.ARROW_INFINITE)
 						| item.getKey().equals(Enchantment.SILK_TOUCH)) {
 					// Value 10
 					enchantValue += (10.0 * rank);
-					plugin.getLogger().info("Enchant +10 rank "+ rank);
+					//plugin.getLogger().info("Enchant +10 rank "+ rank);
 				}
 				//multiplier++;
 			}
 			// Multiply the value by how many enchantments there are
-			plugin.getLogger().info("Total = "+enchantValue+" enchantments");
+			//plugin.getLogger().info("Total = "+enchantValue+" enchantments");
 			//enchantValue = enchantValue * multiEnchantValue.get(multiplier);
 			return enchantValue;
 		} else {
