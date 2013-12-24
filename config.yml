@@ -14,6 +14,14 @@ profit: 5.0
 # doubling in price if it has a single, level I, common enchantment, like Bow Power I
 enchantments: 1.0
 
+# Currency symbol or name. If it is one character it will be prefixed, if it is a word, it will be suffixed.
+# Examples
+# currency: $
+# currency: emeralds
+# currency: coins
+currency: $
+
+
 #Set your prices here. Commenting out a value will result in it becoming priceless and may make other items that use it priceless too.
 block-prices:
    GRASS: 1

@@ -16,11 +16,15 @@
  */
 package com.wasteofplastic.bluebook.util;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Map.Entry;
 //import java.util.Set;
+
+
 
 //import org.bukkit.ChatColor;
 //import org.bukkit.ChatColor;
@@ -47,7 +51,9 @@ public class Util {
 	private static HashMap<Integer, Double> fishPrices = new HashMap<Integer, Double>();
 
 	private static BlueBook plugin;
-
+	// Currency symbol or word
+	private static String currency = "$";
+	
 	static {
 		plugin = BlueBook.instance;
 		// Initialize all block prices so that if any are missing nothing bad
@@ -2225,17 +2231,31 @@ public class Util {
 	 * return true; }
 	 */
 	/**
-	 * Formats the given number according to how vault would like it. E.g. $50
-	 * or 5 dollars.
+	 * Formats the given number into a price. Adds commas to enable easy reading and the currency symbol or word
 	 * 
 	 * @return The formatted string.
 	 */
-	/*
-	 * public static String format(double n) { try { return
-	 * plugin.getEcon().format(n); } catch (NumberFormatException e) { return
-	 * "$" + n; } }
-	 */
-
+	public static String format(double n) {
+		//TODO complete
+		NumberFormat formatter;
+		String number;
+		formatter = new DecimalFormat("#,###,###,###.00");
+		number = formatter.format(n);
+		if (currency.length() == 1) {
+			return  currency + number;
+		} else {
+			return number + " " + currency;
+		}
+	}
+/*
+ * Sets the currency to be used in formating
+ */
+	public static void setCurrency(String c) {
+		if (c != null) {
+			currency = c;
+		}
+	}
+	
 	/**
 	 * Counts the number of items in the given inventory where
 	 * Util.matches(inventory item, item) is true.
@@ -2409,20 +2429,20 @@ public class Util {
 						| item.getKey().equals(Enchantment.DIG_SPEED)) {
 					// Value = 1
 					enchantValue += (1.0 * rank);
-					//plugin.getLogger().info("Enchant +1 rank " + rank);
+					plugin.getLogger().info("Enchant +1 rank " + rank);
 				} else if (item.getKey().equals(Enchantment.PROTECTION_FALL)
 						| item.getKey().equals(Enchantment.PROTECTION_FIRE)
 						| item.getKey().equals(
 								Enchantment.PROTECTION_PROJECTILE)) {
 					// Value 2
 					enchantValue += (2.0 * rank);
-					//plugin.getLogger().info("Enchant +2 rank " + rank);
+					plugin.getLogger().info("Enchant +2 rank " + rank);
 				} else if (item.getKey().equals(Enchantment.DAMAGE_ARTHROPODS)
 						| item.getKey().equals(Enchantment.KNOCKBACK)
 						| item.getKey().equals(Enchantment.DAMAGE_UNDEAD)) {
 					// Value 2.5
 					enchantValue += 2.5;
-					//plugin.getLogger().info("Enchant +2.5 rank "+ rank);
+					plugin.getLogger().info("Enchant +2.5 rank "+ rank);
 				} else if (item.getKey().equals(Enchantment.WATER_WORKER)
 						| item.getKey().equals(
 								Enchantment.PROTECTION_EXPLOSIONS)
@@ -2434,13 +2454,13 @@ public class Util {
 						| item.getKey().equals(Enchantment.LOOT_BONUS_BLOCKS)) {
 					// Value 5
 					enchantValue += (5.0 * rank);
-					//plugin.getLogger().info("Enchant +5 rank "+ rank);
+					plugin.getLogger().info("Enchant +5 rank "+ rank);
 				} else if (item.getKey().equals(Enchantment.THORNS)
 						| item.getKey().equals(Enchantment.ARROW_INFINITE)
 						| item.getKey().equals(Enchantment.SILK_TOUCH)) {
 					// Value 10
 					enchantValue += (10.0 * rank);
-					//plugin.getLogger().info("Enchant +10 rank "+ rank);
+					plugin.getLogger().info("Enchant +10 rank "+ rank);
 				}
 				multiplier++;
 			}

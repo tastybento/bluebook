@@ -30,7 +30,6 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.PluginManager;
-import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.block.Block;
 import org.bukkit.command.Command;
@@ -49,7 +48,7 @@ public class BlueBook extends JavaPlugin implements Listener {
 	public double enchantValue = 1.0;
 
 	// Version of the Plugin
-	private static double version = 1.3;
+	private static double version = 1.4;
 	
 	@Override
 	public void onDisable() {
@@ -59,11 +58,6 @@ public class BlueBook extends JavaPlugin implements Listener {
 	public void onEnable() {
 		instance = this;
 		loadYamls();
-		// TODO remove requirement to have Vault. It's just used for formatting anyway and I can do a better version
-		if (!setupEconomy()) {
-			getLogger().severe("Vault not found. Plugin Disabling");
-			getServer().getPluginManager().disablePlugin(this);
-		}
 		PluginManager pm = getServer().getPluginManager(); // Registers the
 															// plugin
 		pm.registerEvents(this, this);
@@ -137,15 +131,15 @@ public class BlueBook extends JavaPlugin implements Listener {
 					// Item is worn down somewhat
 					p.sendMessage(ChatColor.BLUE + "[BlueBook " + version + "] " + ChatColor.GOLD
 							+ "Worn " + Util.getName(itemInHand) + " ~"
-							+ econ.format(price) + " each");
+							+ Util.format(price) + " each");
 				} else if (durability == 0 && maxDurability > 0){
 					p.sendMessage(ChatColor.BLUE + "[BlueBook " + version + "] " + ChatColor.GOLD
 							+ "Mint " + Util.getName(itemInHand) + " ~"
-							+ econ.format(price) + " each");
+							+ Util.format(price) + " each");
 				} else {
 					p.sendMessage(ChatColor.BLUE + "[BlueBook " + version + "] " + ChatColor.GOLD
 							+ Util.getName(itemInHand) + " ~"
-							+ econ.format(price) + " each");
+							+ Util.format(price) + " each");
 					
 				}
 			}
@@ -169,6 +163,12 @@ public class BlueBook extends JavaPlugin implements Listener {
 				&& configEnchantValue < 1000.0) {
 			enchantValue = configEnchantValue;
 		}
+		String configCurrency = this.getConfig().getString("currency");
+		if (configCurrency != null && configCurrency.length() < 10) {
+			Util.setCurrency(configCurrency);
+		} else {
+			Util.setCurrency("$");
+		}
 	}
 	
 	/*
@@ -186,25 +186,4 @@ public class BlueBook extends JavaPlugin implements Listener {
     		return false;
     	}
     }
-	/**
-	 * Returns the economy
-	 * 
-	 * @return The economy object
-	 */
-	public Economy getEcon() {
-		return econ;
-	}
-
-	private boolean setupEconomy() {
-		if (getServer().getPluginManager().getPlugin("Vault") == null) {
-			return false;
-		}
-		RegisteredServiceProvider<Economy> rsp = getServer()
-				.getServicesManager().getRegistration(Economy.class);
-		if (rsp == null) {
-			return false;
-		}
-		econ = rsp.getProvider();
-		return econ != null;
-	}
 }
