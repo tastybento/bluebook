@@ -1938,7 +1938,27 @@ public class Util {
 		case RED_MUSHROOM:
 			break;
 		case RED_ROSE:
-			return "Poppy";
+			switch ((int) damage) {
+			case 0:
+				return "POPPY";
+			case 1:
+				return "BLUE_ORCHID";
+			case 2:
+				return "ALLIUM";
+			case 3:
+				return "AZURE_BLUET";
+			case 4:
+				return "RED_TULIP";
+			case 5:
+				return "ORANGE_TULIP";
+			case 6:
+				return "WHITE TULIP";
+			case 7:
+				return "PINK_TULIP";
+			case 8:
+				return "OXEYE_DAISY";
+			}
+			return mat.toString();
 		case ROTTEN_FLESH:
 			break;
 		case SADDLE:
