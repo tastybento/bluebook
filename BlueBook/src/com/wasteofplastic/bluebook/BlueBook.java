@@ -48,7 +48,7 @@ public class BlueBook extends JavaPlugin implements Listener {
 	public double enchantValue = 1.0;
 
 	// Version of the Plugin
-	private static double version = 1.4;
+	private static double version = 1.5;
 	
 	@Override
 	public void onDisable() {
