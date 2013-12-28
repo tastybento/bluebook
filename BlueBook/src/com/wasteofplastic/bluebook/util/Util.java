@@ -56,35 +56,9 @@ public class Util {
 	
 	static {
 		plugin = BlueBook.instance;
-		// Initialize all block prices so that if any are missing nothing bad
-		// happens
-		// The value is set to a large negative number so that even crafted
-		// items will probably become priceless
-		for (Material mat : Material.values()) {
-			// Set the price of everything to -10000
-			blockPrices.put(mat, -10000.0);
-		}
-		// plugin.getLogger().info("BlueBook Loading Prices from config.yml");
-		// Load in prices
-		Map<String, Object> map = plugin.getConfig()
-				.getConfigurationSection("block-prices").getValues(false);
-		for (Entry<String, Object> entry : map.entrySet()) { // just to loop
-																// through the
-																// entries
-			Material key = Material.getMaterial(entry.getKey());
-			Double price = Double.valueOf(entry.getValue().toString());
-			if (key != null) {
-				blockPrices.put(key, price); // cast the value so it becomes a
-												// "MyObjectClass".
-				// plugin.getLogger().info("Block loaded " + key + " $" +
-				// price);
-			} else {
-				plugin.getLogger().info(
-						"BlueBook - Invalid block in config.yml: "
-								+ entry.getKey());
-			}
-		}
-
+		// Load the base prices from the config.yml file
+		loadPrices();
+		
 		// Calculate all the other prices based on these core prices
 		calculatePrices();
 
@@ -147,12 +121,47 @@ public class Util {
 		tools.add(Material.IRON_HELMET);
 		tools.add(Material.IRON_LEGGINGS);
 	}
+	
+	public static void loadPrices() {
+
+		// Initialize all block prices so that if any are missing nothing bad
+		// happens
+		// The value is set to a large negative number so that even crafted
+		// items will probably become priceless
+		for (Material mat : Material.values()) {
+			// Set the price of everything to -10000
+			blockPrices.put(mat, -10000.0);
+		}
+		// plugin.getLogger().info("BlueBook Loading Prices from config.yml");
+		// Load in prices
+		Map<String, Object> map = plugin.getConfig()
+				.getConfigurationSection("block-prices").getValues(false);
+		for (Entry<String, Object> entry : map.entrySet()) { // just to loop
+																// through the
+																// entries
+			Material key = Material.getMaterial(entry.getKey());
+			Double price = Double.valueOf(entry.getValue().toString());
+			if (key != null) {
+				blockPrices.put(key, price); // cast the value so it becomes a
+												// "MyObjectClass".
+				// plugin.getLogger().info("Block loaded " + key + " $" +
+				// price);
+			} else {
+				plugin.getLogger().info(
+						"BlueBook - Invalid block in config.yml: "
+								+ entry.getKey());
+			}
+		}
+
+	}
 
 	/*************************************
 	 * Calculates the prices of materials based on the core block prices that
 	 * have been loaded from the config file
+	 * @param None
+	 * @return Void
 	 */
-	private static void calculatePrices() {
+	public static void calculatePrices() {
 		// Work through each material to calculate
 		// Common materials for crafting
 		final double fuel = blockPrices.get(Material.COAL) / 8.0;
