@@ -48,7 +48,7 @@ public class BlueBook extends JavaPlugin implements Listener {
 	public double enchantValue = 1.0;
 
 	// Version of the Plugin
-	private static double version = 1.5;
+	private static double version = 1.6;
 	
 	@Override
 	public void onDisable() {
@@ -169,6 +169,9 @@ public class BlueBook extends JavaPlugin implements Listener {
 		} else {
 			Util.setCurrency("$");
 		}
+		// Load the rest of the prices
+		Util.loadPrices();
+		Util.calculatePrices();
 	}
 	
 	/*
