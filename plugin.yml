@@ -1,6 +1,6 @@
 name: BlueBook
 main: com.wasteofplastic.bluebook.BlueBook
-version: 1.4
+version: 1.6
 commands:
    bbreload:
       description: Reloads the BlueBook config
