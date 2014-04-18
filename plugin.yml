@@ -1,6 +1,6 @@
 name: BlueBook
 main: com.wasteofplastic.bluebook.BlueBook
-version: 1.6
+version: 1.7.1
 commands:
    bbreload:
       description: Reloads the BlueBook config
@@ -8,6 +8,9 @@ commands:
       permission: bluebook.reload
       permission-message: You don't have <permission>
 permissions:
-    bluebook.show:
-        description: Provides guide price for block or item when hitting a sign or chest.
-        default: op
+   bluebook.show:
+      description: Provides guide price for block or item when hitting a sign or chest.
+      default: op
+   bluebook.signshow:
+      description: Displays object's value on any close by sign with [VALUE]
+      default: op

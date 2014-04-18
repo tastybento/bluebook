@@ -910,6 +910,7 @@ public class Util {
 		} else {
 			vanillaName = displayName;
 		}
+		/*
 		if (!i.getEnchantments().isEmpty()) {
 			vanillaName += " (Enchanted)";
 			// Loop through every enchantment on the item
@@ -919,8 +920,7 @@ public class Util {
 				String name = item.getKey().getName();
 				vanillaName += "\n" + name + " " + toRoman(item.getValue());
 			}
-			*/
-		}
+		}*/
 		return vanillaName;
 	}
 

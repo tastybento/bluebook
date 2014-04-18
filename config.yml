@@ -1,5 +1,5 @@
 # Bento’s BlueBook Price Guide
-# Version 1.3
+# Version 1.7
 
 # Enchanted items pricing
 # Enchanted items are priced based on their rarity, which is based on
@@ -21,6 +21,8 @@ enchantments: 1.0
 # currency: coins
 currency: $
 
+# Text to show when quoting a price
+quote-text: [BlueBook] 
 
 #Set your prices here. Commenting out a value will result in it becoming priceless and may make other items that use it priceless too.
 block-prices:
@@ -127,4 +129,6 @@ block-prices:
    DOUBLE_PLANT: 2
 # 1.7. 2 New wood types
    LOG_2: 15
+   LEAVES_2: 2
+
 
