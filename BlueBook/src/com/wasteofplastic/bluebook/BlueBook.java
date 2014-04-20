@@ -17,15 +17,12 @@
 package com.wasteofplastic.bluebook;
 
 import java.io.IOException;
-import java.util.Iterator;
 
 import net.milkbowl.vault.economy.Economy;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -53,7 +50,9 @@ public class BlueBook extends JavaPlugin implements Listener {
 	
 	public double profit = 0.0;
 	public double enchantValue = 1.0;
-	public String version = "";
+	private static Util worldPrice = null;
+	// What get's displayed when there is a quote in chat
+	private String configText = "";
 	
 	@Override
 	public void onDisable() {
@@ -62,16 +61,12 @@ public class BlueBook extends JavaPlugin implements Listener {
 
 	public void onEnable() {
 		instance = this;
+		worldPrice = new Util();		
+
 		loadYamls();
 		PluginManager pm = getServer().getPluginManager(); // Registers the
 															// plugin
 		pm.registerEvents(this, this);
-		Plugin p = this;
-		if (p != null) {
-		    PluginDescriptionFile pdf = p.getDescription();
-		    version = pdf.getVersion();
-		}
-
 	   	// Send stats
     	try {
     	    MetricsLite metrics = new MetricsLite(this);
@@ -117,16 +112,19 @@ public class BlueBook extends JavaPlugin implements Listener {
 			short durability = itemInHand.getDurability();
 			// Find out the max durability of the item
 			short maxDurability = itemInHand.getType().getMaxDurability();
+			// Load the prices for this world
+			//worldPrice.loadPrices(p.getWorld().toString());
+			//worldPrice.calculatePrices(p.getWorld().toString());
 			// For DEBUG
 			//p.sendMessage(ChatColor.BLUE + "[BlueBook "+version+ "] " + ChatColor.GOLD
-			//		+ Util.getName(itemInHand) + " durability is " + durability + " out of " + maxDurability);
+			//getLogger().info(worldPrice.getName(itemInHand) + " durability is " + durability + " out of " + maxDurability);
 			// Tell player what the guide price is.
-			double price = Util.getPrice(itemInHand);
+			double price = worldPrice.getPrice(itemInHand,p.getWorld().getName());
 			// Find out the value of enchantments
 			// Find out if this item is enchanted or not
 			if (!item.getEnchantments().isEmpty()) {
-				//getLogger().info("Item is enchanted - Base price = " + Util.format(price));
-				price = price + price * Util.getEnchantmentValue(item) * enchantValue;
+				getLogger().info("Item is enchanted - Base price = " + Util.format(price));
+				price = price + price * worldPrice.getEnchantmentValue(item) * enchantValue;
 			}
 			// Add the % profit
 			price = price + price * (profit/100);
@@ -138,7 +136,7 @@ public class BlueBook extends JavaPlugin implements Listener {
 			String lineThree = "";
 			String enchanted = "";
 			if (!itemInHand.getEnchantments().isEmpty()) {
-				 enchanted = "Enchanted";
+				 enchanted = " Enchanted";
 			}
 
 			if (price < 0.0) {
@@ -146,25 +144,25 @@ public class BlueBook extends JavaPlugin implements Listener {
 				// unknown prices - literally price-less
 				// TODO: Allow the prefix of the message to be configured
 				lineOne = enchanted;
-				lineTwo = Util.getName(itemInHand);
+				lineTwo = worldPrice.getName(itemInHand);
 				lineThree = "is priceless!";
 			} else {
 				if (maxDurability > 0 && durability > 0) {
 					// Item is worn down somewhat
-					lineOne = "Worn " + enchanted;
-					lineTwo = Util.getName(itemInHand);
+					lineOne = "Worn" + enchanted;
+					lineTwo = worldPrice.getName(itemInHand);
 					lineThree = Util.format(price) + " each";
 				} else if (durability == 0 && maxDurability > 0){
-					lineOne = "Mint " + enchanted;
-					lineTwo = Util.getName(itemInHand);
+					lineOne = "Mint" + enchanted;
+					lineTwo = worldPrice.getName(itemInHand);
 					lineThree = Util.format(price) + " each";
 				} else {
 					if (lineOne == "") {
-						lineOne = Util.getName(itemInHand);
+						lineOne = worldPrice.getName(itemInHand);
 						lineTwo = Util.format(price) + " each";	
 					} else {
 						lineOne = enchanted;
-						lineTwo = Util.getName(itemInHand);
+						lineTwo = worldPrice.getName(itemInHand);
 						lineThree = Util.format(price) + " each";	
 					}
 				}
@@ -200,8 +198,13 @@ public class BlueBook extends JavaPlugin implements Listener {
 				}
 			}
 			if (p.hasPermission("bluebook.show")) {
-				p.sendMessage(ChatColor.BLUE + "[BlueBook " + version + "] " + ChatColor.GOLD
-						+ lineOne + " " + lineTwo + " " + lineThree + ".");
+				if (lineOne == "") {
+					p.sendMessage(configText + " " + ChatColor.GOLD
+							+ lineTwo + " " + lineThree);
+				} else {
+					p.sendMessage(configText + " " + ChatColor.GOLD
+							+ lineOne + " " + lineTwo + " " + lineThree);
+				}
 			} 
 		}
 	}
@@ -225,13 +228,19 @@ public class BlueBook extends JavaPlugin implements Listener {
 		}
 		String configCurrency = this.getConfig().getString("currency");
 		if (configCurrency != null && configCurrency.length() < 10) {
-			Util.setCurrency(configCurrency);
+			worldPrice.setCurrency(configCurrency);
 		} else {
-			Util.setCurrency("$");
+			worldPrice.setCurrency("$");
 		}
+		configText = this.getConfig().getString("quote-text");
+		if (configText == null || configText == "") {
+			PluginDescriptionFile pdf = this.getDescription();
+			configText = ChatColor.BLUE + "[BlueBook " + pdf.getVersion() + "]";
+		} 
+		
 		// Load the rest of the prices
-		Util.loadPrices();
-		Util.calculatePrices();
+		//worldPrice.loadPrices();
+		//worldPrice.calculatePrices();
 	}
 	
 	/*
@@ -242,7 +251,8 @@ public class BlueBook extends JavaPlugin implements Listener {
     	if(cmd.getName().equalsIgnoreCase("bbreload")) {
     		// Reload the config file
     		loadYamls();
-    		sender.sendMessage(ChatColor.BLUE + "[BlueBook " + version + "] " + ChatColor.GOLD
+    		worldPrice.thisWorld = "";
+    		sender.sendMessage(configText + " " + ChatColor.GOLD
 					+ "Reloaded");
     		return true;
     	} else {

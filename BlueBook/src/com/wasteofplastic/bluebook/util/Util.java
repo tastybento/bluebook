@@ -26,10 +26,16 @@ import java.util.Map.Entry;
 
 
 
+
+
+
+
+import org.bukkit.Bukkit;
 //import org.bukkit.ChatColor;
 //import org.bukkit.ChatColor;
 //import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.enchantments.Enchantment;
 //import org.bukkit.configuration.InvalidConfigurationException;
 //import org.bukkit.configuration.file.YamlConfiguration;
@@ -45,22 +51,23 @@ import com.wasteofplastic.bluebook.BlueBook;
 
 public class Util {
 	private static HashSet<Material> tools = new HashSet<Material>();
-	private static HashMap<Material, Double> blockPrices = new HashMap<Material, Double>();
-	private static HashMap<Integer, Double> dyePrices = new HashMap<Integer, Double>();
-	private static HashMap<Integer, Double> potionPrices = new HashMap<Integer, Double>();
-	private static HashMap<Integer, Double> fishPrices = new HashMap<Integer, Double>();
+	private HashMap<Material, Double> blockPrices = new HashMap<Material, Double>();
+	private HashMap<Integer, Double> dyePrices = new HashMap<Integer, Double>();
+	private HashMap<Integer, Double> potionPrices = new HashMap<Integer, Double>();
+	private HashMap<Integer, Double> fishPrices = new HashMap<Integer, Double>();
 
 	private static BlueBook plugin;
 	// Currency symbol or word
 	private static String currency = "$";
+	public String thisWorld = "";
 	
-	static {
+	{
 		plugin = BlueBook.instance;
 		// Load the base prices from the config.yml file
-		loadPrices();
+		//loadPrices(thisWorld);
 		
 		// Calculate all the other prices based on these core prices
-		calculatePrices();
+		//calculatePrices();
 
 		// Set up a list of "tools" for the object lister
 		tools.add(Material.BOW);
@@ -122,37 +129,50 @@ public class Util {
 		tools.add(Material.IRON_LEGGINGS);
 	}
 	
-	public static void loadPrices() {
-
+	public void loadPrices(String world) {
 		// Initialize all block prices so that if any are missing nothing bad
 		// happens
 		// The value is set to a large negative number so that even crafted
 		// items will probably become priceless
-		for (Material mat : Material.values()) {
-			// Set the price of everything to -10000
-			blockPrices.put(mat, -10000.0);
-		}
-		// plugin.getLogger().info("BlueBook Loading Prices from config.yml");
-		// Load in prices
-		Map<String, Object> map = plugin.getConfig()
-				.getConfigurationSection("block-prices").getValues(false);
-		for (Entry<String, Object> entry : map.entrySet()) { // just to loop
-																// through the
-																// entries
-			Material key = Material.getMaterial(entry.getKey());
-			Double price = Double.valueOf(entry.getValue().toString());
-			if (key != null) {
-				blockPrices.put(key, price); // cast the value so it becomes a
-												// "MyObjectClass".
-				// plugin.getLogger().info("Block loaded " + key + " $" +
-				// price);
-			} else {
-				plugin.getLogger().info(
-						"BlueBook - Invalid block in config.yml: "
-								+ entry.getKey());
+		//plugin.getLogger().info("World is " + world);
+		// Check if the path exists, otherwise use the default
+		Map<String, Object> defaultMap = plugin.getConfig().getConfigurationSection("block-prices").getValues(false);
+		Map<String, Object> worldMap = null;
+		if (world != null) {
+			if (plugin.getConfig().isSet(world)) {
+				//plugin.getLogger().info("World found in config");
+				worldMap = plugin.getConfig().getConfigurationSection(world).getValues(false);
 			}
 		}
+		// Go through every material
+		//int totalCount = 0;
+		//int defaultCount = 0;
+		//int worldCount = 0;
+		for (Material mat : Material.values()) {
+			// Set the price of everything to -10000
+			// TODO: remove this line and check for non-containing elsewhere
+			//blockPrices.put(mat, -10000.0);
+			//totalCount++;
+			// Set the price to the default if it exists
+			if (defaultMap.containsKey(mat.toString())) {
+				//plugin.getLogger().info("Material = " + mat.toString()+ " price $" + defaultMap.get(mat.toString()));
+				final Double price = Double.valueOf(defaultMap.get(mat.toString()).toString());				
+				blockPrices.put(mat, price);
+				//defaultCount++;
+			}
+			if (worldMap != null) {
+				if (worldMap.containsKey(mat.toString())) {
+					//plugin.getLogger().info("World Material = " + mat.toString()+ " price $" + worldMap.get(mat.toString()));
+					final Double price = Double.valueOf(worldMap.get(mat.toString()).toString());
+					blockPrices.put(mat, price);
+					//worldCount++;
+				}
+			}
 
+
+		}
+		//plugin.getLogger().info("Loaded " + defaultCount + " default block prices, " + worldCount + " world block prices");
+		//plugin.getLogger().info("Total potential prices is " + totalCount);
 	}
 
 	/*************************************
@@ -161,7 +181,7 @@ public class Util {
 	 * @param None
 	 * @return Void
 	 */
-	public static void calculatePrices() {
+	public void calculatePrices(String world) {
 		// Work through each material to calculate
 		// Common materials for crafting
 		final double fuel = blockPrices.get(Material.COAL) / 8.0;
@@ -246,6 +266,9 @@ public class Util {
 		blockPrices.put(Material.GLASS, blockPrices.get(Material.SAND) + fuel);
 		blockPrices.put(Material.LAPIS_BLOCK,
 				blockPrices.get(Material.LAPIS_ORE) / 9.0);
+		blockPrices.put(Material.CHEST, 8.0 * wood);
+		blockPrices.put(Material.HOPPER,
+				5.0 * ironBar + blockPrices.get(Material.CHEST));
 		blockPrices.put(
 				Material.DISPENSER,
 				blockPrices.get(Material.COBBLESTONE) * 7.0
@@ -278,7 +301,6 @@ public class Util {
 		blockPrices.put(Material.TORCH, stick + blockPrices.get(Material.COAL)
 				/ 4.0);
 		blockPrices.put(Material.WOOD_STAIRS, 6.0 * wood / 4.0);
-		blockPrices.put(Material.CHEST, 8.0 * wood);
 		blockPrices.put(Material.DIAMOND_BLOCK, 9.0 * diamond);
 		blockPrices.put(Material.WORKBENCH, 4.0 * wood);
 		blockPrices.put(Material.FURNACE, 8.0 * cobble);
@@ -368,8 +390,6 @@ public class Util {
 						* blockPrices.get(Material.QUARTZ) + 3.0
 						* blockPrices.get(Material.STEP));
 		blockPrices.put(Material.REDSTONE_BLOCK, 9.0 * redStone);
-		blockPrices.put(Material.HOPPER,
-				5.0 * ironBar + blockPrices.get(Material.CHEST));
 		blockPrices.put(Material.QUARTZ_BLOCK,
 				9.0 * blockPrices.get(Material.QUARTZ));
 		blockPrices.put(Material.QUARTZ_STAIRS,
@@ -835,6 +855,7 @@ public class Util {
 
 		// Technically this potion is made from PUFFERFISH 349:3
 		// Water Breathing
+		potionPrices.put(13, fishPrices.get(3) / 3.0 + potionValue);
 		potionPrices.put(8205, fishPrices.get(3) / 3.0 + potionValue);
 		// Water Breathing II
 		potionPrices.put(8237, fishPrices.get(3) / 3.0 + potionValue
@@ -901,7 +922,7 @@ public class Util {
 	 *            The itemstack to fetch the name of
 	 * @return The human readable item name.
 	 */
-	public static String getName(ItemStack i) {
+	public String getName(ItemStack i) {
 		// If the item has had its name changed, then let's use that
 		String vanillaName = "";
 		String displayName = i.getItemMeta().getDisplayName();
@@ -2279,7 +2300,7 @@ public class Util {
 /*
  * Sets the currency to be used in formating
  */
-	public static void setCurrency(String c) {
+	public void setCurrency(String c) {
 		if (c != null) {
 			currency = c;
 		}
@@ -2354,7 +2375,7 @@ public class Util {
 	 * 
 	 * @return The price of the block
 	 */
-	public static double getEnchantmentValue(ItemStack i) {
+	public double getEnchantmentValue(ItemStack i) {
 		// TODO
 		if (!i.getEnchantments().isEmpty()) {
 			// Loop through every enchantment on the item and value it
@@ -2507,7 +2528,15 @@ public class Util {
 	 * 
 	 * @return The price of the block
 	 */
-	public static double getPrice(ItemStack item) {
+	public double getPrice(ItemStack item, String itemWorld) {
+		// Get the world that this item is in
+		if (!itemWorld.equalsIgnoreCase(thisWorld)) {
+			// Need to update prices for this new world
+			loadPrices(itemWorld);
+			calculatePrices(itemWorld);
+			thisWorld = itemWorld;
+		}
+			
 		// Multiplier for damage
 		double damageModifier = 1;
 		Material type = item.getType();

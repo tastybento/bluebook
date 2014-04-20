@@ -1,5 +1,5 @@
 # Bento’s BlueBook Price Guide
-# Version 1.7
+# Version 1.8
 
 # Enchanted items pricing
 # Enchanted items are priced based on their rarity, which is based on
@@ -21,10 +21,12 @@ enchantments: 1.0
 # currency: coins
 currency: $
 
-# Text to show when quoting a price
-quote-text: [BlueBook] 
+# Text to show when quoting a price.
+# If left as nothing, it will show the [Bluebook <version number>]
+quote-text: '' 
 
-#Set your prices here. Commenting out a value will result in it becoming priceless and may make other items that use it priceless too.
+#Set your default prices here. Commenting out a value will result in it becoming priceless and may make other items that use it priceless too.
+#To set world-specific prices, add a section below this with just the price changes you want. They will overwrite these default prices.
 block-prices:
    GRASS: 1
    DIRT: 0.5
@@ -131,4 +133,15 @@ block-prices:
    LOG_2: 15
    LEAVES_2: 2
 
+# World-specific prices should go here. You only need to list items that are specifc to the world. Crafted items will be calculated appropriately Format is:
+# worldname:
+#   material1: price
+#   material2: price
+# worldname2:
+#   material4: price
+# etc.
 
+# Example - change to your own world
+SkyWorld:
+   GRASS: 1000
+   DIRT: 500
