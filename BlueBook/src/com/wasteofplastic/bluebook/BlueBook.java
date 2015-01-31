@@ -68,8 +68,8 @@ public class BlueBook extends JavaPlugin implements Listener {
 	worldPrice = new Util();		
 
 	loadConfig();
-	worldPrice.loadPrices(null);
-	worldPrice.calculatePrices(null);
+	//worldPrice.loadPrices(null);
+	//worldPrice.calculatePrices(null);
 	// Register events
 	PluginManager pm = getServer().getPluginManager();
 	pm.registerEvents(this, this);
@@ -105,8 +105,8 @@ public class BlueBook extends JavaPlugin implements Listener {
 	// Find out who is doing the clicking
 	Player p = e.getPlayer();
 	// Load the prices for this world
-	worldPrice.loadPrices(p.getWorld().toString());
-	worldPrice.calculatePrices(p.getWorld().toString());
+	worldPrice.loadPrices(p.getWorld());
+	worldPrice.calculatePrices();
 
 	// Get the item they are hitting
 	ItemStack item = e.getItem();

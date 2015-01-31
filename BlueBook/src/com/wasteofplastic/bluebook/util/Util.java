@@ -26,6 +26,7 @@ import java.util.Map;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.FurnaceRecipe;
 //import org.bukkit.configuration.InvalidConfigurationException;
@@ -124,7 +125,7 @@ public class Util {
 	tools.add(Material.IRON_LEGGINGS);
     }
 
-    public void loadPrices(String world) {
+    public void loadPrices(World world) {
 	// Initialize all block prices so that if any are missing nothing bad
 	// happens
 	// The value is set to a large negative number so that even crafted
@@ -134,9 +135,9 @@ public class Util {
 	Map<String, Object> defaultMap = plugin.getConfig().getConfigurationSection("block-prices").getValues(false);
 	Map<String, Object> worldMap = null;
 	if (world != null) {
-	    if (plugin.getConfig().isSet(world)) {
+	    if (plugin.getConfig().isSet(world.getName())) {
 		//plugin.Bukkit.getLogger().info("World found in config");
-		worldMap = plugin.getConfig().getConfigurationSection(world).getValues(false);
+		worldMap = plugin.getConfig().getConfigurationSection(world.getName()).getValues(false);
 	    }
 	}
 	// Go through every material
@@ -157,7 +158,7 @@ public class Util {
 	    }
 	    if (worldMap != null) {
 		if (worldMap.containsKey(mat.toString())) {
-		    //plugin.Bukkit.getLogger().info("World Material = " + mat.toString()+ " price $" + worldMap.get(mat.toString()));
+		    //Bukkit.getLogger().info("World Material = " + mat.toString()+ " price $" + worldMap.get(mat.toString()));
 		    final Double price = Double.valueOf(worldMap.get(mat.toString()).toString());
 		    blockPrices.put(mat.toString(), price);
 		    //worldCount++;
@@ -173,9 +174,9 @@ public class Util {
     /*************************************
      * Calculates the prices of materials based on the core block prices that
      * have been loaded from the config file
-     * @param world
+     * @param 
      */
-    public void calculatePrices(String world) {
+    public void calculatePrices() {
 	// Work through each material to calculate
 	// Common materials for crafting
 	final double fuel = blockPrices.get("COAL") / 8.0;
@@ -2686,6 +2687,7 @@ public class Util {
      * @return The price of the block
      */
     public double getPrice(ItemStack item, String itemWorld) {
+	/*
 	// Get the world that this item is in
 	if (!itemWorld.equalsIgnoreCase(thisWorld)) {
 	    // Need to update prices for this new world
@@ -2693,7 +2695,7 @@ public class Util {
 	    calculatePrices(itemWorld);
 	    thisWorld = itemWorld;
 	}
-
+	 */
 	// Multiplier for damage
 	double damageModifier = 1;
 	Material type = item.getType();

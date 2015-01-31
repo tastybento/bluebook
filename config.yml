@@ -134,7 +134,7 @@ block-prices:
 # 1.7. 2 New wood types
    LOG_2: 15
    LEAVES_2: 2
-# 1.8 Base Materials - Comment out if you are not using 1.8+
+# 1.8 Base Materials
    PRISMARINE_SHARD: 100
    PRISMARINE_CRYSTALS: 500
    MUTTON: 7.5
@@ -143,7 +143,9 @@ block-prices:
    RABBIT_HIDE: 10
 
 
-# World-specific prices should go here. You only need to list items that are specifc to the world. Crafted items will be calculated appropriately Format is:
+# World-specific prices should go here. You only need to list items that are
+# specific to the world. Crafted items will be calculated appropriately.
+# Format is:
 # worldname:
 #   material1: price
 #   material2: price
@@ -152,6 +154,6 @@ block-prices:
 # etc.
 
 # Example - change to your own world
-SkyWorld:
+ASkyBlock:
    GRASS: 1000
    DIRT: 500
