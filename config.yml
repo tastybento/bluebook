@@ -1,5 +1,5 @@
-# Bento’s BlueBook Price Guide
-# Version 1.8
+# tastybento’s BlueBook Price Guide
+# Version 1.9
 
 # Enchanted items pricing
 # Enchanted items are priced based on their rarity, which is based on
@@ -37,6 +37,8 @@ block-prices:
    GOLD_ORE: 50
    IRON_ORE: 15
    COAL_ORE: 10
+   STICK: 1
+   WOOD: 5
    LOG: 10
    LEAVES: 2
    LAPIS_ORE: 20
@@ -132,6 +134,14 @@ block-prices:
 # 1.7. 2 New wood types
    LOG_2: 15
    LEAVES_2: 2
+# 1.8 Base Materials - Comment out if you are not using 1.8+
+   PRISMARINE_SHARD: 100
+   PRISMARINE_CRYSTALS: 500
+   MUTTON: 7.5
+   RABBIT: 7.5
+   RABBIT_FOOT: 50
+   RABBIT_HIDE: 10
+
 
 # World-specific prices should go here. You only need to list items that are specifc to the world. Crafted items will be calculated appropriately Format is:
 # worldname:

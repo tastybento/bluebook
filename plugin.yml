@@ -1,6 +1,6 @@
 name: BlueBook
 main: com.wasteofplastic.bluebook.BlueBook
-version: 1.8
+version: 1.9
 commands:
    bbreload:
       description: Reloads the BlueBook config
@@ -10,7 +10,7 @@ commands:
 permissions:
    bluebook.show:
       description: Provides guide price for block or item when hitting a sign or chest.
-      default: op
+      default: true
    bluebook.signshow:
       description: Displays object's value on any close by sign with [VALUE]
       default: op
