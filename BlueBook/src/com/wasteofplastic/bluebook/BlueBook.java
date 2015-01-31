@@ -60,7 +60,7 @@ public class BlueBook extends JavaPlugin implements Listener {
 
     @Override
     public void onDisable() {
-	this.reloadConfig();
+	//this.reloadConfig();
     }
 
     public void onEnable() {

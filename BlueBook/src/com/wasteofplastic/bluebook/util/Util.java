@@ -46,7 +46,7 @@ import com.wasteofplastic.bluebook.IngredientCost;
 
 public class Util {
     private static HashSet<Material> tools = new HashSet<Material>();
-    private HashMap<Material, Double> blockPrices = new HashMap<Material, Double>();
+    private HashMap<String, Double> blockPrices = new HashMap<String, Double>();
     private HashMap<Integer, Double> dyePrices = new HashMap<Integer, Double>();
     private HashMap<Integer, Double> potionPrices = new HashMap<Integer, Double>();
     private HashMap<Integer, Double> fishPrices = new HashMap<Integer, Double>();
@@ -152,14 +152,14 @@ public class Util {
 	    if (defaultMap.containsKey(mat.toString())) {
 		//plugin.Bukkit.getLogger().info("Material = " + mat.toString()+ " price $" + defaultMap.get(mat.toString()));
 		final Double price = Double.valueOf(defaultMap.get(mat.toString()).toString());				
-		blockPrices.put(mat, price);
+		blockPrices.put(mat.toString(), price);
 		//defaultCount++;
 	    }
 	    if (worldMap != null) {
 		if (worldMap.containsKey(mat.toString())) {
 		    //plugin.Bukkit.getLogger().info("World Material = " + mat.toString()+ " price $" + worldMap.get(mat.toString()));
 		    final Double price = Double.valueOf(worldMap.get(mat.toString()).toString());
-		    blockPrices.put(mat, price);
+		    blockPrices.put(mat.toString(), price);
 		    //worldCount++;
 		}
 	    }
@@ -178,405 +178,402 @@ public class Util {
     public void calculatePrices(String world) {
 	// Work through each material to calculate
 	// Common materials for crafting
-	final double fuel = blockPrices.get(Material.COAL) / 8.0;
-	final double wood = blockPrices.get(Material.LOG) / 4.0;
+	final double fuel = blockPrices.get("COAL") / 8.0;
+	final double wood = blockPrices.get("LOG") / 4.0;
 	final double stick = wood / 2.0;
-	final double goldBar = blockPrices.get(Material.GOLD_ORE) + fuel;
-	final double ironBar = blockPrices.get(Material.IRON_ORE) + fuel;
-	final double redStone = blockPrices.get(Material.REDSTONE);
-	final double cobble = blockPrices.get(Material.COBBLESTONE);
+	final double goldBar = blockPrices.get("GOLD_ORE") + fuel;
+	final double ironBar = blockPrices.get("IRON_ORE") + fuel;
+	final double redStone = blockPrices.get("REDSTONE");
+	final double cobble = blockPrices.get("COBBLESTONE");
 	final double stone = cobble + fuel;
-	final double diamond = blockPrices.get(Material.DIAMOND);
+	final double diamond = blockPrices.get("DIAMOND");
 	// Basics
-	blockPrices.put(Material.IRON_INGOT, ironBar);
-	blockPrices.put(Material.GOLD_INGOT, goldBar);
-	blockPrices.put(Material.WOOD, wood);
-	blockPrices.put(Material.STICK, stick);
-	blockPrices.put(Material.STONE, stone);
+	blockPrices.put("IRON_INGOT", ironBar);
+	blockPrices.put("GOLD_INGOT", goldBar);
+	blockPrices.put("WOOD", wood);
+	blockPrices.put("STICK", stick);
+	blockPrices.put("STONE", stone);
 
 	// dyes - all are INK_SACK variants
 	// WHITE - bone meal
-	dyePrices.put(15, blockPrices.get(Material.BONE));
+	dyePrices.put(15, blockPrices.get("BONE"));
 	// ORANGE - made the traditional way, just like mom used to make it
 	dyePrices.put(
 		14,
-		blockPrices.get(Material.RED_ROSE)
-		+ blockPrices.get(Material.YELLOW_FLOWER));
+		blockPrices.get("RED_ROSE")
+		+ blockPrices.get("YELLOW_FLOWER"));
 	// MAGENTA
 	dyePrices.put(
 		13,
-		blockPrices.get(Material.RED_ROSE) * 2.0
-		+ blockPrices.get(Material.BONE)
-		+ blockPrices.get(Material.LAPIS_ORE));
+		blockPrices.get("RED_ROSE") * 2.0
+		+ blockPrices.get("BONE")
+		+ blockPrices.get("LAPIS_ORE"));
 	// LIGHT BLUE
 	dyePrices.put(
 		12,
-		blockPrices.get(Material.BONE)
-		+ blockPrices.get(Material.LAPIS_ORE));
+		blockPrices.get("BONE")
+		+ blockPrices.get("LAPIS_ORE"));
 	// YELLOW
-	dyePrices.put(11, blockPrices.get(Material.YELLOW_FLOWER));
+	dyePrices.put(11, blockPrices.get("YELLOW_FLOWER"));
 	// LIME
 	dyePrices.put(
 		10,
-		blockPrices.get(Material.CACTUS) + fuel
-		+ blockPrices.get(Material.BONE));
+		blockPrices.get("CACTUS") + fuel
+		+ blockPrices.get("BONE"));
 	// PINK
 	dyePrices.put(
 		9,
-		blockPrices.get(Material.RED_ROSE)
-		+ blockPrices.get(Material.BONE));
+		blockPrices.get("RED_ROSE")
+		+ blockPrices.get("BONE"));
 	// GRAY
 	dyePrices.put(
 		8,
-		blockPrices.get(Material.INK_SACK)
-		+ blockPrices.get(Material.BONE));
+		blockPrices.get("INK_SACK")
+		+ blockPrices.get("BONE"));
 	// LIGHT GRAY
 	dyePrices.put(
 		7,
-		blockPrices.get(Material.INK_SACK)
-		+ blockPrices.get(Material.BONE) * 2.0);
+		blockPrices.get("INK_SACK")
+		+ blockPrices.get("BONE") * 2.0);
 	// CYAN
 	dyePrices.put(
 		6,
-		blockPrices.get(Material.CACTUS) + fuel
-		+ blockPrices.get(Material.LAPIS_ORE));
+		blockPrices.get("CACTUS") + fuel
+		+ blockPrices.get("LAPIS_ORE"));
 	// PURPLE
 	dyePrices.put(
 		5,
-		blockPrices.get(Material.RED_ROSE)
-		+ blockPrices.get(Material.LAPIS_ORE));
+		blockPrices.get("RED_ROSE")
+		+ blockPrices.get("LAPIS_ORE"));
 	// BLUE
-	dyePrices.put(4, blockPrices.get(Material.LAPIS_ORE));
+	dyePrices.put(4, blockPrices.get("LAPIS_ORE"));
 	// BROWN
-	dyePrices.put(3, blockPrices.get(Material.COCOA) / 3.0);
+	dyePrices.put(3, blockPrices.get("COCOA") / 3.0);
 	// GREEN
-	dyePrices.put(2, blockPrices.get(Material.CACTUS) + fuel);
+	dyePrices.put(2, blockPrices.get("CACTUS") + fuel);
 	// RED
-	dyePrices.put(1, blockPrices.get(Material.RED_ROSE));
+	dyePrices.put(1, blockPrices.get("RED_ROSE"));
 	// BLACK
-	dyePrices.put(0, blockPrices.get(Material.INK_SACK));
+	dyePrices.put(0, blockPrices.get("INK_SACK"));
 
 	// Other crafted items
-	blockPrices.put(Material.GLASS, blockPrices.get(Material.SAND) + fuel);
-	blockPrices.put(Material.LAPIS_BLOCK,
-		blockPrices.get(Material.LAPIS_ORE) / 9.0);
-	blockPrices.put(Material.CHEST, 8.0 * wood);
-	blockPrices.put(Material.HOPPER,
-		5.0 * ironBar + blockPrices.get(Material.CHEST));
-	blockPrices.put(
-		Material.DISPENSER,
-		blockPrices.get(Material.COBBLESTONE) * 7.0
-		+ blockPrices.get(Material.HOPPER) + redStone);
-	blockPrices.put(Material.SANDSTONE,
-		blockPrices.get(Material.SAND) * 4.0);
-	blockPrices.put(Material.NOTE_BLOCK, 8.0 * wood + redStone);
-	blockPrices.put(Material.POWERED_RAIL,
+	blockPrices.put("GLASS", blockPrices.get("SAND") + fuel);
+	blockPrices.put("LAPIS_BLOCK",
+		blockPrices.get("LAPIS_ORE") / 9.0);
+	blockPrices.put("CHEST", 8.0 * wood);
+	blockPrices.put("HOPPER",
+		5.0 * ironBar + blockPrices.get("CHEST"));
+	blockPrices.put("DISPENSER",
+		blockPrices.get("COBBLESTONE") * 7.0
+		+ blockPrices.get("HOPPER") + redStone);
+	blockPrices.put("SANDSTONE",
+		blockPrices.get("SAND") * 4.0);
+	blockPrices.put("NOTE_BLOCK", 8.0 * wood + redStone);
+	blockPrices.put("POWERED_RAIL",
 		(6.0 * goldBar + redStone + stick) / 6.0);
-	blockPrices.put(Material.STONE_PLATE, 2.0 * stone);
-	blockPrices.put(Material.DETECTOR_RAIL,
+	blockPrices.put("STONE_PLATE", 2.0 * stone);
+	blockPrices.put("DETECTOR_RAIL",
 		(6.0 * ironBar + redStone + blockPrices
-			.get(Material.STONE_PLATE)) / 6.0);
-	blockPrices.put(Material.PISTON_BASE, 3.0 * wood + ironBar + 4.0
+			.get("STONE_PLATE")) / 6.0);
+	blockPrices.put("PISTON_BASE", 3.0 * wood + ironBar + 4.0
 		* cobble + redStone);
-	blockPrices.put(Material.PISTON_STICKY_BASE, 3.0 * wood + ironBar + 4.0
-		* cobble + redStone + blockPrices.get(Material.SLIME_BALL));
-	blockPrices.put(Material.GOLD_BLOCK, 9.0 * goldBar);
-	blockPrices.put(Material.IRON_BLOCK, 9.0 * ironBar);
-	blockPrices.put(Material.STEP, 3.0 * wood / 6.0);
-	blockPrices.put(Material.CLAY_BRICK,
-		blockPrices.get(Material.CLAY_BALL) + fuel);
-	blockPrices.put(Material.TNT, blockPrices.get(Material.SAND) * 4.0
-		+ blockPrices.get(Material.SULPHUR) * 5.0);
-	blockPrices.put(Material.PAPER, blockPrices.get(Material.SUGAR_CANE));
-	blockPrices.put(Material.BOOK, blockPrices.get(Material.PAPER) * 3.0
-		+ blockPrices.get(Material.LEATHER));
-	blockPrices.put(Material.BOOKSHELF, blockPrices.get(Material.BOOK)
-		* 3.0 + blockPrices.get(Material.WOOD) * 6.0);
-	blockPrices.put(Material.TORCH, stick + blockPrices.get(Material.COAL)
+	blockPrices.put("PISTON_STICKY_BASE", 3.0 * wood + ironBar + 4.0
+		* cobble + redStone + blockPrices.get("SLIME_BALL"));
+	blockPrices.put("GOLD_BLOCK", 9.0 * goldBar);
+	blockPrices.put("IRON_BLOCK", 9.0 * ironBar);
+	blockPrices.put("STEP", 3.0 * wood / 6.0);
+	blockPrices.put("CLAY_BRICK",
+		blockPrices.get("CLAY_BALL") + fuel);
+	blockPrices.put("TNT", blockPrices.get("SAND") * 4.0
+		+ blockPrices.get("SULPHUR") * 5.0);
+	blockPrices.put("PAPER", blockPrices.get("SUGAR_CANE"));
+	blockPrices.put("BOOK", blockPrices.get("PAPER") * 3.0
+		+ blockPrices.get("LEATHER"));
+	blockPrices.put("BOOKSHELF", blockPrices.get("BOOK")
+		* 3.0 + blockPrices.get("WOOD") * 6.0);
+	blockPrices.put("TORCH", stick + blockPrices.get("COAL")
 		/ 4.0);
-	blockPrices.put(Material.WOOD_STAIRS, 6.0 * wood / 4.0);
-	blockPrices.put(Material.DIAMOND_BLOCK, 9.0 * diamond);
-	blockPrices.put(Material.WORKBENCH, 4.0 * wood);
-	blockPrices.put(Material.FURNACE, 8.0 * cobble);
-	blockPrices.put(Material.LADDER, 7.0 * stick / 3.0);
-	blockPrices.put(Material.RAILS, (6.0 * ironBar + stick) / 16.0);
-	blockPrices.put(Material.COBBLESTONE_STAIRS, 6.0 * cobble / 4.0);
-	blockPrices.put(Material.LEVER, cobble + stick);
-	blockPrices.put(Material.STONE_PLATE, 2.0 * stone);
-	blockPrices.put(Material.WOOD_PLATE, 2.0 * wood);
-	blockPrices.put(Material.REDSTONE_TORCH_OFF, stick + redStone);
-	blockPrices.put(Material.REDSTONE_TORCH_ON, stick + redStone);
-	blockPrices.put(Material.STONE_BUTTON, stone);
-	blockPrices.put(Material.SNOW_BLOCK,
-		4.0 * blockPrices.get(Material.SNOW_BALL));
-	blockPrices.put(Material.BRICK,
-		4.0 * blockPrices.get(Material.CLAY_BRICK));
-	blockPrices.put(Material.JUKEBOX, 9.0 * wood + diamond);
-	blockPrices.put(Material.FENCE, 6.0 * stick / 3.0);
-	blockPrices.put(Material.GLOWSTONE,
-		4.0 * blockPrices.get(Material.GLOWSTONE_DUST));
+	blockPrices.put("WOOD_STAIRS", 6.0 * wood / 4.0);
+	blockPrices.put("DIAMOND_BLOCK", 9.0 * diamond);
+	blockPrices.put("WORKBENCH", 4.0 * wood);
+	blockPrices.put("FURNACE", 8.0 * cobble);
+	blockPrices.put("LADDER", 7.0 * stick / 3.0);
+	blockPrices.put("RAILS", (6.0 * ironBar + stick) / 16.0);
+	blockPrices.put("COBBLESTONE_STAIRS", 6.0 * cobble / 4.0);
+	blockPrices.put("LEVER", cobble + stick);
+	blockPrices.put("STONE_PLATE", 2.0 * stone);
+	blockPrices.put("WOOD_PLATE", 2.0 * wood);
+	blockPrices.put("REDSTONE_TORCH_OFF", stick + redStone);
+	blockPrices.put("REDSTONE_TORCH_ON", stick + redStone);
+	blockPrices.put("STONE_BUTTON", stone);
+	blockPrices.put("SNOW_BLOCK",
+		4.0 * blockPrices.get("SNOW_BALL"));
+	blockPrices.put("BRICK",
+		4.0 * blockPrices.get("CLAY_BRICK"));
+	blockPrices.put("JUKEBOX", 9.0 * wood + diamond);
+	blockPrices.put("FENCE", 6.0 * stick / 3.0);
+	blockPrices.put("GLOWSTONE",
+		4.0 * blockPrices.get("GLOWSTONE_DUST"));
 	blockPrices.put(
-		Material.JACK_O_LANTERN,
-		blockPrices.get(Material.TORCH)
-		+ blockPrices.get(Material.PUMPKIN));
-	blockPrices.put(Material.TRAP_DOOR, 6.0 * wood / 2.0);
-	blockPrices.put(Material.SMOOTH_BRICK, stone);
-	blockPrices.put(Material.IRON_FENCE, 6.0 * ironBar / 16.0);
-	blockPrices.put(Material.THIN_GLASS,
-		6.0 * blockPrices.get(Material.GLASS) / 16.0);
-	blockPrices.put(Material.MELON_BLOCK,
-		9.0 * blockPrices.get(Material.MELON));
-	blockPrices.put(Material.FENCE_GATE, 4.0 * stick + 2.0 * wood);
-	blockPrices.put(Material.BRICK_STAIRS,
-		6.0 * blockPrices.get(Material.BRICK) / 4.0);
-	blockPrices.put(Material.SMOOTH_STAIRS,
-		6.0 * blockPrices.get(Material.SMOOTH_BRICK) / 4.0);
-	blockPrices.put(Material.NETHER_BRICK_ITEM,
-		blockPrices.get(Material.NETHERRACK) + fuel);
-	blockPrices.put(Material.NETHER_BRICK,
-		4.0 * blockPrices.get(Material.NETHER_BRICK_ITEM));
-	blockPrices.put(Material.NETHER_FENCE,
-		blockPrices.get(Material.NETHER_BRICK));
-	blockPrices.put(Material.NETHER_BRICK_STAIRS,
-		6.0 * blockPrices.get(Material.NETHER_BRICK) / 4.0);
-	blockPrices.put(Material.ENCHANTMENT_TABLE,
-		4.0 * blockPrices.get(Material.OBSIDIAN) + diamond
-		+ blockPrices.get(Material.BOOK));
-	blockPrices.put(Material.REDSTONE_LAMP_ON,
-		4.0 * redStone + blockPrices.get(Material.GLOWSTONE));
-	blockPrices.put(Material.REDSTONE_LAMP_OFF, 4.0 * redStone
-		+ blockPrices.get(Material.GLOWSTONE));
-	blockPrices.put(Material.WOOD_STEP, 3.0 * wood / 6.0);
-	blockPrices.put(Material.SANDSTONE_STAIRS,
-		6.0 * blockPrices.get(Material.SANDSTONE) / 4.0);
-	blockPrices.put(Material.BLAZE_POWDER,
-		blockPrices.get(Material.BLAZE_ROD) / 2.0);
+		"JACK_O_LANTERN",
+		blockPrices.get("TORCH")
+		+ blockPrices.get("PUMPKIN"));
+	blockPrices.put("TRAP_DOOR", 6.0 * wood / 2.0);
+	blockPrices.put("SMOOTH_BRICK", stone);
+	blockPrices.put("IRON_FENCE", 6.0 * ironBar / 16.0);
+	blockPrices.put("THIN_GLASS",
+		6.0 * blockPrices.get("GLASS") / 16.0);
+	blockPrices.put("MELON_BLOCK",
+		9.0 * blockPrices.get("MELON"));
+	blockPrices.put("FENCE_GATE", 4.0 * stick + 2.0 * wood);
+	blockPrices.put("BRICK_STAIRS",
+		6.0 * blockPrices.get("BRICK") / 4.0);
+	blockPrices.put("SMOOTH_STAIRS",
+		6.0 * blockPrices.get("SMOOTH_BRICK") / 4.0);
+	blockPrices.put("NETHER_BRICK_ITEM",
+		blockPrices.get("NETHERRACK") + fuel);
+	blockPrices.put("NETHER_BRICK",
+		4.0 * blockPrices.get("NETHER_BRICK_ITEM"));
+	blockPrices.put("NETHER_FENCE",
+		blockPrices.get("NETHER_BRICK"));
+	blockPrices.put("NETHER_BRICK_STAIRS",
+		6.0 * blockPrices.get("NETHER_BRICK") / 4.0);
+	blockPrices.put("ENCHANTMENT_TABLE",
+		4.0 * blockPrices.get("OBSIDIAN") + diamond
+		+ blockPrices.get("BOOK"));
+	blockPrices.put("REDSTONE_LAMP_ON",
+		4.0 * redStone + blockPrices.get("GLOWSTONE"));
+	blockPrices.put("REDSTONE_LAMP_OFF", 4.0 * redStone
+		+ blockPrices.get("GLOWSTONE"));
+	blockPrices.put("WOOD_STEP", 3.0 * wood / 6.0);
+	blockPrices.put("SANDSTONE_STAIRS",
+		6.0 * blockPrices.get("SANDSTONE") / 4.0);
+	blockPrices.put("BLAZE_POWDER",
+		blockPrices.get("BLAZE_ROD") / 2.0);
 	blockPrices.put(
-		Material.EYE_OF_ENDER,
-		blockPrices.get(Material.BLAZE_POWDER)
-		+ blockPrices.get(Material.ENDER_PEARL));
+		"EYE_OF_ENDER",
+		blockPrices.get("BLAZE_POWDER")
+		+ blockPrices.get("ENDER_PEARL"));
 	blockPrices.put(
-		Material.ENDER_CHEST,
-		8.0 * blockPrices.get(Material.OBSIDIAN)
-		+ blockPrices.get(Material.EYE_OF_ENDER));
-	blockPrices.put(Material.TRIPWIRE_HOOK, ironBar + stick + wood);
-	blockPrices.put(Material.EMERALD_BLOCK,
-		9.0 * blockPrices.get(Material.EMERALD));
-	blockPrices.put(Material.SPRUCE_WOOD_STAIRS, 6.0 * wood / 4.0);
-	blockPrices.put(Material.BIRCH_WOOD_STAIRS, 6.0 * wood / 4.0);
-	blockPrices.put(Material.JUNGLE_WOOD_STAIRS, 6.0 * wood / 4.0);
+		"ENDER_CHEST",
+		8.0 * blockPrices.get("OBSIDIAN")
+		+ blockPrices.get("EYE_OF_ENDER"));
+	blockPrices.put("TRIPWIRE_HOOK", ironBar + stick + wood);
+	blockPrices.put("EMERALD_BLOCK",
+		9.0 * blockPrices.get("EMERALD"));
+	blockPrices.put("SPRUCE_WOOD_STAIRS", 6.0 * wood / 4.0);
+	blockPrices.put("BIRCH_WOOD_STAIRS", 6.0 * wood / 4.0);
+	blockPrices.put("JUNGLE_WOOD_STAIRS", 6.0 * wood / 4.0);
 	blockPrices.put(
-		Material.BEACON,
-		5.0 * blockPrices.get(Material.GLASS)
-		+ blockPrices.get(Material.OBSIDIAN)
-		+ blockPrices.get(Material.NETHER_STAR));
-	blockPrices.put(Material.COBBLE_WALL, cobble);
-	blockPrices.put(Material.WOOD_BUTTON, wood);
-	blockPrices.put(Material.ANVIL,
-		3.0 * blockPrices.get(Material.IRON_BLOCK) + 4.0 * ironBar);
-	blockPrices.put(Material.TRAPPED_CHEST, blockPrices.get(Material.CHEST)
-		+ blockPrices.get(Material.TRIPWIRE_HOOK));
-	blockPrices.put(Material.GOLD_PLATE, 2.0 * goldBar);
-	blockPrices.put(Material.IRON_PLATE, 2.0 * ironBar);
+		"BEACON",
+		5.0 * blockPrices.get("GLASS")
+		+ blockPrices.get("OBSIDIAN")
+		+ blockPrices.get("NETHER_STAR"));
+	blockPrices.put("COBBLE_WALL", cobble);
+	blockPrices.put("WOOD_BUTTON", wood);
+	blockPrices.put("ANVIL",
+		3.0 * blockPrices.get("IRON_BLOCK") + 4.0 * ironBar);
+	blockPrices.put("TRAPPED_CHEST", blockPrices.get("CHEST")
+		+ blockPrices.get("TRIPWIRE_HOOK"));
+	blockPrices.put("GOLD_PLATE", 2.0 * goldBar);
+	blockPrices.put("IRON_PLATE", 2.0 * ironBar);
 	blockPrices.put(
-		Material.DAYLIGHT_DETECTOR,
-		3.0 * blockPrices.get(Material.GLASS) + 3.0
-		* blockPrices.get(Material.QUARTZ) + 3.0
-		* blockPrices.get(Material.STEP));
-	blockPrices.put(Material.REDSTONE_BLOCK, 9.0 * redStone);
-	blockPrices.put(Material.QUARTZ_BLOCK,
-		9.0 * blockPrices.get(Material.QUARTZ));
-	blockPrices.put(Material.QUARTZ_STAIRS,
-		6.0 * blockPrices.get(Material.QUARTZ) / 4.0);
-	blockPrices.put(Material.ACTIVATOR_RAIL, 6.0 * ironBar + 2.0 * stick
-		+ blockPrices.get(Material.REDSTONE_TORCH_ON));
-	blockPrices.put(Material.DROPPER, 7.0 * cobble + redStone);
-	blockPrices.put(Material.CLAY,
-		4.0 * blockPrices.get(Material.CLAY_BALL));
-	blockPrices.put(Material.HARD_CLAY, blockPrices.get(Material.CLAY)
+		"DAYLIGHT_DETECTOR",
+		3.0 * blockPrices.get("GLASS") + 3.0
+		* blockPrices.get("QUARTZ") + 3.0
+		* blockPrices.get("STEP"));
+	blockPrices.put("REDSTONE_BLOCK", 9.0 * redStone);
+	blockPrices.put("QUARTZ_BLOCK",
+		9.0 * blockPrices.get("QUARTZ"));
+	blockPrices.put("QUARTZ_STAIRS",
+		6.0 * blockPrices.get("QUARTZ") / 4.0);
+	blockPrices.put("ACTIVATOR_RAIL", 6.0 * ironBar + 2.0 * stick
+		+ blockPrices.get("REDSTONE_TORCH_ON"));
+	blockPrices.put("DROPPER", 7.0 * cobble + redStone);
+	blockPrices.put("CLAY",
+		4.0 * blockPrices.get("CLAY_BALL"));
+	blockPrices.put("HARD_CLAY", blockPrices.get("CLAY")
 		+ fuel);
-	blockPrices.put(Material.STAINED_CLAY,
-		(8.0 * blockPrices.get(Material.HARD_CLAY) + blockPrices
-			.get(Material.INK_SACK)) / 8.0);
-	blockPrices.put(Material.HAY_BLOCK,
-		9.0 * blockPrices.get(Material.WHEAT));
-	blockPrices.put(Material.CARPET,
-		2.0 * blockPrices.get(Material.WOOL) / 3.0);
-	blockPrices.put(Material.COAL_BLOCK,
-		9.0 * blockPrices.get(Material.COAL));
-	blockPrices.put(Material.IRON_SPADE, ironBar + 2.0 * stick);
-	blockPrices.put(Material.IRON_PICKAXE, 3.0 * ironBar + 2.0 * stick);
-	blockPrices.put(Material.IRON_AXE, 3.0 * ironBar + 2.0 * stick);
-	blockPrices.put(Material.FLINT_AND_STEEL,
-		ironBar + blockPrices.get(Material.FLINT));
-	blockPrices.put(Material.BOW,
-		3.0 * stick + blockPrices.get(Material.STRING));
-	blockPrices.put(Material.ARROW, (blockPrices.get(Material.FLINT)
-		+ stick + blockPrices.get(Material.FEATHER)) / 4.0);
-	blockPrices.put(Material.IRON_SWORD, 2.0 * ironBar + stick);
-	blockPrices.put(Material.WOOD_SWORD, 2.0 * wood + stick);
-	blockPrices.put(Material.WOOD_SPADE, wood + 2.0 * stick);
-	blockPrices.put(Material.WOOD_PICKAXE, 3.0 * wood + 2.0 * stick);
-	blockPrices.put(Material.WOOD_AXE, 3.0 * wood + 2.0 * stick);
-	blockPrices.put(Material.STONE_SWORD, 2.0 * stone + stick);
-	blockPrices.put(Material.STONE_SPADE, stone + 2.0 * stick);
-	blockPrices.put(Material.STONE_PICKAXE, 3.0 * stone + 2.0 * stick);
-	blockPrices.put(Material.STONE_AXE, 3.0 * stone + 2.0 * stick);
-	blockPrices.put(Material.DIAMOND_SWORD, 2.0 * diamond + stick);
-	blockPrices.put(Material.DIAMOND_SPADE, diamond + 2.0 * stick);
-	blockPrices.put(Material.DIAMOND_PICKAXE, 3.0 * diamond + 2.0 * stick);
-	blockPrices.put(Material.DIAMOND_AXE, 3.0 * diamond + 2.0 * stick);
-	blockPrices.put(Material.BOWL, 3.0 * wood / 4.0);
+	blockPrices.put("STAINED_CLAY",
+		(8.0 * blockPrices.get("HARD_CLAY") + blockPrices
+			.get("INK_SACK")) / 8.0);
+	blockPrices.put("HAY_BLOCK",
+		9.0 * blockPrices.get("WHEAT"));
+	blockPrices.put("CARPET",
+		2.0 * blockPrices.get("WOOL") / 3.0);
+	blockPrices.put("COAL_BLOCK",
+		9.0 * blockPrices.get("COAL"));
+	blockPrices.put("IRON_SPADE", ironBar + 2.0 * stick);
+	blockPrices.put("IRON_PICKAXE", 3.0 * ironBar + 2.0 * stick);
+	blockPrices.put("IRON_AXE", 3.0 * ironBar + 2.0 * stick);
+	blockPrices.put("FLINT_AND_STEEL",
+		ironBar + blockPrices.get("FLINT"));
+	blockPrices.put("BOW",
+		3.0 * stick + blockPrices.get("STRING"));
+	blockPrices.put("ARROW", (blockPrices.get("FLINT")
+		+ stick + blockPrices.get("FEATHER")) / 4.0);
+	blockPrices.put("IRON_SWORD", 2.0 * ironBar + stick);
+	blockPrices.put("WOOD_SWORD", 2.0 * wood + stick);
+	blockPrices.put("WOOD_SPADE", wood + 2.0 * stick);
+	blockPrices.put("WOOD_PICKAXE", 3.0 * wood + 2.0 * stick);
+	blockPrices.put("WOOD_AXE", 3.0 * wood + 2.0 * stick);
+	blockPrices.put("STONE_SWORD", 2.0 * stone + stick);
+	blockPrices.put("STONE_SPADE", stone + 2.0 * stick);
+	blockPrices.put("STONE_PICKAXE", 3.0 * stone + 2.0 * stick);
+	blockPrices.put("STONE_AXE", 3.0 * stone + 2.0 * stick);
+	blockPrices.put("DIAMOND_SWORD", 2.0 * diamond + stick);
+	blockPrices.put("DIAMOND_SPADE", diamond + 2.0 * stick);
+	blockPrices.put("DIAMOND_PICKAXE", 3.0 * diamond + 2.0 * stick);
+	blockPrices.put("DIAMOND_AXE", 3.0 * diamond + 2.0 * stick);
+	blockPrices.put("BOWL", 3.0 * wood / 4.0);
 	blockPrices.put(
-		Material.MUSHROOM_SOUP,
-		blockPrices.get(Material.RED_MUSHROOM)
-		+ blockPrices.get(Material.BROWN_MUSHROOM)
+		"MUSHROOM_SOUP",
+		blockPrices.get("RED_MUSHROOM")
+		+ blockPrices.get("BROWN_MUSHROOM")
 		+ (3.0 * wood / 4.0));
-	blockPrices.put(Material.GOLD_SWORD, 2.0 * goldBar + stick);
-	blockPrices.put(Material.GOLD_SPADE, goldBar + 2.0 * stick);
-	blockPrices.put(Material.GOLD_PICKAXE, 3.0 * goldBar + 2.0 * stick);
-	blockPrices.put(Material.GOLD_AXE, 3.0 * goldBar + 2.0 * stick);
-	blockPrices.put(Material.WOOD_HOE, 2.0 * wood + 2.0 * stick);
-	blockPrices.put(Material.STONE_HOE, 2.0 * stone + 2.0 * stick);
-	blockPrices.put(Material.IRON_HOE, 2.0 * ironBar + 2.0 * stick);
-	blockPrices.put(Material.DIAMOND_HOE, 2.0 * diamond + 2.0 * stick);
-	blockPrices.put(Material.GOLD_HOE, 2.0 * goldBar + 2.0 * stick);
-	blockPrices.put(Material.BREAD, 3.0 * blockPrices.get(Material.WHEAT));
-	blockPrices.put(Material.LEATHER_HELMET,
-		5.0 * blockPrices.get(Material.LEATHER));
-	blockPrices.put(Material.LEATHER_CHESTPLATE,
-		8.0 * blockPrices.get(Material.LEATHER));
-	blockPrices.put(Material.LEATHER_LEGGINGS,
-		7.0 * blockPrices.get(Material.LEATHER));
-	blockPrices.put(Material.LEATHER_BOOTS,
-		4.0 * blockPrices.get(Material.LEATHER));
-	blockPrices.put(Material.CHAINMAIL_HELMET,
-		5.0 * blockPrices.get(Material.FIRE));
-	blockPrices.put(Material.CHAINMAIL_CHESTPLATE,
-		8.0 * blockPrices.get(Material.FIRE));
-	blockPrices.put(Material.CHAINMAIL_LEGGINGS,
-		7.0 * blockPrices.get(Material.FIRE));
-	blockPrices.put(Material.CHAINMAIL_BOOTS,
-		4.0 * blockPrices.get(Material.FIRE));
-	blockPrices.put(Material.IRON_HELMET, 5.0 * ironBar);
-	blockPrices.put(Material.IRON_CHESTPLATE, 8.0 * ironBar);
-	blockPrices.put(Material.IRON_LEGGINGS, 7.0 * ironBar);
-	blockPrices.put(Material.IRON_BOOTS, 4.0 * ironBar);
-	blockPrices.put(Material.DIAMOND_HELMET, 5.0 * diamond);
-	blockPrices.put(Material.DIAMOND_CHESTPLATE, 8.0 * diamond);
-	blockPrices.put(Material.DIAMOND_LEGGINGS, 7.0 * diamond);
-	blockPrices.put(Material.DIAMOND_BOOTS, 4.0 * diamond);
-	blockPrices.put(Material.GOLD_HELMET, 5.0 * goldBar);
-	blockPrices.put(Material.GOLD_CHESTPLATE, 8.0 * goldBar);
-	blockPrices.put(Material.GOLD_LEGGINGS, 7.0 * goldBar);
-	blockPrices.put(Material.GOLD_BOOTS, 4.0 * goldBar);
-	blockPrices.put(Material.GRILLED_PORK, blockPrices.get(Material.PORK)
+	blockPrices.put("GOLD_SWORD", 2.0 * goldBar + stick);
+	blockPrices.put("GOLD_SPADE", goldBar + 2.0 * stick);
+	blockPrices.put("GOLD_PICKAXE", 3.0 * goldBar + 2.0 * stick);
+	blockPrices.put("GOLD_AXE", 3.0 * goldBar + 2.0 * stick);
+	blockPrices.put("WOOD_HOE", 2.0 * wood + 2.0 * stick);
+	blockPrices.put("STONE_HOE", 2.0 * stone + 2.0 * stick);
+	blockPrices.put("IRON_HOE", 2.0 * ironBar + 2.0 * stick);
+	blockPrices.put("DIAMOND_HOE", 2.0 * diamond + 2.0 * stick);
+	blockPrices.put("GOLD_HOE", 2.0 * goldBar + 2.0 * stick);
+	blockPrices.put("BREAD", 3.0 * blockPrices.get("WHEAT"));
+	blockPrices.put("LEATHER_HELMET",
+		5.0 * blockPrices.get("LEATHER"));
+	blockPrices.put("LEATHER_CHESTPLATE",
+		8.0 * blockPrices.get("LEATHER"));
+	blockPrices.put("LEATHER_LEGGINGS",
+		7.0 * blockPrices.get("LEATHER"));
+	blockPrices.put("LEATHER_BOOTS",
+		4.0 * blockPrices.get("LEATHER"));
+	blockPrices.put("CHAINMAIL_HELMET",
+		5.0 * blockPrices.get("FIRE"));
+	blockPrices.put("CHAINMAIL_CHESTPLATE",
+		8.0 * blockPrices.get("FIRE"));
+	blockPrices.put("CHAINMAIL_LEGGINGS",
+		7.0 * blockPrices.get("FIRE"));
+	blockPrices.put("CHAINMAIL_BOOTS",
+		4.0 * blockPrices.get("FIRE"));
+	blockPrices.put("IRON_HELMET", 5.0 * ironBar);
+	blockPrices.put("IRON_CHESTPLATE", 8.0 * ironBar);
+	blockPrices.put("IRON_LEGGINGS", 7.0 * ironBar);
+	blockPrices.put("IRON_BOOTS", 4.0 * ironBar);
+	blockPrices.put("DIAMOND_HELMET", 5.0 * diamond);
+	blockPrices.put("DIAMOND_CHESTPLATE", 8.0 * diamond);
+	blockPrices.put("DIAMOND_LEGGINGS", 7.0 * diamond);
+	blockPrices.put("DIAMOND_BOOTS", 4.0 * diamond);
+	blockPrices.put("GOLD_HELMET", 5.0 * goldBar);
+	blockPrices.put("GOLD_CHESTPLATE", 8.0 * goldBar);
+	blockPrices.put("GOLD_LEGGINGS", 7.0 * goldBar);
+	blockPrices.put("GOLD_BOOTS", 4.0 * goldBar);
+	blockPrices.put("GRILLED_PORK", blockPrices.get("PORK")
 		+ fuel);
-	blockPrices.put(Material.PAINTING,
-		8.0 * stick + blockPrices.get(Material.WOOL));
-	blockPrices.put(Material.GOLDEN_APPLE,
-		8.0 * goldBar + blockPrices.get(Material.APPLE));
-	blockPrices.put(Material.SIGN, (6.0 * wood + stick) / 3.0);
-	blockPrices.put(Material.WOODEN_DOOR, 6.0 * wood);
-	blockPrices.put(Material.BUCKET, 3.0 * ironBar);
-	blockPrices.put(Material.MINECART, 5.0 * ironBar);
-	blockPrices.put(Material.IRON_DOOR, 6.0 * ironBar);
-	blockPrices.put(Material.BOAT, 6.0 * wood);
+	blockPrices.put("PAINTING",
+		8.0 * stick + blockPrices.get("WOOL"));
+	blockPrices.put("GOLDEN_APPLE",
+		8.0 * goldBar + blockPrices.get("APPLE"));
+	blockPrices.put("SIGN", (6.0 * wood + stick) / 3.0);
+	blockPrices.put("WOODEN_DOOR", 6.0 * wood);
+	blockPrices.put("BUCKET", 3.0 * ironBar);
+	blockPrices.put("MINECART", 5.0 * ironBar);
+	blockPrices.put("IRON_DOOR", 6.0 * ironBar);
+	blockPrices.put("BOAT", 6.0 * wood);
 	blockPrices.put(
-		Material.STORAGE_MINECART,
-		blockPrices.get(Material.CHEST)
-		+ blockPrices.get(Material.MINECART));
+		"STORAGE_MINECART",
+		blockPrices.get("CHEST")
+		+ blockPrices.get("MINECART"));
 	blockPrices.put(
-		Material.POWERED_MINECART,
-		blockPrices.get(Material.FURNACE)
-		+ blockPrices.get(Material.MINECART));
-	blockPrices.put(Material.COMPASS, 4.0 * ironBar + redStone);
-	blockPrices.put(Material.FISHING_ROD,
-		3.0 * stick + 2.0 * blockPrices.get(Material.STRING));
-	blockPrices.put(Material.WATCH, 4.0 * goldBar + redStone);
-	blockPrices.put(Material.COOKED_FISH,
-		blockPrices.get(Material.RAW_FISH) + fuel);
-	blockPrices.put(Material.SUGAR, blockPrices.get(Material.SUGAR_CANE));
+		"POWERED_MINECART",
+		blockPrices.get("FURNACE")
+		+ blockPrices.get("MINECART"));
+	blockPrices.put("COMPASS", 4.0 * ironBar + redStone);
+	blockPrices.put("FISHING_ROD",
+		3.0 * stick + 2.0 * blockPrices.get("STRING"));
+	blockPrices.put("WATCH", 4.0 * goldBar + redStone);
+	blockPrices.put("COOKED_FISH",
+		blockPrices.get("RAW_FISH") + fuel);
+	blockPrices.put("SUGAR", blockPrices.get("SUGAR_CANE"));
 	blockPrices.put(
-		Material.CAKE,
-		3.0 * blockPrices.get(Material.WHEAT)
-		+ blockPrices.get(Material.EGG) + 2.0
-		* blockPrices.get(Material.SUGAR) + 3.0
-		* blockPrices.get(Material.MILK_BUCKET));
-	blockPrices.put(Material.BED,
-		3.0 * wood + 3.0 * blockPrices.get(Material.WOOL));
-	blockPrices.put(Material.DIODE, 3.0 * stone + redStone + 2.0
-		* blockPrices.get(Material.REDSTONE_TORCH_ON));
-	blockPrices.put(Material.COOKIE, 2.0 * blockPrices.get(Material.WHEAT)
-		+ blockPrices.get(Material.COCOA) / 3.0);
-	blockPrices.put(Material.SHEARS, 2.0 * ironBar);
-	blockPrices.put(Material.COOKED_BEEF,
-		blockPrices.get(Material.RAW_BEEF) + fuel);
-	blockPrices.put(Material.COOKED_CHICKEN,
-		blockPrices.get(Material.RAW_CHICKEN) + fuel);
-	blockPrices.put(Material.GOLD_NUGGET, goldBar / 9.0);
-	blockPrices.put(Material.GLASS_BOTTLE, blockPrices.get(Material.GLASS));
+		"CAKE",
+		3.0 * blockPrices.get("WHEAT")
+		+ blockPrices.get("EGG") + 2.0
+		* blockPrices.get("SUGAR") + 3.0
+		* blockPrices.get("MILK_BUCKET"));
+	blockPrices.put("BED",
+		3.0 * wood + 3.0 * blockPrices.get("WOOL"));
+	blockPrices.put("DIODE", 3.0 * stone + redStone + 2.0
+		* blockPrices.get("REDSTONE_TORCH_ON"));
+	blockPrices.put("COOKIE", 2.0 * blockPrices.get("WHEAT")
+		+ blockPrices.get("COCOA") / 3.0);
+	blockPrices.put("SHEARS", 2.0 * ironBar);
+	blockPrices.put("COOKED_BEEF",
+		blockPrices.get("RAW_BEEF") + fuel);
+	blockPrices.put("COOKED_CHICKEN",
+		blockPrices.get("RAW_CHICKEN") + fuel);
+	blockPrices.put("GOLD_NUGGET", goldBar / 9.0);
+	blockPrices.put("GLASS_BOTTLE", blockPrices.get("GLASS"));
 	// This next one is actually just the water bottle and not a potion -
-	// glass bottle + water, which is free
-	blockPrices.put(Material.POTION, blockPrices.get(Material.GLASS_BOTTLE));
+	// glass bottle + water", which is free
+	blockPrices.put("POTION", blockPrices.get("GLASS_BOTTLE"));
 	blockPrices.put(
-		Material.FERMENTED_SPIDER_EYE,
-		blockPrices.get(Material.SUGAR)
-		+ blockPrices.get(Material.BROWN_MUSHROOM)
-		+ blockPrices.get(Material.SPIDER_EYE));
+		"FERMENTED_SPIDER_EYE",
+		blockPrices.get("SUGAR")
+		+ blockPrices.get("BROWN_MUSHROOM")
+		+ blockPrices.get("SPIDER_EYE"));
 	blockPrices.put(
-		Material.MAGMA_CREAM,
-		blockPrices.get(Material.SLIME_BALL)
-		+ blockPrices.get(Material.BLAZE_POWDER));
-	blockPrices.put(Material.BREWING_STAND_ITEM,
-		3.0 * cobble + blockPrices.get(Material.BLAZE_ROD));
-	blockPrices.put(Material.CAULDRON_ITEM, 7.0 * ironBar);
-	blockPrices.put(Material.SPECKLED_MELON, 8.0 / 9.0 * goldBar
-		+ blockPrices.get(Material.MELON));
+		"MAGMA_CREAM",
+		blockPrices.get("SLIME_BALL")
+		+ blockPrices.get("BLAZE_POWDER"));
+	blockPrices.put("BREWING_STAND_ITEM",
+		3.0 * cobble + blockPrices.get("BLAZE_ROD"));
+	blockPrices.put("CAULDRON_ITEM", 7.0 * ironBar);
+	blockPrices.put("SPECKLED_MELON", 8.0 / 9.0 * goldBar
+		+ blockPrices.get("MELON"));
 	blockPrices.put(
-		Material.FIREBALL,
-		blockPrices.get(Material.COAL)
-		+ blockPrices.get(Material.BLAZE_POWDER)
-		+ blockPrices.get(Material.SULPHUR));
+		"FIREBALL",
+		blockPrices.get("COAL")
+		+ blockPrices.get("BLAZE_POWDER")
+		+ blockPrices.get("SULPHUR"));
 	blockPrices.put(
-		Material.BOOK_AND_QUILL,
-		blockPrices.get(Material.INK_SACK)
-		+ blockPrices.get(Material.BOOK)
-		+ blockPrices.get(Material.FEATHER));
-	blockPrices.put(Material.ITEM_FRAME,
-		8.0 * stick + blockPrices.get(Material.LEATHER));
-	blockPrices.put(Material.FLOWER_POT_ITEM,
-		3.0 * blockPrices.get(Material.CLAY_BRICK));
-	blockPrices.put(Material.BAKED_POTATO,
-		blockPrices.get(Material.POTATO_ITEM) + fuel);
-	// blockPrices.put(Material.BAKED_POTATO, 20.0);
+		"BOOK_AND_QUILL",
+		blockPrices.get("INK_SACK")
+		+ blockPrices.get("BOOK")
+		+ blockPrices.get("FEATHER"));
+	blockPrices.put("ITEM_FRAME",
+		8.0 * stick + blockPrices.get("LEATHER"));
+	blockPrices.put("FLOWER_POT_ITEM",
+		3.0 * blockPrices.get("CLAY_BRICK"));
+	blockPrices.put("BAKED_POTATO",
+		blockPrices.get("POTATO_ITEM") + fuel);
+	// blockPrices.put("BAKED_POTATO", 20.0);
 	blockPrices.put(
-		Material.EMPTY_MAP,
-		8.0 * blockPrices.get(Material.PAPER)
-		+ blockPrices.get(Material.COMPASS));
-	blockPrices.put(Material.GOLDEN_CARROT, (8.0 / 9.0 * goldBar)
-		+ blockPrices.get(Material.CARROT_ITEM));
+		"EMPTY_MAP",
+		8.0 * blockPrices.get("PAPER")
+		+ blockPrices.get("COMPASS"));
+	blockPrices.put("GOLDEN_CARROT", (8.0 / 9.0 * goldBar)
+		+ blockPrices.get("CARROT_ITEM"));
 	blockPrices.put(
-		Material.CARROT_STICK,
-		blockPrices.get(Material.CARROT_ITEM)
-		+ blockPrices.get(Material.FISHING_ROD));
-	blockPrices.put(Material.PUMPKIN_PIE,
-		blockPrices.get(Material.SUGAR) + blockPrices.get(Material.EGG)
-		+ blockPrices.get(Material.PUMPKIN));
-	blockPrices.put(Material.REDSTONE_COMPARATOR,
-		3.0 * stone + 3.0 * blockPrices.get(Material.REDSTONE_TORCH_ON)
-		+ blockPrices.get(Material.QUARTZ));
+		"CARROT_STICK",
+		blockPrices.get("CARROT_ITEM")
+		+ blockPrices.get("FISHING_ROD"));
+	blockPrices.put("PUMPKIN_PIE",
+		blockPrices.get("SUGAR") + blockPrices.get("EGG")
+		+ blockPrices.get("PUMPKIN"));
+	blockPrices.put("REDSTONE_COMPARATOR",
+		3.0 * stone + 3.0 * blockPrices.get("REDSTONE_TORCH_ON")
+		+ blockPrices.get("QUARTZ"));
 	blockPrices.put(
-		Material.EXPLOSIVE_MINECART,
-		blockPrices.get(Material.MINECART)
-		+ blockPrices.get(Material.TNT));
-	blockPrices.put(
-		Material.HOPPER_MINECART,
-		blockPrices.get(Material.MINECART)
-		+ blockPrices.get(Material.HOPPER));
-	blockPrices.put(Material.LEASH,
-		(4.0 * blockPrices.get(Material.STRING) + blockPrices
-			.get(Material.SLIME_BALL) / 2.0));
+		"EXPLOSIVE_MINECART",
+		blockPrices.get("MINECART")
+		+ blockPrices.get("TNT"));
+	blockPrices.put("HOPPER_MINECART",
+		blockPrices.get("MINECART")
+		+ blockPrices.get("HOPPER"));
+	blockPrices.put("LEASH",
+		(4.0 * blockPrices.get("STRING") + blockPrices.get("SLIME_BALL") / 2.0));
 	// FISH
 	// Fish are randomly caught using fishing rods. The probability of
 	// catching each type of fish is in the code somewhere, but unknown to
@@ -584,266 +581,266 @@ public class Util {
 	// I used data from actual fishing as reported
 	// http://www.minecraftforum.net/topic/2076618-fishing-topic/
 	// Salmon
-	fishPrices.put(1, blockPrices.get(Material.RAW_FISH) * 2.30);
+	fishPrices.put(1, blockPrices.get("RAW_FISH") * 2.30);
 	// Clown fish
-	fishPrices.put(2, blockPrices.get(Material.RAW_FISH) * 42.82);
+	fishPrices.put(2, blockPrices.get("RAW_FISH") * 42.82);
 	// Puffer fish
-	fishPrices.put(3, blockPrices.get(Material.RAW_FISH) * 3.89);
+	fishPrices.put(3, blockPrices.get("RAW_FISH") * 3.89);
 
 	// POTIONS - base potion is always with netherwart, anything else is
 	// worthless/priceless :-)
-	double potionValue = blockPrices.get(Material.GLASS_BOTTLE)
-		+ blockPrices.get(Material.NETHER_STALK) / 3;
+	double potionValue = blockPrices.get("GLASS_BOTTLE")
+		+ blockPrices.get("NETHER_STALK") / 3;
 	// 373:16 Awkward Potion
 	potionPrices.put(16, potionValue);
 
 	// 373:8198 Night Vision Potion (3:00) - does this exist?
-	potionPrices.put(8198, blockPrices.get(Material.GOLDEN_CARROT) / 3.0
+	potionPrices.put(8198, blockPrices.get("GOLDEN_CARROT") / 3.0
 		+ potionValue);
 	// 373:8230 Night Vision II
-	potionPrices.put(8230, blockPrices.get(Material.GOLDEN_CARROT) / 3.0
-		+ potionValue + blockPrices.get(Material.GLOWSTONE_DUST) / 3.0);
+	potionPrices.put(8230, blockPrices.get("GOLDEN_CARROT") / 3.0
+		+ potionValue + blockPrices.get("GLOWSTONE_DUST") / 3.0);
 	// 373:8262 Extended Night Vision Potion (8:00)
-	potionPrices.put(8262, blockPrices.get(Material.GOLDEN_CARROT) / 3.0
+	potionPrices.put(8262, blockPrices.get("GOLDEN_CARROT") / 3.0
 		+ potionValue + redStone / 3.0);
 	// 373: Splash Night Vision Potion (3:00)
-	potionPrices.put(16390, blockPrices.get(Material.GOLDEN_CARROT) / 3.0
-		+ potionValue + blockPrices.get(Material.SULPHUR) / 3.0);
+	potionPrices.put(16390, blockPrices.get("GOLDEN_CARROT") / 3.0
+		+ potionValue + blockPrices.get("SULPHUR") / 3.0);
 	// 373:16422 Splash Night Vision II
-	potionPrices.put(16422, blockPrices.get(Material.GOLDEN_CARROT) / 3.0
-		+ potionValue + blockPrices.get(Material.GLOWSTONE_DUST) / 3.0
-		+ blockPrices.get(Material.SULPHUR) / 3.0);
+	potionPrices.put(16422, blockPrices.get("GOLDEN_CARROT") / 3.0
+		+ potionValue + blockPrices.get("GLOWSTONE_DUST") / 3.0
+		+ blockPrices.get("SULPHUR") / 3.0);
 	// Splash Extended Night Vision Potion (8:00)
 	potionPrices.put(16454,
-		blockPrices.get(Material.GOLDEN_CARROT) / 3.0 + potionValue
-		+ redStone / 3.0 + blockPrices.get(Material.SULPHUR)
+		blockPrices.get("GOLDEN_CARROT") / 3.0 + potionValue
+		+ redStone / 3.0 + blockPrices.get("SULPHUR")
 		/ 3.0);
 
 	// 373:8238 Invisibility
-	potionPrices.put(8238, blockPrices.get(Material.GOLDEN_CARROT) / 3.0
-		+ blockPrices.get(Material.FERMENTED_SPIDER_EYE) / 3.0
+	potionPrices.put(8238, blockPrices.get("GOLDEN_CARROT") / 3.0
+		+ blockPrices.get("FERMENTED_SPIDER_EYE") / 3.0
 		+ potionValue);
 	// 373:8270 Extended invisibility
-	potionPrices.put(8270, blockPrices.get(Material.GOLDEN_CARROT) / 3.0
-		+ blockPrices.get(Material.FERMENTED_SPIDER_EYE) / 3.0
+	potionPrices.put(8270, blockPrices.get("GOLDEN_CARROT") / 3.0
+		+ blockPrices.get("FERMENTED_SPIDER_EYE") / 3.0
 		+ potionValue + redStone / 3.0);
 	// 373:16430 Splash Invisibility
-	potionPrices.put(16430, blockPrices.get(Material.GOLDEN_CARROT) / 3.0
-		+ blockPrices.get(Material.FERMENTED_SPIDER_EYE) / 3.0
-		+ potionValue + blockPrices.get(Material.SULPHUR) / 3.0);
+	potionPrices.put(16430, blockPrices.get("GOLDEN_CARROT") / 3.0
+		+ blockPrices.get("FERMENTED_SPIDER_EYE") / 3.0
+		+ potionValue + blockPrices.get("SULPHUR") / 3.0);
 	// 373:16462 Splash Extended invisibility
 	potionPrices.put(
 		16462,
-		blockPrices.get(Material.GOLDEN_CARROT) / 3.0
-		+ blockPrices.get(Material.FERMENTED_SPIDER_EYE) / 3.0
+		blockPrices.get("GOLDEN_CARROT") / 3.0
+		+ blockPrices.get("FERMENTED_SPIDER_EYE") / 3.0
 		+ potionValue + redStone / 3.0
-		+ blockPrices.get(Material.SULPHUR) / 3.0);
+		+ blockPrices.get("SULPHUR") / 3.0);
 
 	// Harm
-	potionPrices.put(8268, blockPrices.get(Material.SPIDER_EYE) / 3.0
-		+ blockPrices.get(Material.FERMENTED_SPIDER_EYE) / 3.0
+	potionPrices.put(8268, blockPrices.get("SPIDER_EYE") / 3.0
+		+ blockPrices.get("FERMENTED_SPIDER_EYE") / 3.0
 		+ potionValue);
 	// Harm 2
-	potionPrices.put(8236, blockPrices.get(Material.SPIDER_EYE) / 3.0
-		+ blockPrices.get(Material.FERMENTED_SPIDER_EYE) / 3.0
-		+ blockPrices.get(Material.GLOWSTONE_DUST) / 3.0 + potionValue);
+	potionPrices.put(8236, blockPrices.get("SPIDER_EYE") / 3.0
+		+ blockPrices.get("FERMENTED_SPIDER_EYE") / 3.0
+		+ blockPrices.get("GLOWSTONE_DUST") / 3.0 + potionValue);
 	// Splash Harm
-	potionPrices.put(16460, blockPrices.get(Material.SPIDER_EYE) / 3.0
-		+ blockPrices.get(Material.FERMENTED_SPIDER_EYE) / 3.0
-		+ blockPrices.get(Material.SULPHUR) / 3.0 + potionValue);
+	potionPrices.put(16460, blockPrices.get("SPIDER_EYE") / 3.0
+		+ blockPrices.get("FERMENTED_SPIDER_EYE") / 3.0
+		+ blockPrices.get("SULPHUR") / 3.0 + potionValue);
 	// Splash harm 2
 	potionPrices
-	.put(16428, blockPrices.get(Material.SPIDER_EYE) / 3.0
-		+ blockPrices.get(Material.FERMENTED_SPIDER_EYE) / 3.0
-		+ blockPrices.get(Material.GLOWSTONE_DUST) / 3.0
-		+ blockPrices.get(Material.SULPHUR) / 3.0 + potionValue);
+	.put(16428, blockPrices.get("SPIDER_EYE") / 3.0
+		+ blockPrices.get("FERMENTED_SPIDER_EYE") / 3.0
+		+ blockPrices.get("GLOWSTONE_DUST") / 3.0
+		+ blockPrices.get("SULPHUR") / 3.0 + potionValue);
 	// Poison
-	potionPrices.put(8196, blockPrices.get(Material.SPIDER_EYE) / 3.0
+	potionPrices.put(8196, blockPrices.get("SPIDER_EYE") / 3.0
 		+ potionValue);
 	// Poison II
-	potionPrices.put(8228, blockPrices.get(Material.SPIDER_EYE) / 3.0
-		+ blockPrices.get(Material.GLOWSTONE_DUST) / 3.0 + potionValue);
+	potionPrices.put(8228, blockPrices.get("SPIDER_EYE") / 3.0
+		+ blockPrices.get("GLOWSTONE_DUST") / 3.0 + potionValue);
 	// Poison Extended
-	potionPrices.put(8260, blockPrices.get(Material.SPIDER_EYE) / 3.0
+	potionPrices.put(8260, blockPrices.get("SPIDER_EYE") / 3.0
 		+ redStone / 3.0 + potionValue);
 	// Splash Poison
-	potionPrices.put(16388, blockPrices.get(Material.SPIDER_EYE) / 3.0
-		+ potionValue + blockPrices.get(Material.SULPHUR) / 3.0);
+	potionPrices.put(16388, blockPrices.get("SPIDER_EYE") / 3.0
+		+ potionValue + blockPrices.get("SULPHUR") / 3.0);
 	// Splash Poison II
-	potionPrices.put(16420, blockPrices.get(Material.SPIDER_EYE) / 3.0
-		+ blockPrices.get(Material.GLOWSTONE_DUST) / 3.0 + potionValue
-		+ blockPrices.get(Material.SULPHUR) / 3.0);
+	potionPrices.put(16420, blockPrices.get("SPIDER_EYE") / 3.0
+		+ blockPrices.get("GLOWSTONE_DUST") / 3.0 + potionValue
+		+ blockPrices.get("SULPHUR") / 3.0);
 	// Splash Poison Extended
 	potionPrices
 	.put(16452,
-		blockPrices.get(Material.SPIDER_EYE) / 3.0 + redStone
+		blockPrices.get("SPIDER_EYE") / 3.0 + redStone
 		/ 3.0 + potionValue
-		+ blockPrices.get(Material.SULPHUR) / 3.0);
+		+ blockPrices.get("SULPHUR") / 3.0);
 
 	// Regeneration
-	potionPrices.put(8193, blockPrices.get(Material.GHAST_TEAR) / 3.0
+	potionPrices.put(8193, blockPrices.get("GHAST_TEAR") / 3.0
 		+ potionValue);
 	// Regen II
-	potionPrices.put(8225, blockPrices.get(Material.GHAST_TEAR) / 3.0
-		+ potionValue + blockPrices.get(Material.GLOWSTONE_DUST) / 3.0);
+	potionPrices.put(8225, blockPrices.get("GHAST_TEAR") / 3.0
+		+ potionValue + blockPrices.get("GLOWSTONE_DUST") / 3.0);
 	// Extended Regen
-	potionPrices.put(8257, blockPrices.get(Material.GHAST_TEAR) / 3.0
+	potionPrices.put(8257, blockPrices.get("GHAST_TEAR") / 3.0
 		+ potionValue + redStone / 3.0);
 
 	// Regeneration Splash
-	potionPrices.put(16385, blockPrices.get(Material.GHAST_TEAR) / 3.0
-		+ potionValue + blockPrices.get(Material.SULPHUR) / 3.0);
+	potionPrices.put(16385, blockPrices.get("GHAST_TEAR") / 3.0
+		+ potionValue + blockPrices.get("SULPHUR") / 3.0);
 	// Regen II Splash
-	potionPrices.put(16417, blockPrices.get(Material.GHAST_TEAR) / 3.0
-		+ potionValue + blockPrices.get(Material.GLOWSTONE_DUST) / 3.0
-		+ blockPrices.get(Material.SULPHUR) / 3.0);
+	potionPrices.put(16417, blockPrices.get("GHAST_TEAR") / 3.0
+		+ potionValue + blockPrices.get("GLOWSTONE_DUST") / 3.0
+		+ blockPrices.get("SULPHUR") / 3.0);
 	// Extended Regen Splash
 	potionPrices.put(16449,
-		blockPrices.get(Material.GHAST_TEAR) / 3.0 + potionValue
-		+ redStone / 3.0 + blockPrices.get(Material.SULPHUR)
+		blockPrices.get("GHAST_TEAR") / 3.0 + potionValue
+		+ redStone / 3.0 + blockPrices.get("SULPHUR")
 		/ 3.0);
 
 	// Strength
-	potionPrices.put(8201, blockPrices.get(Material.BLAZE_POWDER) / 3.0
+	potionPrices.put(8201, blockPrices.get("BLAZE_POWDER") / 3.0
 		+ potionValue);
 	// Strength II
-	potionPrices.put(8233, blockPrices.get(Material.BLAZE_POWDER) / 3.0
-		+ potionValue + blockPrices.get(Material.GLOWSTONE_DUST) / 3.0);
+	potionPrices.put(8233, blockPrices.get("BLAZE_POWDER") / 3.0
+		+ potionValue + blockPrices.get("GLOWSTONE_DUST") / 3.0);
 	// Extended Strength
-	potionPrices.put(8265, blockPrices.get(Material.BLAZE_POWDER) / 3.0
+	potionPrices.put(8265, blockPrices.get("BLAZE_POWDER") / 3.0
 		+ potionValue + redStone / 3.0);
 
 	// Strength Splash
-	potionPrices.put(16393, blockPrices.get(Material.BLAZE_POWDER) / 3.0
-		+ potionValue + blockPrices.get(Material.SULPHUR) / 3.0);
+	potionPrices.put(16393, blockPrices.get("BLAZE_POWDER") / 3.0
+		+ potionValue + blockPrices.get("SULPHUR") / 3.0);
 	// Strength II Splash
-	potionPrices.put(16425, blockPrices.get(Material.BLAZE_POWDER) / 3.0
-		+ potionValue + blockPrices.get(Material.GLOWSTONE_DUST) / 3.0
-		+ blockPrices.get(Material.SULPHUR) / 3.0);
+	potionPrices.put(16425, blockPrices.get("BLAZE_POWDER") / 3.0
+		+ potionValue + blockPrices.get("GLOWSTONE_DUST") / 3.0
+		+ blockPrices.get("SULPHUR") / 3.0);
 	// Extended Strength Splash
 	potionPrices.put(16457,
-		blockPrices.get(Material.BLAZE_POWDER) / 3.0 + potionValue
-		+ redStone / 3.0 + blockPrices.get(Material.SULPHUR)
+		blockPrices.get("BLAZE_POWDER") / 3.0 + potionValue
+		+ redStone / 3.0 + blockPrices.get("SULPHUR")
 		/ 3.0);
 
 	// Speed
-	potionPrices.put(8194, blockPrices.get(Material.SUGAR) / 3.0
+	potionPrices.put(8194, blockPrices.get("SUGAR") / 3.0
 		+ potionValue);
 	// Speed II
-	potionPrices.put(8226, blockPrices.get(Material.SUGAR) / 3.0
-		+ potionValue + blockPrices.get(Material.GLOWSTONE_DUST) / 3.0);
+	potionPrices.put(8226, blockPrices.get("SUGAR") / 3.0
+		+ potionValue + blockPrices.get("GLOWSTONE_DUST") / 3.0);
 	// Extended Speed
-	potionPrices.put(8258, blockPrices.get(Material.SUGAR) / 3.0
+	potionPrices.put(8258, blockPrices.get("SUGAR") / 3.0
 		+ potionValue + redStone / 3.0);
 
 	// Speed Splash
-	potionPrices.put(16386, blockPrices.get(Material.SUGAR) / 3.0
-		+ potionValue + blockPrices.get(Material.SULPHUR) / 3.0);
+	potionPrices.put(16386, blockPrices.get("SUGAR") / 3.0
+		+ potionValue + blockPrices.get("SULPHUR") / 3.0);
 	// Speed II Splash
-	potionPrices.put(16418, blockPrices.get(Material.SUGAR) / 3.0
-		+ potionValue + blockPrices.get(Material.GLOWSTONE_DUST) / 3.0
-		+ blockPrices.get(Material.SULPHUR) / 3.0);
+	potionPrices.put(16418, blockPrices.get("SUGAR") / 3.0
+		+ potionValue + blockPrices.get("GLOWSTONE_DUST") / 3.0
+		+ blockPrices.get("SULPHUR") / 3.0);
 	// Extended Speed Splash
 	potionPrices.put(16450,
-		blockPrices.get(Material.SUGAR) / 3.0 + potionValue + redStone
-		/ 3.0 + blockPrices.get(Material.SULPHUR) / 3.0);
+		blockPrices.get("SUGAR") / 3.0 + potionValue + redStone
+		/ 3.0 + blockPrices.get("SULPHUR") / 3.0);
 
 	// Fire Resistance
-	potionPrices.put(8195, blockPrices.get(Material.MAGMA_CREAM) / 3.0
+	potionPrices.put(8195, blockPrices.get("MAGMA_CREAM") / 3.0
 		+ potionValue);
 	// Fire Resistance II
-	potionPrices.put(8227, blockPrices.get(Material.MAGMA_CREAM) / 3.0
-		+ potionValue + blockPrices.get(Material.GLOWSTONE_DUST) / 3.0);
+	potionPrices.put(8227, blockPrices.get("MAGMA_CREAM") / 3.0
+		+ potionValue + blockPrices.get("GLOWSTONE_DUST") / 3.0);
 	// Extended Fire Resistance
-	potionPrices.put(8259, blockPrices.get(Material.MAGMA_CREAM) / 3.0
+	potionPrices.put(8259, blockPrices.get("MAGMA_CREAM") / 3.0
 		+ potionValue + redStone / 3.0);
 
 	// Fire Resistance Splash
-	potionPrices.put(16387, blockPrices.get(Material.MAGMA_CREAM) / 3.0
-		+ potionValue + blockPrices.get(Material.SULPHUR) / 3.0);
+	potionPrices.put(16387, blockPrices.get("MAGMA_CREAM") / 3.0
+		+ potionValue + blockPrices.get("SULPHUR") / 3.0);
 	// Fire Resistance II Splash
-	potionPrices.put(16419, blockPrices.get(Material.MAGMA_CREAM) / 3.0
-		+ potionValue + blockPrices.get(Material.GLOWSTONE_DUST) / 3.0
-		+ blockPrices.get(Material.SULPHUR) / 3.0);
+	potionPrices.put(16419, blockPrices.get("MAGMA_CREAM") / 3.0
+		+ potionValue + blockPrices.get("GLOWSTONE_DUST") / 3.0
+		+ blockPrices.get("SULPHUR") / 3.0);
 	// Extended Fire Resistance Splash
 	potionPrices.put(16451,
-		blockPrices.get(Material.MAGMA_CREAM) / 3.0 + potionValue
-		+ redStone / 3.0 + blockPrices.get(Material.SULPHUR)
+		blockPrices.get("MAGMA_CREAM") / 3.0 + potionValue
+		+ redStone / 3.0 + blockPrices.get("SULPHUR")
 		/ 3.0);
 
 	// Weakness
-	potionPrices.put(8200, blockPrices.get(Material.FERMENTED_SPIDER_EYE)
+	potionPrices.put(8200, blockPrices.get("FERMENTED_SPIDER_EYE")
 		/ 3.0 + potionValue);
 	// Weakness II
-	potionPrices.put(8232, blockPrices.get(Material.FERMENTED_SPIDER_EYE)
-		/ 3.0 + potionValue + blockPrices.get(Material.GLOWSTONE_DUST)
+	potionPrices.put(8232, blockPrices.get("FERMENTED_SPIDER_EYE")
+		/ 3.0 + potionValue + blockPrices.get("GLOWSTONE_DUST")
 		/ 3.0);
 	// Extended Weakness
-	potionPrices.put(8264, blockPrices.get(Material.FERMENTED_SPIDER_EYE)
+	potionPrices.put(8264, blockPrices.get("FERMENTED_SPIDER_EYE")
 		/ 3.0 + potionValue + redStone / 3.0);
 
 	// Weakness Splash
-	potionPrices.put(16392, blockPrices.get(Material.FERMENTED_SPIDER_EYE)
-		/ 3.0 + potionValue + blockPrices.get(Material.SULPHUR) / 3.0);
+	potionPrices.put(16392, blockPrices.get("FERMENTED_SPIDER_EYE")
+		/ 3.0 + potionValue + blockPrices.get("SULPHUR") / 3.0);
 	// Weakness II Splash
-	potionPrices.put(16424, blockPrices.get(Material.FERMENTED_SPIDER_EYE)
-		/ 3.0 + potionValue + blockPrices.get(Material.GLOWSTONE_DUST)
-		/ 3.0 + blockPrices.get(Material.SULPHUR) / 3.0);
+	potionPrices.put(16424, blockPrices.get("FERMENTED_SPIDER_EYE")
+		/ 3.0 + potionValue + blockPrices.get("GLOWSTONE_DUST")
+		/ 3.0 + blockPrices.get("SULPHUR") / 3.0);
 	// Extended Weakness Splash
 	potionPrices.put(
 		16456,
-		blockPrices.get(Material.FERMENTED_SPIDER_EYE) / 3.0
+		blockPrices.get("FERMENTED_SPIDER_EYE") / 3.0
 		+ potionValue + redStone / 3.0
-		+ blockPrices.get(Material.SULPHUR) / 3.0);
+		+ blockPrices.get("SULPHUR") / 3.0);
 
 	// Slowness
-	potionPrices.put(8202, blockPrices.get(Material.FERMENTED_SPIDER_EYE)
-		/ 3.0 + blockPrices.get(Material.SUGAR) / 3.0 + potionValue);
+	potionPrices.put(8202, blockPrices.get("FERMENTED_SPIDER_EYE")
+		/ 3.0 + blockPrices.get("SUGAR") / 3.0 + potionValue);
 	// Slowness II
-	potionPrices.put(8234, blockPrices.get(Material.FERMENTED_SPIDER_EYE)
-		/ 3.0 + blockPrices.get(Material.SUGAR) / 3.0 + potionValue
-		+ blockPrices.get(Material.GLOWSTONE_DUST) / 3.0);
+	potionPrices.put(8234, blockPrices.get("FERMENTED_SPIDER_EYE")
+		/ 3.0 + blockPrices.get("SUGAR") / 3.0 + potionValue
+		+ blockPrices.get("GLOWSTONE_DUST") / 3.0);
 	// Extended Slowness
-	potionPrices.put(8266, blockPrices.get(Material.FERMENTED_SPIDER_EYE)
-		/ 3.0 + blockPrices.get(Material.SUGAR) / 3.0 + potionValue
+	potionPrices.put(8266, blockPrices.get("FERMENTED_SPIDER_EYE")
+		/ 3.0 + blockPrices.get("SUGAR") / 3.0 + potionValue
 		+ redStone / 3.0);
 
 	// Slowness Splash
-	potionPrices.put(16394, blockPrices.get(Material.FERMENTED_SPIDER_EYE)
-		/ 3.0 + blockPrices.get(Material.SUGAR) / 3.0 + potionValue
-		+ blockPrices.get(Material.SULPHUR) / 3.0);
+	potionPrices.put(16394, blockPrices.get("FERMENTED_SPIDER_EYE")
+		/ 3.0 + blockPrices.get("SUGAR") / 3.0 + potionValue
+		+ blockPrices.get("SULPHUR") / 3.0);
 	// Slowness II Splash
 	potionPrices.put(16426,
-		blockPrices.get(Material.FERMENTED_SPIDER_EYE) / 3.0
-		+ blockPrices.get(Material.SUGAR) / 3.0 + potionValue
-		+ blockPrices.get(Material.GLOWSTONE_DUST) / 3.0
-		+ blockPrices.get(Material.SULPHUR) / 3.0);
+		blockPrices.get("FERMENTED_SPIDER_EYE") / 3.0
+		+ blockPrices.get("SUGAR") / 3.0 + potionValue
+		+ blockPrices.get("GLOWSTONE_DUST") / 3.0
+		+ blockPrices.get("SULPHUR") / 3.0);
 	// Extended Slowness Splash
-	potionPrices.put(16458, blockPrices.get(Material.FERMENTED_SPIDER_EYE)
-		/ 3.0 + blockPrices.get(Material.SUGAR) / 3.0 + potionValue
-		+ redStone / 3.0 + blockPrices.get(Material.SULPHUR) / 3.0);
+	potionPrices.put(16458, blockPrices.get("FERMENTED_SPIDER_EYE")
+		/ 3.0 + blockPrices.get("SUGAR") / 3.0 + potionValue
+		+ redStone / 3.0 + blockPrices.get("SULPHUR") / 3.0);
 
 	// Healing
-	potionPrices.put(8197, blockPrices.get(Material.SPECKLED_MELON) / 3.0
+	potionPrices.put(8197, blockPrices.get("SPECKLED_MELON") / 3.0
 		+ potionValue);
 	// Healing II
-	potionPrices.put(8229, blockPrices.get(Material.SPECKLED_MELON) / 3.0
-		+ potionValue + blockPrices.get(Material.GLOWSTONE_DUST) / 3.0);
+	potionPrices.put(8229, blockPrices.get("SPECKLED_MELON") / 3.0
+		+ potionValue + blockPrices.get("GLOWSTONE_DUST") / 3.0);
 	// Extended Healing
-	potionPrices.put(8261, blockPrices.get(Material.SPECKLED_MELON) / 3.0
+	potionPrices.put(8261, blockPrices.get("SPECKLED_MELON") / 3.0
 		+ potionValue + redStone / 3.0);
 
 	// Healing Splash
-	potionPrices.put(16389, blockPrices.get(Material.SPECKLED_MELON) / 3.0
-		+ potionValue + blockPrices.get(Material.SULPHUR) / 3.0);
+	potionPrices.put(16389, blockPrices.get("SPECKLED_MELON") / 3.0
+		+ potionValue + blockPrices.get("SULPHUR") / 3.0);
 	// Healing II Splash
-	potionPrices.put(16421, blockPrices.get(Material.SPECKLED_MELON) / 3.0
-		+ potionValue + blockPrices.get(Material.GLOWSTONE_DUST) / 3.0
-		+ blockPrices.get(Material.SULPHUR) / 3.0);
+	potionPrices.put(16421, blockPrices.get("SPECKLED_MELON") / 3.0
+		+ potionValue + blockPrices.get("GLOWSTONE_DUST") / 3.0
+		+ blockPrices.get("SULPHUR") / 3.0);
 	// Extended Healing Splash
 	potionPrices.put(16453,
-		blockPrices.get(Material.SPECKLED_MELON) / 3.0 + potionValue
-		+ redStone / 3.0 + blockPrices.get(Material.SULPHUR)
+		blockPrices.get("SPECKLED_MELON") / 3.0 + potionValue
+		+ redStone / 3.0 + blockPrices.get("SULPHUR")
 		/ 3.0);
 
 	// Technically this potion is made from PUFFERFISH 349:3
@@ -852,24 +849,45 @@ public class Util {
 	potionPrices.put(8205, fishPrices.get(3) / 3.0 + potionValue);
 	// Water Breathing II
 	potionPrices.put(8237, fishPrices.get(3) / 3.0 + potionValue
-		+ blockPrices.get(Material.GLOWSTONE_DUST) / 3.0);
+		+ blockPrices.get("GLOWSTONE_DUST") / 3.0);
 	// Extended Water Breathing
 	potionPrices.put(8269, fishPrices.get(3) / 3.0 + potionValue + redStone
 		/ 3.0);
 
 	// Water Breathing Splash
 	potionPrices.put(16397, fishPrices.get(3) / 3.0 + potionValue
-		+ blockPrices.get(Material.SULPHUR) / 3.0);
+		+ blockPrices.get("SULPHUR") / 3.0);
 	// Water Breathing II Splash
 	potionPrices.put(
 		16429,
 		fishPrices.get(3) / 3.0 + potionValue
-		+ blockPrices.get(Material.GLOWSTONE_DUST) / 3.0
-		+ blockPrices.get(Material.SULPHUR) / 3.0);
+		+ blockPrices.get("GLOWSTONE_DUST") / 3.0
+		+ blockPrices.get("SULPHUR") / 3.0);
 	// Extended Water Breathing Splash
 	potionPrices.put(16461, fishPrices.get(3) / 3.0 + potionValue
-		+ redStone / 3.0 + blockPrices.get(Material.SULPHUR) / 3.0);
-
+		+ redStone / 3.0 + blockPrices.get("SULPHUR") / 3.0);
+	// Leaping
+	if (blockPrices.containsKey("RABBIT_FOOT")) {
+	    // 8203 - Jump boost
+	    potionPrices.put(8203, blockPrices.get("RABBIT_FOOT") / 3D + potionValue);
+	    // 8235 - Jump boost II
+	    potionPrices.put(8235, blockPrices.get("RABBIT_FOOT") / 3D + potionValue 
+		    + blockPrices.get("GLOWSTONE_DUST") / 3.0);
+	    // 8267 - Jump boost extended
+	    potionPrices.put(8267, blockPrices.get("RABBIT_FOOT") + potionValue
+		    + redStone / 3.0);
+	    // 16395 - Splash jump boost
+	    potionPrices.put(16395, blockPrices.get("RABBIT_FOOT") + potionValue
+		    + blockPrices.get("SULPHUR") / 3.0);
+	    // 16427 - Splash jump boost II
+	    potionPrices.put(16427, blockPrices.get("RABBIT_FOOT") / 3D + potionValue
+		    + blockPrices.get("GLOWSTONE_DUST") / 3.0
+		    + blockPrices.get("SULPHUR") / 3.0);
+	    // 16459 - Splash jump boost extended
+	    potionPrices.put(16459, blockPrices.get("RABBIT_FOOT") + potionValue
+		    + redStone / 3.0
+		    + blockPrices.get("SULPHUR") / 3.0);
+	}
 	/*
 	 * 
 	 * Potion 373:8193 Regeneration Potion (0:45) 373:8194 Swiftness Potion
@@ -1104,9 +1122,11 @@ public class Util {
 	    } catch (Exception e) {
 		return "CUSTOM_POTION";
 	    }
+	    //Bukkit.getLogger().info("DEBUG: " + pot.toString());
 	    // Now we can parse out what the potion is from its effects and type
 	    String prefix = "";
 	    String suffix = "";
+	    //Bukkit.getLogger().info("DEBUG: level =" + pot.getLevel());
 	    if (pot.getLevel() > 0)
 		suffix += "_" + pot.getLevel();
 	    if (pot.hasExtendedDuration())
@@ -1116,6 +1136,7 @@ public class Util {
 	    // These are the useless or unused potions. Usually, these can only
 	    // be obtained by /give
 	    if (pot.getEffects().isEmpty()) {
+		//Bukkit.getLogger().info("DEBUG: potion effects are empty");
 		switch ((int) damage) {
 		case 64:
 		    return prefix + "MUNDANE_POTION" + suffix;
@@ -1537,6 +1558,12 @@ public class Util {
 	case COOKED_CHICKEN:
 	    break;
 	case COOKED_FISH:
+	    switch ((int) damage) {
+	    case 0:
+		return "COOKED FISH";
+	    case 1:
+		return "COOKED SALMON";
+	    }
 	    break;
 	case COOKIE:
 	    break;
@@ -1583,6 +1610,14 @@ public class Util {
 	case DIODE_BLOCK_ON:
 	    break;
 	case DIRT:
+	    switch ((int) damage) {
+	    case 0:
+		return "DIRT";
+	    case 1:
+		return "COARSE DIRT";
+	    case 2:
+		return "PODZOL";
+	    }
 	    break;
 	case DISPENSER:
 	    break;
@@ -1847,6 +1882,62 @@ public class Util {
 	case MOB_SPAWNER:
 	    break;
 	case MONSTER_EGGS:
+	    switch ((int) damage) {
+	    case 50:
+		return "CREEPER EGG";
+	    case 51:
+		return "SKELETON EGG";
+	    case 52:
+		return "SPIDER EGG";
+	    case 54:
+		return "ZOMBIE EGG";
+	    case 55:
+		return "SLIME EGG";
+	    case 56:
+		return "GHAST EGG";
+	    case 57:
+		return "PIGMAN EGG";
+	    case 58:
+		return "ENDERMAN EGG";
+	    case 59:
+		return "CAVE SPIDER EGG";
+	    case 60:
+		return "SILVERFISH EGG";
+	    case 61:
+		return "BLAZE EGG";
+	    case 62:
+		return "MAGMA CUBE EGG";
+	    case 65:
+		return "BAT EGG";
+	    case 66:
+		return "WITCH EGG";
+	    case 67:
+		return "ENDERMITE EGG";
+	    case 68:
+		return "GUARDIAN EGG";
+	    case 90:
+		return "PIG EGG";
+	    case 91:
+		return "SHEEP EGG";
+	    case 92:
+		return "COW EGG";
+	    case 93:
+		return "CHICKEN EGG";
+	    case 94:
+		return "SQUID EGG";
+	    case 95:
+		return "WOLF EGG";
+	    case 96:
+		return "MOOSHROOM EGG";
+	    case 98:
+		return "OCELOT EGG";
+	    case 100:
+		return "HORSE EGG";
+	    case 101:
+		return "RABBIT EGG";
+	    case 120:
+		return "VILLAGER EGG";
+	    }
 	    break;
 	case MOSSY_COBBLESTONE:
 	    break;
@@ -1923,6 +2014,16 @@ public class Util {
 	case RAW_CHICKEN:
 	    break;
 	case RAW_FISH:
+	    switch ((int) damage) {
+	    case 0:
+		return "RAW FISH";
+	    case 1:
+		return "RAW SALMON";
+	    case 2:
+		return "CLOWNFISH";
+	    case 3:
+		return "PUFFERFISH";
+	    }
 	    break;
 	case RECORD_10:
 	    return "Ward Record";
@@ -1987,6 +2088,12 @@ public class Util {
 	case SADDLE:
 	    break;
 	case SAND:
+	    switch ((int) damage) {
+	    case 0:
+		return "SAND";
+	    case 1:
+		return "RED SAND";
+	    }
 	    break;
 	case SANDSTONE_STAIRS:
 	    break;
@@ -1999,6 +2106,18 @@ public class Util {
 	case SIGN_POST:
 	    break;
 	case SKULL:
+	    switch ((int) damage) {
+	    case 0:
+		return "SKELETON MOB HEAD";
+	    case 1:
+		return "WITHER SKELETON MOB HEAD";
+	    case 2:
+		return "ZOMBIE MOB HEAD";
+	    case 3:
+		return "HUMAN MOB HEAD";
+	    case 4:
+		return "CREEPER MOB HEAD";
+	    }
 	    break;
 	case SLIME_BALL:
 	    break;
@@ -2019,6 +2138,12 @@ public class Util {
 	case SPIDER_EYE:
 	    break;
 	case SPONGE:
+	    switch ((int) damage) {
+	    case 0:
+		return "SPONGE";
+	    case 1:
+		return "WET SPONGE";
+	    }
 	    break;
 	case SPRUCE_WOOD_STAIRS:
 	    break;
@@ -2137,6 +2262,22 @@ public class Util {
 	case STICK:
 	    break;
 	case STONE:
+	    switch ((int) damage) {
+	    case 0:
+		return "STONE";
+	    case 1:
+		return "GRANITE";
+	    case 2:
+		return "POLISHED GRANITE";
+	    case 3:
+		return "DIORITE";
+	    case 4:
+		return "POLISHED DIORITE";
+	    case 5:
+		return "ANDESITE";
+	    case 6:
+		return "POLISHED ANDESITE";	
+	    }
 	    break;
 	case STONE_AXE:
 	    break;
@@ -2217,6 +2358,29 @@ public class Util {
 	case YELLOW_FLOWER:
 	    return "Dandelion";
 	default:
+	    // 1.8 - use string comparison to be compatible with 1.7.9
+	    if (item.getType().toString().equals("PRISMARINE")) {
+		switch ((int) damage) {
+		case 0:
+		    return "PRISMARINE";
+		case 1:
+		    return "PRISMARINE BRICKS";
+		case 2:
+		    return "DARK PRISMARINE";
+		}
+	    } else if (item.getType().toString().equals("BANNER")) {
+		// For all colors
+		return "BANNER";
+	    } else if (item.getType().toString().equals("RED_SANDSTONE")) {
+		switch ((int) damage) {
+		case 0:
+		    return "RED_SANDSTONE";
+		case 1:
+		    return "SMOOTH RED_SANDSTONE";
+		case 2:
+		    return "CHISELED RED_SANDSTONE";
+		}
+	    }
 	    break;
 	}
 	// This covers the rest of the items that have a "reasonable" name
@@ -2328,7 +2492,7 @@ public class Util {
     /*
      * public static int countSpace(Inventory inv, ItemStack item) { int space =
      * 0; for (ItemStack iStack : inv.getContents()) { if (iStack == null ||
-     * iStack.getType() == Material.AIR) { space += item.getMaxStackSize(); }
+     * iStack.getType() == "AIR) { space += item.getMaxStackSize(); }
      * else if (matches(item, iStack)) { space += item.getMaxStackSize() -
      * iStack.getAmount(); } } return space; }
      */
@@ -2547,7 +2711,7 @@ public class Util {
 	    case WOOL:
 		try {
 		    return (dyePrices.get((int) (15 - durability)) + blockPrices
-			    .get(Material.WOOL));
+			    .get("WOOL"));
 		} catch (Exception e) {
 		    return -10000.0;
 		}
@@ -2576,11 +2740,10 @@ public class Util {
 		}
 		break;
 	    case POTION:
-		try {
-		    return potionPrices.get((int) durability);
-		} catch (Exception e) {
-		    return -10000.0;
+		if (potionPrices.containsKey((int) durability)) {
+		    return potionPrices.get((int) durability); 
 		}
+		return -10000.0;
 	    case SAPLING:
 		switch ((int) durability) {
 		case 0:
@@ -2696,8 +2859,7 @@ public class Util {
 		    // "GOLDEN_APPLE";
 		case 1:
 		    // "ENCHANTED_GOLDEN_APPLE"
-		    return (blockPrices.get(Material.APPLE) + blockPrices
-			    .get(Material.GOLD_BLOCK) * 8.0);
+		    return (blockPrices.get("APPLE") + blockPrices.get("GOLD_BLOCK") * 8.0);
 		}
 		break;
 	    case ANVIL:
@@ -2706,13 +2868,13 @@ public class Util {
 		switch ((int) durability) {
 		case 0:
 		    // "ANVIL";
-		    return blockPrices.get(Material.ANVIL);
+		    return blockPrices.get("ANVIL");
 		case 1:
 		    // "SLIGHTLY_DAMAGED_ANVIL";
-		    return blockPrices.get(Material.ANVIL) * 0.12;
+		    return blockPrices.get("ANVIL") * 0.12;
 		case 2:
 		    // "VERY_DAMAGED:ANVIL";
-		    return blockPrices.get(Material.ANVIL) * 0.0144;
+		    return blockPrices.get("ANVIL") * 0.0144;
 		}
 		break;
 	    case RED_ROSE:
@@ -2729,8 +2891,7 @@ public class Util {
 	    case STAINED_GLASS:
 		// plugin.Bukkit.getLogger().info("Stained glass");
 		try {
-		    return (dyePrices.get((int) (15 - durability)) + blockPrices
-			    .get(Material.GLASS));
+		    return (dyePrices.get((int) (15 - durability)) + blockPrices.get("GLASS"));
 		} catch (Exception e) {
 		    return -10000.0;
 		}
@@ -2746,8 +2907,7 @@ public class Util {
 		 */
 	    case CARPET:
 		try {
-		    return (dyePrices.get((int) (15 - durability)) + 2 / 3 * blockPrices
-			    .get(Material.WOOL));
+		    return (dyePrices.get((int) (15 - durability)) + 2 / 3 * blockPrices.get("WOOL"));
 		} catch (Exception e) {
 		    return -10000.0;
 		}
@@ -3439,8 +3599,8 @@ public class Util {
 	    }
 	}
 	// Final total is...
-	if (blockPrices.containsKey(type)) {
-	    return (Double) blockPrices.get(type) * damageModifier;
+	if (blockPrices.containsKey(type.toString())) {
+	    return (Double) blockPrices.get(type.toString()) * damageModifier;
 	} else {
 	    // See if we can work it out via the recipe
 	    // List of items that have no recipes
@@ -3456,7 +3616,7 @@ public class Util {
 			Bukkit.getLogger().info(ingredient.getIngredient().toString());
 		    }
 		    Bukkit.getLogger().info("**********************");
-		    */
+		     */
 		    //Bukkit.getLogger().info(crafted.toString());
 		    List<IngredientCost> toBeRemoved = new ArrayList<IngredientCost>();
 		    List<IngredientCost> toBeAdded = new ArrayList<IngredientCost>();
@@ -3522,7 +3682,7 @@ public class Util {
     /**
      * @return the blockPrices
      */
-    public HashMap<Material, Double> getBlockPrices() {
+    public HashMap<String, Double> getBlockPrices() {
 	return blockPrices;
     }
     /**
@@ -3533,9 +3693,9 @@ public class Util {
     private List<IngredientCost> getIngredients(ItemStack item) {
 	List<IngredientCost> ingredients = new ArrayList<IngredientCost>();
 	// If we know the price of this item immediately (it's in config) then return that, not the recipe
-	if (blockPrices.containsKey(item.getType())) {
+	if (blockPrices.containsKey(item.getType().toString())) {
 	    //Bukkit.getLogger().info("Price of " + item.toString() + " is known and is $" + blockPrices.get(item.getType()));
-	    ingredients.add(new IngredientCost(item, blockPrices.get(item.getType())));
+	    ingredients.add(new IngredientCost(item, blockPrices.get(item.getType().toString())));
 	    return ingredients;
 	} 
 	List<Recipe> recipe = Bukkit.getServer().getRecipesFor(item);
@@ -3549,8 +3709,8 @@ public class Util {
 		    if (ingredient != null) {
 			//Bukkit.getLogger().info(ingredient.toString());
 			double cost = 0D;
-			if (blockPrices.containsKey(ingredient.getType())) {
-			    cost = blockPrices.get(ingredient.getType()) / sr.getResult().getAmount();
+			if (blockPrices.containsKey(ingredient.getType().toString())) {
+			    cost = blockPrices.get(ingredient.getType().toString()) / sr.getResult().getAmount();
 			}
 			ingredients.add(new IngredientCost(ingredient, cost));
 		    }
@@ -3563,8 +3723,8 @@ public class Util {
 		    if (ingredient != null) {
 			//Bukkit.getLogger().info(ingredient.toString());
 			double cost = 0D;
-			if (blockPrices.containsKey(ingredient.getType())) {
-			    cost = blockPrices.get(ingredient.getType()) / slr.getResult().getAmount();
+			if (blockPrices.containsKey(ingredient.getType().toString())) {
+			    cost = blockPrices.get(ingredient.getType().toString()) / slr.getResult().getAmount();
 			}
 			ingredients.add(new IngredientCost(ingredient, cost));
 		    }
@@ -3575,14 +3735,14 @@ public class Util {
 		FurnaceRecipe fr = (FurnaceRecipe)r;
 		//ingredients.add(fr.getInput());
 		double cost = 0D;
-		if (blockPrices.containsKey(fr.getInput().getType())) {
-		    cost = blockPrices.get(fr.getInput().getType()) / fr.getResult().getAmount();
+		if (blockPrices.containsKey(fr.getInput().getType().toString())) {
+		    cost = blockPrices.get(fr.getInput().getType().toString()) / fr.getResult().getAmount();
 		}
 		ingredients.add(new IngredientCost(fr.getInput(), cost));
 		// Coal must be in config
-		if (blockPrices.containsKey(Material.COAL)) {
+		if (blockPrices.containsKey("COAL")) {
 		    // Magic number - Coal can cook 8 things...ish
-		    cost = blockPrices.get(Material.COAL) / 8D;
+		    cost = blockPrices.get("COAL") / 8D;
 		} else {
 		    cost = 1;
 		}
