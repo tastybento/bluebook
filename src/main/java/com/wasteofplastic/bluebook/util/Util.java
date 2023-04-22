@@ -129,7 +129,6 @@ public class Util {
         blockPrices.put(Material.STICK, stick);
         blockPrices.put(Material.STONE, stone);
 
-        // dyes - all are INK_SAC variants
         // WHITE - bone meal
         dyePrices.put(DyeColor.WHITE, getBlockPrice(Material.BONE));
         // ORANGE - made the traditional way, just like mom used to make it
@@ -839,7 +838,7 @@ public class Util {
      *            The itemstack to fetch the name of
      * @return The human readable item name.
      */
-    public String getName(ItemStack i) {
+    public static String getName(ItemStack i) {
         // If the item has had its name changed, then let's use that
         String vanillaName = "";
         String displayName = i.getItemMeta().getDisplayName();
@@ -929,42 +928,6 @@ public class Util {
     }
 
     /**
-     * Compares two items to each other. Returns true if they match.
-     *
-     * @param stack1
-     *            The first item stack
-     * @param stack2
-     *            The second item stack
-     * @return true if the itemstacks match. (Material, durability, enchants)
-     */
-    /*
-     * public static boolean matches(ItemStack stack1, ItemStack stack2) { if
-     * (stack1 == stack2) return true; // Referring to the same thing, or both
-     * are null. if (stack1 == null || stack2 == null) return false; // One of
-     * them is null (Can't be both, see above)
-     *
-     * if (stack1.getType() != stack2.getType()) return false; // Not the same
-     * material if (stack1.getDurability() != stack2.getDurability()) return
-     * false; // Not the same durability if
-     * (!stack1.getEnchantments().equals(stack2.getEnchantments())) return
-     * false; // They have the same enchants
-     *
-     * try { Class.forName("org.bukkit.inventory.meta.EnchantmentStorageMeta");
-     * boolean book1 = stack1.getItemMeta() instanceof EnchantmentStorageMeta;
-     * boolean book2 = stack2.getItemMeta() instanceof EnchantmentStorageMeta;
-     * if (book1 != book2) return false;// One has enchantment meta, the other
-     * does not. if (book1 == true) { // They are the same here (both true or
-     * both // false). So if one is true, the other is // true. Map<Enchantment,
-     * Integer> ench1 = ((EnchantmentStorageMeta) stack1
-     * .getItemMeta()).getStoredEnchants(); Map<Enchantment, Integer> ench2 =
-     * ((EnchantmentStorageMeta) stack2 .getItemMeta()).getStoredEnchants(); if
-     * (!ench1.equals(ench2)) return false; // Enchants aren't the same. } }
-     * catch (ClassNotFoundException e) { // Nothing. They dont have a build
-     * high enough to support this. }
-     *
-     * return true; }
-     */
-    /**
      * Formats the given number into a price. Adds commas to enable easy reading and the currency symbol or word
      *
      * @return The formatted string.
@@ -991,75 +954,11 @@ public class Util {
     }
 
     /**
-     * Counts the number of items in the given inventory where
-     * Util.matches(inventory item, item) is true.
-     *
-     * @param inv
-     *            The inventory to search
-     * @param item
-     *            The ItemStack to search for
-     * @return The number of items that match in this inventory.
-     */
-    /*
-     * public static int countItems(Inventory inv, ItemStack item) { int items =
-     * 0; for (ItemStack iStack : inv.getContents()) { if (iStack == null)
-     * continue; if (Util.matches(item, iStack)) { items += iStack.getAmount();
-     * } } return items; }
-     */
-    /**
-     * Returns the number of items that can be given to the inventory safely.
-     *
-     * @param inv
-     *            The inventory to count
-     * @param item
-     *            The item prototype. Material, durabiltiy and enchants must
-     *            match for 'stackability' to occur.
-     * @return The number of items that can be given to the inventory safely.
-     */
-    /*
-     * public static int countSpace(Inventory inv, ItemStack item) { int space =
-     * 0; for (ItemStack iStack : inv.getContents()) { if (iStack == null ||
-     * iStack.getType() == "AIR) { space += item.getMaxStackSize(); }
-     * else if (matches(item, iStack)) { space += item.getMaxStackSize() -
-     * iStack.getAmount(); } } return space; }
-     */
-    /**
-     * Returns true if the given location is loaded or not.
-     *
-     * @param loc
-     *            The location
-     * @return true if the given location is loaded or not.
-     */
-    /*
-     * public static boolean isLoaded(Location loc) { //
-     * System.out.println("Checking isLoaded(Location loc)"); if (loc.getWorld()
-     * == null) { // System.out.println("Is not loaded. (No world)"); return
-     * false; } // Calculate the chunks coordinates. These are 1,2,3 for each
-     * chunk, NOT // location rounded to the nearest 16. int x = (int)
-     * Math.floor((loc.getBlockX()) / 16.0); int z = (int)
-     * Math.floor((loc.getBlockZ()) / 16.0);
-     *
-     * if (loc.getWorld().isChunkLoaded(x, z)) { //
-     * System.out.println("Chunk is loaded " + x + ", " + z); return true; }
-     * else { // System.out.println("Chunk is NOT loaded " + x + ", " + z);
-     * return false; } }
-     */
-    /**
-     * Returns the price of a block of the material or -100000 if unknown
-     *
-     * @return The price of the block
-     */
-    /*
-     * public static double getPrice(Material type) { if
-     * (blockPrices.containsKey(type)) { return (Double) getBlockPrice(type);
-     * } return -10000; }
-     */
-    /**
      * Returns the price of a block of the ItemStack or -100000 if unknown
      *
      * @return The price of the block
      */
-    public double getEnchantmentValue(ItemStack i) {
+    public static double getEnchantmentValue(ItemStack i) {
         // TODO
         if (!i.getEnchantments().isEmpty()) {
             // Loop through every enchantment on the item and value it
@@ -1231,21 +1130,39 @@ public class Util {
 
         // Find out if this item is damaged or not, i.e. durability
         ItemMeta meta = item.getItemMeta();
-        int durability = 0;
+        int durability = 1;
         if (meta instanceof Damageable damageable) {
             durability = damageable.getDamage();
+            damageModifier = (double)durability / maxDurability;
         }
-        if (Tag.WOOL.isTagged(type)) {
-            // Wool
-            try {
-                return (dyePrices.get(15 - durability) + blockPrices
-                        .get("WOOL"));
-            } catch (Exception e) {
-                return -10000.0;
+
+        // If this has a prescribed value, then return it, otherwise, calculate it.
+        if (blockPrices.containsKey(type)) {
+            return blockPrices.get(type) * damageModifier;
+        }
+        /*
+         * Anything else should be calculated based on crafting or rarity.
+         * Bed, HangingSign, Sheep, Shulker, Sign, Dye
+         */
+        if (meta instanceof Colorable c) {
+            // Calculate based on dye
+            double dyePrice = dyePrices.get(c.getColor());
+
+            if (type.name().contains("_BED")) {
+                return 3D * (dyePrice + getBlockPrice(Material.WHITE_WOOL) + getBlockPrice(Material.OAK_WOOD));
+            } else if (type.name().contains("STAINED_GLASS")) {
+                return dyePrice + getBlockPrice(Material.GLASS);
+            } else if (type.name().contains("CARPET")) {
+                return dyePrice + 2 / 3 * getBlockPrice(Material.WHITE_WOOL);
+            } else if (Tag.WOOL.isTagged(type)) {
+                return dyePrice + blockPrices.get(Material.WHITE_WOOL);
+            } else {
+                return dyePrice;
             }
         }
+        // Fish - rarity
         if (Tag.ITEMS_FISHES.isTagged(type)) {
-            return (fishPrices.get(durability));
+            return (fishPrices.get(type));
         }
         /*
     case INK_SAC:
@@ -1266,13 +1183,6 @@ public class Util {
         }
 
 
-        if (meta instanceof Colorable colorable) {
-            if (type.name().contains("STAINED_GLASS")) {
-                return dyePrices.get(colorable.getColor()) + getBlockPrice(Material.GLASS);
-            } else if (type.name().contains("CARPET")) {
-                return dyePrices.get(colorable.getColor()) + + 2 / 3 * getBlockPrice(Material.WHITE_WOOL);
-            }
-        }
 
         // Adjust price for damage to the item
         if (maxDurability > 0) {

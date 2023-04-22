@@ -41,6 +41,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.ShapelessRecipe;
+import org.bukkit.inventory.meta.Damageable;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -55,9 +57,10 @@ public class BlueBook extends JavaPlugin implements Listener {
 
     public double profit = 0.0;
     public double enchantValue = 1.0;
-    private static Util worldPrice = null;
     // What get's displayed when there is a quote in chat
     private String configText = "";
+
+    private PriceCalculator priceCalculator;
 
     @Override
     public void onDisable() {
@@ -66,12 +69,10 @@ public class BlueBook extends JavaPlugin implements Listener {
 
     @Override
     public void onEnable() {
-        instance = this;
-        worldPrice = new Util();
-
         loadConfig();
-        //worldPrice.loadPrices(null);
-        //worldPrice.calculatePrices(null);
+        priceCalculator = new PriceCalculator(this);
+        //Util.loadPrices(null);
+        //Util.calculatePrices(null);
         // Register events
         PluginManager pm = getServer().getPluginManager();
         pm.registerEvents(this, this);
@@ -96,13 +97,13 @@ public class BlueBook extends JavaPlugin implements Listener {
         // Find out who is doing the clicking
         Player p = e.getPlayer();
         // Load the prices for this world
-        worldPrice.loadPrices(p.getWorld());
-        worldPrice.calculatePrices();
+        //Util.loadPrices(p.getWorld());
+        //Util.calculatePrices();
 
         // Get the item they are hitting
         ItemStack item = e.getItem();
         // Get the item in their hand
-        ItemStack itemInHand = p.getItemInHand();
+        ItemStack itemInHand = p.getInventory().getItemInMainHand();
         // Initialize variables
         //double damageModifier = 1;
 
@@ -112,21 +113,28 @@ public class BlueBook extends JavaPlugin implements Listener {
         if (item != null && item.getType() != Material.AIR
                 && (p.hasPermission("bluebook.show") || p.hasPermission("bluebook.signshow"))) {
             // Find out if this item is damaged or not, i.e. durability
-            short durability = itemInHand.getDurability();
+            double damageModifier = 1;
             // Find out the max durability of the item
             short maxDurability = itemInHand.getType().getMaxDurability();
+            ItemMeta meta = item.getItemMeta();
+            int durability = 1;
+            if (meta instanceof Damageable damageable) {
+                durability = damageable.getDamage();
+                damageModifier = (double)durability / maxDurability;
+            }
 
             // For DEBUG
             //p.sendMessage(ChatColor.BLUE + "[BlueBook "+version+ "] " + ChatColor.GOLD
-            //getLogger().info(worldPrice.getName(itemInHand) + " durability is " + durability + " out of " + maxDurability);
+            //getLogger().info(Util.getName(itemInHand) + " durability is " + durability + " out of " + maxDurability);
             // Tell player what the guide price is.
-            double price = worldPrice.getPrice(itemInHand,p.getWorld().getName());
+            //double price = Util.getPrice(itemInHand,p.getWorld().getName());
+            double price = priceCalculator.getPrice(itemInHand);
             //double price = 1D;
             // Find out the value of enchantments
             // Find out if this item is enchanted or not
             if (!item.getEnchantments().isEmpty()) {
                 getLogger().info("Item is enchanted - Base price = " + Util.format(price));
-                price = price + price * worldPrice.getEnchantmentValue(item) * enchantValue;
+                price = price + price * Util.getEnchantmentValue(item) * enchantValue;
             }
             // Add the % profit
             price = price + price * (profit/100);
@@ -146,25 +154,25 @@ public class BlueBook extends JavaPlugin implements Listener {
                 // unknown prices - literally price-less
                 // TODO: Allow the prefix of the message to be configured
                 lineOne = enchanted;
-                lineTwo = worldPrice.getName(itemInHand);
+                lineTwo = Util.getName(itemInHand);
                 lineThree = "is priceless!";
             } else {
                 if (maxDurability > 0 && durability > 0) {
                     // Item is worn down somewhat
                     lineOne = "Worn" + enchanted;
-                    lineTwo = worldPrice.getName(itemInHand);
+                    lineTwo = Util.getName(itemInHand);
                     lineThree = Util.format(price) + " each";
                 } else if (durability == 0 && maxDurability > 0){
                     lineOne = "Mint" + enchanted;
-                    lineTwo = worldPrice.getName(itemInHand);
+                    lineTwo = Util.getName(itemInHand);
                     lineThree = Util.format(price) + " each";
                 } else {
                     if (lineOne == "") {
-                        lineOne = worldPrice.getName(itemInHand);
+                        lineOne = Util.getName(itemInHand);
                         lineTwo = Util.format(price) + " each";
                     } else {
                         lineOne = enchanted;
-                        lineTwo = worldPrice.getName(itemInHand);
+                        lineTwo = Util.getName(itemInHand);
                         lineThree = Util.format(price) + " each";
                     }
                 }
@@ -227,8 +235,8 @@ public class BlueBook extends JavaPlugin implements Listener {
     public void loadConfig() {
         saveDefaultConfig(); // Creates the config folder and copies config.yml
         // (If one doesn't exist) as required.
-        reloadConfig(); // Reloads config.yml
-        getConfig().options().copyDefaults(true); // Load defaults.
+        //reloadConfig(); // Reloads config.yml
+        //getConfig().options().copyDefaults(true); // Load defaults.
         // Pull out a few variables and put some limit checking in just in case
         // someone goes crazy
         Double configProfit = this.getConfig().getDouble("profit",5D);
@@ -246,13 +254,15 @@ public class BlueBook extends JavaPlugin implements Listener {
             getLogger().warning("Enchantment multiplier out of range (-1000 to 1000). Setting to 1");
             enchantValue = 1D;
         }
+        /*
         String configCurrency = getConfig().getString("currency","$");
         if (configCurrency.length() < 10) {
-            worldPrice.setCurrency(configCurrency);
+            Util.setCurrency(configCurrency);
         } else {
             getLogger().warning("Currency length must be less than 10 characters long. Truncating.");
-            worldPrice.setCurrency(configCurrency.substring(0, 9));
+            Util.setCurrency(configCurrency.substring(0, 9));
         }
+         */
         configText = getConfig().getString("quote-text","");
         if (configText.isEmpty()) {
             PluginDescriptionFile pdf = this.getDescription();
@@ -260,8 +270,8 @@ public class BlueBook extends JavaPlugin implements Listener {
         }
 
         // Load the rest of the prices
-        //worldPrice.loadPrices();
-        //worldPrice.calculatePrices();
+        //Util.loadPrices();
+        //Util.calculatePrices();
     }
 
     /*
@@ -273,7 +283,7 @@ public class BlueBook extends JavaPlugin implements Listener {
         if(cmd.getName().equalsIgnoreCase("bbreload")) {
             // Reload the config file
             loadConfig();
-            worldPrice.thisWorld = "";
+            //Util.thisWorld = "";
             sender.sendMessage(configText + " " + ChatColor.GOLD
                     + "Reloaded");
             return true;
@@ -282,10 +292,4 @@ public class BlueBook extends JavaPlugin implements Listener {
         }
     }
 
-    /**
-     * @return the worldPrice
-     */
-    public static Util getWorldPrice() {
-        return worldPrice;
-    }
 }
