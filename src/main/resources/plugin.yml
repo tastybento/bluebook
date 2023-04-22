@@ -1,6 +1,8 @@
 name: BlueBook
 main: com.wasteofplastic.bluebook.BlueBook
-version: 1.9
+version: 2.0
+api-version: "1.19"
+authors: [tastybento]
 commands:
    bbreload:
       description: Reloads the BlueBook config

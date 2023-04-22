@@ -1,0 +1,143 @@
+# tastybento’s BlueBook Price Guide
+# Version 1.9
+
+# Enchanted items pricing
+# Enchanted items are priced based on their rarity, which is based on
+# the probability of obtaining the enchantments when using an enchantment table
+# 
+
+# Set your server’s profit percentage. If 0%, then the recommended price will
+# be exactly the cost of goods, no labor. 5% is a good value. 
+profit: 5.0
+
+# Set the value multiplier for enchantments. A value of 1.0 will result in an item
+# doubling in price if it has a single, level I, common enchantment, like Bow Power I
+enchantments: 1.0
+
+# Currency symbol or name. If it is one character it will be prefixed, if it is a word, it will be suffixed.
+# Examples
+# currency: $
+# currency: emeralds
+# currency: coins
+currency: $
+
+# Text to show when quoting a price.
+# If left as nothing, it will show the [Bluebook <version number>]
+quote-text: '' 
+
+#Set your default prices here. Commenting out a value will result in it becoming priceless and may make other items that use it priceless too.
+#To set world-specific prices, add a section below this with just the price changes you want. They will overwrite these default prices.
+block-prices:
+   GRASS: 1
+   DIRT: 0.5
+   COBBLESTONE: 1
+   OAK_SAPLING: 5
+   SAND: 0.5
+   GRAVEL: 0.5
+   GOLD_ORE: 50
+   NETHER_GOLD_ORE: 25
+   IRON_ORE: 15
+   COAL_ORE: 10
+   STICK: 1
+   OAK_WOOD: 5
+   OAK_LOG: 10
+   OAK_LEAVES: 2
+   LAPIS_ORE: 20
+   COBWEB: 2.25
+   WHITE_WOOL: 5
+   DANDELION: 1
+   POPPY: 1
+   BROWN_MUSHROOM: 1
+   RED_MUSHROOM: 1
+   MOSSY_COBBLESTONE: 10
+   OBSIDIAN: 50
+   DIAMOND_ORE: 505
+   REDSTONE_ORE: 15
+   ICE: 7
+   CACTUS: 5
+   PUMPKIN: 10
+   NETHERRACK: 5
+   SOUL_SAND: 10
+   VINE: 5
+   MYCELIUM: 10
+   LILYPAD: 3
+   END_STONE: 10
+   DRAGON_EGG: 1000
+   EMERALD_ORE: 55
+   NETHER_QUARTZ_ORE: 20
+   PACKED_ICE: 15
+   APPLE: 3
+   COAL: 8
+   DIAMOND: 500
+   STRING: 1.5
+   FEATHER: 0.5
+   GUNPOWDER: 10
+   WHEAT_SEEDS: 1
+   WHEAT: 3
+   FLINT: 1
+   PORKCHOP: 7.5
+   WATER_BUCKET: 55
+   LAVA_BUCKET: 128
+   SADDLE: 100
+   REDSTONE: 3
+   SNOW_BALL: 1
+   LEATHER: 10
+   MILK_BUCKET: 55
+   CLAY_BALL: 3
+   SUGAR_CANE: 1
+   SLIME_BALL: 10
+   EGG: 0.5
+   GLOWSTONE_DUST: 8
+   COD: 3
+   INK_SAC: 3
+   BONE: 5
+   MELON: 1.5
+   PUMPKIN_SEEDS: 15
+   MELON_SEEDS: 15
+   BEEF: 7.5
+   CHICKEN: 5
+   ROTTEN_FLESH: 1
+   ENDER_PEARL: 50
+   BLAZE_ROD: 100
+   GHAST_TEAR: 75
+   NETHER_STALK: 25
+   SPIDER_EYE: 3
+   EMERALD: 50
+   CARROT_ITEM: 1
+   POTATO_ITEM: 0.5
+   POISONOUS_POTATO: 0.25
+   NETHER_STAR: 250
+   QUARTZ: 17.5
+   IRON_HORSE_ARMOR: 120
+   GOLD_HORSE_ARMOR: 350
+   DIAMOND_HORSE_ARMOR: 3000
+   NAME_TAG: 50
+   MUSIC_DISC_5: 100
+   MUSIC_DISC_13: 100
+   SPONGE: 10
+   FIRE: 12
+# COCOA PLANT, max 3 beans per plant
+   COCOA: 15
+# 1.8 Base Materials
+   PRISMARINE_SHARD: 100
+   PRISMARINE_CRYSTALS: 500
+   MUTTON: 7.5
+   RABBIT: 7.5
+   RABBIT_FOOT: 50
+   RABBIT_HIDE: 10
+
+
+# World-specific prices should go here. You only need to list items that are
+# specific to the world. Crafted items will be calculated appropriately.
+# Format is:
+# worldname:
+#   material1: price
+#   material2: price
+# worldname2:
+#   material4: price
+# etc.
+
+# Example - change to your own world
+ASkyBlock:
+   GRASS: 1000
+   DIRT: 500
