@@ -73,18 +73,21 @@ public class PriceCalculator {
 
     /**
      * Calculate the recipe for this item in hand
-     * @param item
+     * @param i itemstack to do
      * @return List of recipe items and their factored cost
      */
-    private List<IngrCost> getIngredients(ItemStack i, int recipeNumber) {
+    private List<IngrCost> getIngredients(ItemStack i, int iteration) {
+        if (iteration > 3) {
+            Bukkit.getLogger().info("Too many iterations");
+            return null;
+        }
         ItemStack item = new ItemStack(i.getType());
-        List<IngrCost> ingredients = new ArrayList<IngrCost>();
         // If we know the price of this item immediately (it's in config) then return that, not the recipe
         if (blockPrices.containsKey(item.getType())) {
             Bukkit.getLogger().info("Price of " + item.getType().name() + " is known and is $" + getBlockPrice(item.getType()));
             return List.of(new IngrCost(item, getBlockPrice(item.getType())));
         }
-        Bukkit.getLogger().info("Calculating price of " + item.getType() + " using recipe #" + recipeNumber);
+        Bukkit.getLogger().info("Calculating price of " + item.getType());
 
         // Look up recipe for ItemStack
         List<Recipe> recipe = Bukkit.getServer().getRecipesFor(item);
@@ -93,90 +96,170 @@ public class PriceCalculator {
             Bukkit.getLogger().warning("I do not know the price of " + item.getType().name() + ". Add it to config.yml!");
             return List.of(new IngrCost(item, 0D));
         } else {
-            if (recipeNumber >= recipe.size()) {
-                Bukkit.getLogger().warning("I do not know how to make " + item.getType().name() + ". Add it to config.yml!");
-                return List.of(new IngrCost(item, 0D));
-            }
-            // Try the next recipe
-            Recipe r = recipe.get(recipeNumber);
-            Bukkit.getLogger().info("Recipe exists! " + r.getClass().getName());
-            if (r instanceof ShapedRecipe sr) {
-                Bukkit.getLogger().info("Shaped Recipe");
-                for (ItemStack ingredient : sr.getIngredientMap().values()) {
-                    if (ingredient != null) {
-                        Bukkit.getLogger().info("Ingredient is " + ingredient.toString());
-                        double cost = 0D;
-                        if (blockPrices.containsKey(ingredient.getType())) {
-                            cost = getBlockPrice(ingredient.getType()) / sr.getResult().getAmount(); // Divide by the number created
-                            ingredients.add(new IngrCost(ingredient, cost));
-                        } else {
-                            if (ingredient.getType().equals(item.getType())) {
-                                // Infinite loop - try and see if there is another recipe
-                                ingredients.addAll(getIngredients(ingredient, recipeNumber + 1));
-                            } else {
-                                // iteration!
-                                ingredients.addAll(getIngredients(ingredient, 0));
-                            }
-                        }
-                    }
-                }
-                Bukkit.getLogger().info("Result = " + sr.getResult().toString());
-            } else if (r instanceof ShapelessRecipe slr) {
-                Bukkit.getLogger().info("Shapeless Recipe");
-                for (ItemStack ingredient : slr.getIngredientList()) {
-                    if (ingredient != null) {
-                        Bukkit.getLogger().info("Ingredient is " + ingredient.toString());
-                        double cost = 0D;
-                        if (blockPrices.containsKey(ingredient.getType())) {
-                            cost = getBlockPrice(ingredient.getType()) / slr.getResult().getAmount();
-                            ingredients.add(new IngrCost(ingredient, cost));
-                        } else {
-                            if (ingredient.getType().equals(item.getType())) {
-                                // Infinite loop - try and see if there is another recipe
-                                ingredients.addAll(getIngredients(ingredient, recipeNumber + 1));
-                            } else {
-                                // iteration!
-                                ingredients.addAll(getIngredients(ingredient, 0));
-                            }
-                        }
-                    }
-                }
-                Bukkit.getLogger().info("Result = " + slr.getResult().toString());
-            } else if (r instanceof FurnaceRecipe fr) {
-                Bukkit.getLogger().info("Furnace Recipe");
-                double cost = 0D;
-                ItemStack in = fr.getInput();
-                if (blockPrices.containsKey(fr.getInput().getType())) {
-                    cost = getBlockPrice(in.getType()) / fr.getResult().getAmount();
-                } else {
-                    Bukkit.getLogger().warning("I do not know the price of " + in.getType().name() + ". Add it to config.yml!");
-                }
-                ingredients.add(new IngrCost(in, cost));
-                // Coal must be in config
-                double coalCost = this.getPrice(new ItemStack(Material.COAL));
-                cost = coalCost / 8D;
-                ingredients.add(new IngrCost(new ItemStack(Material.COAL), cost));
-
-            } else if (r instanceof BlastingRecipe fr) {
-                Bukkit.getLogger().info("Blasting Recipe");
-                double cost = 0D;
-                ItemStack in = fr.getInput();
-                if (blockPrices.containsKey(fr.getInput().getType())) {
-                    cost = getBlockPrice(in.getType()) / fr.getResult().getAmount();
-                } else {
-                    Bukkit.getLogger().warning("I do not know the price of " + in.getType().name() + ". Add it to config.yml!");
-                }
-                ingredients.add(new IngrCost(in, cost));
-                // Coal must be in config
-                double coalCost = this.getPrice(new ItemStack(Material.COAL));
-                cost = coalCost / 8D;
-                ingredients.add(new IngrCost(new ItemStack(Material.COAL), cost));
-
-
-            }
-
+            return getBestIngredients(item.getType(), recipe, iteration);
         }
-        ingredients.forEach(ic -> Bukkit.getLogger().info(ic.item.getType() + " = $" + ic.cost));
-        return ingredients;
+    }
+
+    private List<IngrCost> getBestIngredients(Material material, List<Recipe> recipe, int iteration) {
+        List<IngrCost> bestIngredients = new ArrayList<IngrCost>();
+        List<IngrCost> ingredients = new ArrayList<IngrCost>();
+        double lowestCost = Double.MAX_VALUE;
+        double highestCost = Double.MIN_VALUE;
+        for (Recipe r : recipe) {
+            Bukkit.getLogger().info("Debug: Recipe is a " + r.getClass().getName());
+            Double cost = 0D;
+            if (r instanceof ShapedRecipe sr) {
+                cost = shapedRecipe(sr, r, ingredients, material, iteration);
+            } else if (r instanceof ShapelessRecipe slr) {
+                cost = shapeless(slr, r, ingredients, material, iteration);
+            } else if (r instanceof FurnaceRecipe fr) {
+                cost = furnace(fr, r, ingredients, material, iteration);
+            } else if (r instanceof BlastingRecipe fr) {
+                cost = blast(fr, r, ingredients, material, iteration);
+            }
+            // Cost obtained
+            if (cost != null) {
+                // Store best price
+                if (lowestCost > cost) {
+                    lowestCost = cost;
+                    // Store this one
+                    bestIngredients = new ArrayList<>(ingredients);
+                }
+                if (highestCost < cost) {
+                    highestCost = cost;
+                }
+            }
+        }
+        if (bestIngredients.isEmpty()) {
+            // There is no recipe for this itemstack and we do not know the price!
+            Bukkit.getLogger().warning("No workable recipe found. I do not know the price of " + material.name() + ". Add it to config.yml!");
+            return List.of(new IngrCost(new ItemStack(material), 0D));
+        }
+        Bukkit.getLogger().info("Lowest cost is $" + lowestCost);
+        Bukkit.getLogger().info("Highest cost is $" + highestCost);
+        Bukkit.getLogger().info("Final recipe is");
+        //
+        bestIngredients.forEach(ic -> {
+            Bukkit.getLogger().info(ic.item().getType() + " = $" + ic.cost);
+        });
+        return bestIngredients;
+    }
+
+
+    private Double blast(BlastingRecipe fr, Recipe r, List<IngrCost> ingredients, Material type, int iteration) {
+        Bukkit.getLogger().info("Blasting Recipe");
+        double cost = 0D;
+        ItemStack in = fr.getInput();
+        if (blockPrices.containsKey(fr.getInput().getType())) {
+            cost = getBlockPrice(in.getType()) / fr.getResult().getAmount();
+        } else {
+            if (in.getType().equals(type)) {
+                // Infinite loop -
+                return null;
+            } else {
+                // iteration!
+                List<IngrCost> subIng = getIngredients(in, iteration + 1);
+                if (subIng == null) {
+                    return null;
+                }
+                ingredients.addAll(subIng);
+            }
+        }
+        ingredients.add(new IngrCost(in, cost));
+        // Coal must be in config
+        double coalCost = this.getPrice(new ItemStack(Material.COAL));
+        cost = coalCost / 8D;
+        ingredients.add(new IngrCost(new ItemStack(Material.COAL), cost));
+        return cost;
+
+    }
+
+
+    private Double furnace(FurnaceRecipe fr, Recipe r, List<IngrCost> ingredients, Material type, int iteration) {
+        Bukkit.getLogger().info("Furnace Recipe");
+        double cost = 0D;
+        ItemStack in = fr.getInput();
+        if (blockPrices.containsKey(fr.getInput().getType())) {
+            cost = getBlockPrice(in.getType()) / fr.getResult().getAmount();
+        } else {
+            if (in.getType().equals(type)) {
+                // Infinite loop -
+                return null;
+            } else {
+                // iteration!
+                List<IngrCost> subIng = getIngredients(in, iteration + 1);
+                if (subIng == null) {
+                    return null;
+                }
+                ingredients.addAll(subIng);
+            }
+        }
+        ingredients.add(new IngrCost(in, cost));
+        // Coal must be in config
+        double coalCost = this.getPrice(new ItemStack(Material.COAL));
+        cost = coalCost / 8D;
+        ingredients.add(new IngrCost(new ItemStack(Material.COAL), cost));
+        return cost;
+    }
+
+
+    private Double shapeless(ShapelessRecipe slr, Recipe r, List<IngrCost> ingredients, Material type, int iteration) {
+        Bukkit.getLogger().info("Shapeless Recipe");
+        double totalCost = 0D;
+        for (ItemStack ingredient : slr.getIngredientList()) {
+            if (ingredient != null) {
+                Bukkit.getLogger().info("Ingredient is " + ingredient.toString());
+                double cost = 0D;
+                if (blockPrices.containsKey(ingredient.getType())) {
+                    cost = getBlockPrice(ingredient.getType()) / slr.getResult().getAmount();
+                    ingredients.add(new IngrCost(ingredient, cost));
+                    totalCost += cost;
+                } else {
+                    if (ingredient.getType().equals(type)) {
+                        // Infinite loop - try and see if there is another recipe
+                        return null;
+                    } else {
+                        // iteration!
+                        List<IngrCost> subIng = getIngredients(ingredient, iteration + 1);
+                        if (subIng == null) {
+                            return null;
+                        }
+                        ingredients.addAll(subIng);
+                    }
+                }
+            }
+        }
+        Bukkit.getLogger().info("Result = " + slr.getResult().toString());
+        return totalCost;
+    }
+
+
+    private Double shapedRecipe(ShapedRecipe sr, Recipe r, List<IngrCost> ingredients, Material material, int iteration) {
+        Bukkit.getLogger().info("Shaped Recipe");
+        double totalCost = 0D;
+        for (ItemStack ingredient : sr.getIngredientMap().values()) {
+            if (ingredient != null) {
+                Bukkit.getLogger().info("Ingredient is " + ingredient.toString());
+                double cost = 0D;
+                if (blockPrices.containsKey(ingredient.getType())) {
+                    cost = getBlockPrice(ingredient.getType()) / sr.getResult().getAmount(); // Divide by the number created
+                    ingredients.add(new IngrCost(ingredient, cost));
+                    totalCost += cost;
+                } else {
+                    if (ingredient.getType().equals(material)) {
+                        // Infinite loop -
+                        return null;
+                    } else {
+                        // iteration!
+                        List<IngrCost> subIng = getIngredients(ingredient, iteration + 1);
+                        if (subIng == null) {
+                            return null;
+                        }
+                        ingredients.addAll(subIng);
+                    }
+                }
+            }
+        }
+        return totalCost;
     }
 }
